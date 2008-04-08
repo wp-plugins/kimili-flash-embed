@@ -4,16 +4,17 @@
 Plugin Name: Kimili Flash Embed
 Plugin URI: http://www.kimili.com/plugins/kml_flashembed
 Description: Provides a wordpress interface for Geoff Stearns' excellent standards compliant <a href="http://blog.deconcept.com/flashobject/">Flash detection and embedding JavaScript</a>. The syntax is <code>[kml_flashembed movie=&quot;filename.swf&quot; height=&quot;250&quot; width=&quot;400&quot; /]</code>.
-Version: 1.4
+Version: 1.4.1
 Author: Michael Bester
 Author URI: http://www.kimili.com
+Update: http://www.kimili.com/plugins/kml_flashembed/wp
 */
 
 /*
 *
 *	KIMILI FLASH EMBED
 *
-*	Copyright 2007 Michael Bester (http://www.kimili.com)
+*	Copyright 2008 Michael Bester (http://www.kimili.com)
 *	Released under the GNU General Public License (http://www.gnu.org/licenses/gpl.html)
 *
 */
@@ -22,15 +23,17 @@ Author URI: http://www.kimili.com
 *	Global Vars
 ************************************************************************/
 
-$kml_request_type	= "";
-$kml_flashembed_ver	= "1.4";
+$kml_request_type		= "";
+$kml_flashembed_ver		= "1.4.1";
+$kml_flashembed_root	= get_settings('siteurl') . '/wp-content/plugins/'.'kml_flashembed'; //dirname(plugin_basename(__FILE__));
 
 
 /***********************************************************************
 *	Load Dependencies 
 ************************************************************************/
 
-require_once('buttonsnap.php');
+if( !class_exists('buttonsnap') )
+	require_once ($kml_flashembed_root . '/buttonsnap.php');
 
 
 /***********************************************************************
@@ -133,6 +136,8 @@ function kml_flashembed_parse_kfe_tags($match) {
 
 function kml_flashembed_build_fo_script($atts) {
 	
+	global $kml_flashembed_root;
+	
 	if (is_array($atts)) extract($atts);
 	
 	$out	= array();
@@ -189,7 +194,7 @@ function kml_flashembed_build_fo_script($atts) {
 	if (isset($allowscriptaccess))	$out[] = '	so_' . $rand . '.addParam("allowScriptAccess", "' . $allowscriptaccess . '");';
 	if (isset($allowfullscreen))	$out[] = '	so_' . $rand . '.addParam("allowFullScreen", "' . $allowfullscreen . '");';
 	if ($useexpressinstall) {
-		$xiswf = buttonsnap_dirname(__FILE__) . '/lib/expressinstall.swf';
+		$xiswf = $kml_flashembed_root.'/lib/expressinstall.swf';
 									$out[] = '	so_' . $rand . '.useExpressInstall("' . $xiswf . '");';
 	}		
 	// Loop through and add any name/value pairs in the $fvars attribute
@@ -306,10 +311,10 @@ function kml_flashembed_build_object_tag($atts) {
 ************************************************************************/
 
 function kml_flashembed_add_flashobject_js() {
-	global $kml_flashembed_ver;
+	global $kml_flashembed_ver, $kml_flashembed_root;
 	echo '
 	<!-- Courtesy of Kimili Flash Embed - Version '. $kml_flashembed_ver . ' -->
-	<script src="' . buttonsnap_dirname(__FILE__) . '/js/swfobject.js" type="text/javascript"></script>
+	<script src="' . $kml_flashembed_root . '/js/swfobject.js" type="text/javascript"></script>
 ';
 }
 
@@ -322,39 +327,60 @@ function kml_flashembed_add_flashobject_js() {
 
 function kml_flashembed_addbuttons() {  
   
-	global $wp_db_version;  
-  
-	// Check for WordPress 2.1+ and activated RTE  
-	if ( 3664 <= $wp_db_version && 'true' == get_user_option('rich_editing') ) {  
+	global $wp_db_version, $kml_flashembed_root;  
+ 	
+	// Check for WordPress 2.5+ and activated RTE
+	if (  $wp_db_version >= 6846 && 'true' == get_user_option('rich_editing')  ) {  
+		
+		add_filter( 'mce_external_plugins', 'kml_flashembed_plugin', 0 );
+		add_filter( 'mce_buttons', 'kml_flashembed_button',0 );
+		
+	// Check for WordPress 2.1+ and activated RTE
+	} elseif ( 3664 <= $wp_db_version && 'true' == get_user_option('rich_editing') ) {  
 		// add the button for wp21 in a new way  
-		add_filter("mce_plugins", "kml_flashembed_button_plugin", 0);  
+		add_filter("mce_plugins", "kml_flashembed_plugin", 0);  
 		add_filter('mce_buttons', 'kml_flashembed_button', 0);  
-		add_action('tinymce_before_init','kml_flashembed_button_script');  		
-	} else {  
-		// Do it in the old way with buttonsnap  
-		$button_image_url = buttonsnap_dirname(__FILE__) . '/kfe/images/flash.gif';  
+		add_action('tinymce_before_init','kml_flashembed_load');
+		
+	}
+	
+	if (class_exists('buttonsnap')) {
+		$button_image_url = $kml_flashembed_root.'/kfe/images/flash.gif';  
 		buttonsnap_separator();  
 		buttonsnap_ajaxbutton($button_image_url, __('Kimili Flash Embed', 'kfe'), 'kml_flashembed_insert_hook');
 		add_filter('kml_flashembed_insert_hook', 'kml_flashembed_insert_tag');
+		
 	}  
 }
 
-// used to insert button in wordpress 2.1x editor  
+// used to insert button in wordpress 2.1x and 2.5 editor  
 function kml_flashembed_button($buttons) {  
 	array_push($buttons, "separator", "kfe");  
 	return $buttons;  
 }  
   
-// Tell TinyMCE that there is a plugin (wp2.1)  
-function kml_flashembed_button_plugin($plugins) {  
-	array_push($plugins, "kfe");  
+// Tell TinyMCE that there is a plugin 
+function kml_flashembed_plugin($plugins) {  
+	
+	global $kml_flashembed_root, $wp_db_version;
+	
+	// WP 2.5
+	if ( $wp_db_version >= 6846 )
+		$plugins['kfe'] = $kml_flashembed_root.'/kfe/editor_plugin_tmce3.js';
+	// WP 2.1 - 2.3
+	else
+		array_push($plugins, "-kfe");  
 	return $plugins;  
 }
 
 // Load the TinyMCE plugin : editor_plugin.js (wp2.1)  
-function kml_flashembed_button_script() {
-	$pluginURL = buttonsnap_dirname(__FILE__) . '/kfe/';
-	echo 'tinyMCE.loadPlugin("kfe", "'.$pluginURL.'");'."\n";  
+function kml_flashembed_load() {
+	
+	global $kml_flashembed_root;
+	
+	$pluginURL = $kml_flashembed_root.'/kfe/';
+	
+	echo 'tinyMCE.loadPlugin("kfe", "'.$pluginURL.'");'."\n"; 
 	return;  
 }
 

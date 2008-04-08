@@ -3,7 +3,7 @@ Contributors: kimili
 Tags: flash, swf, swfobject, javascript
 Requires at least: 1.5
 Tested up to: 2.5
-Stable tag: 1.4
+Stable tag: 1.4.1
 Donate Link: http://kimili.com/donate
 
 Provides a WordPress friendly interface for Geoff Stearns' excellent standards compliant Flash detection and embedding JavaScript, SWFObject
@@ -152,6 +152,11 @@ So I can maintain them in one place, please see the Kimili Flash Embed FAQs at t
 == Version History ==
 
 > **Note:** Because this plugin has been around for a while and numerous older versions exist, yet version 1.4 is the first version to actually be included in the Wordpress Plugin Repository, any older versions are NOT available here.  If you'd like to download an older version, you can do so at the [Kimili Flash Embed for Wordpress Home Page](http://kimili.com/plugins/kml_flashembed/wp).
+
+= Version 1.4.1 =
+
+* Fixed an incompatibility with other plugins that were using the buttonsnap.php library
+* Updated Toolbar buttons to work with TinyMCE 3, used in Wordpress 3
 
 = Version 1.4 =
 

@@ -8,7 +8,7 @@ var TinyMCE_KFEPlugin = {
 			author : 'Michael Bester',  
 			authorurl : 'http://kimili.com',  
 			infourl : 'http://kimili.com/plugins/kml_flashembed',  
-			version : "1.4"  
+			version : "1.4.1"  
 		};  
 	},  
 	getControlHTML : function(cn) {  
