@@ -25,7 +25,7 @@ Update: http://www.kimili.com/plugins/kml_flashembed/wp
 
 $kml_request_type		= "";
 $kml_flashembed_ver		= "1.4.1";
-$kml_flashembed_root	= get_settings('siteurl') . '/wp-content/plugins/'.'kml_flashembed'; //dirname(plugin_basename(__FILE__));
+$kml_flashembed_root	= get_settings('siteurl') . '/wp-content/plugins/'.dirname(plugin_basename(__FILE__));
 
 
 /***********************************************************************
