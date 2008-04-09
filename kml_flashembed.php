@@ -4,7 +4,7 @@
 Plugin Name: Kimili Flash Embed
 Plugin URI: http://www.kimili.com/plugins/kml_flashembed
 Description: Provides a wordpress interface for Geoff Stearns' excellent standards compliant <a href="http://blog.deconcept.com/flashobject/">Flash detection and embedding JavaScript</a>. The syntax is <code>[kml_flashembed movie=&quot;filename.swf&quot; height=&quot;250&quot; width=&quot;400&quot; /]</code>.
-Version: 1.4.1
+Version: 1.4.2
 Author: Michael Bester
 Author URI: http://www.kimili.com
 Update: http://www.kimili.com/plugins/kml_flashembed/wp
@@ -24,7 +24,7 @@ Update: http://www.kimili.com/plugins/kml_flashembed/wp
 ************************************************************************/
 
 $kml_request_type		= "";
-$kml_flashembed_ver		= "1.4.1";
+$kml_flashembed_ver		= "1.4.2";
 $kml_flashembed_root	= get_settings('siteurl') . '/wp-content/plugins/'.dirname(plugin_basename(__FILE__));
 
 
@@ -33,7 +33,7 @@ $kml_flashembed_root	= get_settings('siteurl') . '/wp-content/plugins/'.dirname(
 ************************************************************************/
 
 if( !class_exists('buttonsnap') )
-	require_once ($kml_flashembed_root . '/buttonsnap.php');
+	require_once ('buttonsnap.php');
 
 
 /***********************************************************************
