@@ -3,7 +3,7 @@ Contributors: Kimili
 Tags: flash, swf, swfobject, javascript
 Requires at least: 1.5
 Tested up to: 2.6.1
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 Donate Link: http://kimili.com/donate
 
 Provides a WordPress friendly interface for Geoff Stearns' excellent standards compliant Flash detection and embedding JavaScript, SWFObject
