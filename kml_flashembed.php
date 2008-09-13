@@ -291,15 +291,15 @@ function kml_flashembed_build_object_tag($atts) {
 									$out[] = '			height="'.$height.'">';
 									$out[] = '	<param name="movie" value="' . $movie.$querystring . '" />';
 	if (isset($play))				$out[] = '	<param name="play" value="' . $play . '" />';
-	if (isset($loop))				$out[] = '	<param name=loop" value="' . $loop . '" />';
-	if (isset($menu)) 				$out[] = '	<param name=menu" value="' . $menu . '" />';
-	if (isset($scale)) 				$out[] = '	<param name=scale" value="' . $scale . '" />';
-	if (isset($wmode)) 				$out[] = '	<param name=wmode" value="' . $wmode . '" />';
-	if (isset($align)) 				$out[] = '	<param name=align" value="' . $align . '" />';
-	if (isset($salign)) 			$out[] = '	<param name=salign" value="' . $salign . '" />';    
-	if (isset($base)) 	   		 	$out[] = '	<param name=base" value="' . $base . '" />';
-	if (isset($allowscriptaccess))	$out[] = '	<param name=allowScriptAccess" value="' . $allowscriptaccess . '" />';
-	if (isset($allowfullscreen))	$out[] = '	<param name=allowFullScreen" value="' . $allowfullscreen . '" />';
+	if (isset($loop))				$out[] = '	<param name="loop" value="' . $loop . '" />';
+	if (isset($menu)) 				$out[] = '	<param name="menu" value="' . $menu . '" />';
+	if (isset($scale)) 				$out[] = '	<param name="scale" value="' . $scale . '" />';
+	if (isset($wmode)) 				$out[] = '	<param name="wmode" value="' . $wmode . '" />';
+	if (isset($align)) 				$out[] = '	<param name="align" value="' . $align . '" />';
+	if (isset($salign)) 			$out[] = '	<param name="salign" value="' . $salign . '" />';    
+	if (isset($base)) 	   		 	$out[] = '	<param name="base" value="' . $base . '" />';
+	if (isset($allowscriptaccess))	$out[] = '	<param name="allowScriptAccess" value="' . $allowscriptaccess . '" />';
+	if (isset($allowfullscreen))	$out[] = '	<param name="allowFullScreen" value="' . $allowfullscreen . '" />';
 	 								$out[] = '</object>';     
 
 	$ret .= join("\n", $out);
