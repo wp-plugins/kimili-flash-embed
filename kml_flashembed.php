@@ -35,16 +35,20 @@ class KimiliFlashEmbed
 			// Register editor button hooks
 			add_filter( 'tiny_mce_version', array(&$this, 'tiny_mce_version') );
 			add_filter( 'mce_external_plugins', array(&$this, 'mce_external_plugins') );
-//			add_action( 'edit_form_advanced', array(&$this, 'AddQuicktagsAndFunctions') );
-//			add_action( 'edit_page_form', array(&$this, 'AddQuicktagsAndFunctions') );
+			add_action( 'edit_form_advanced', array(&$this, 'add_quicktags') );
+			add_action( 'edit_page_form', array(&$this, 'add_quicktags') );
 			add_filter( 'mce_buttons', array(&$this, 'mce_buttons') );
+			
+			// Queue Embed JS
+			wp_enqueue_script( 'kimiliflashembed', plugins_url('/kimili-flash-embed/js/kfe.js'), array(), $this->version );
+			
 			
 		} else {
 			// Front-end
 			add_action('template_redirect', array(&$this, 'doObStart'));
 		}
 		
-		// Queue Javascript
+		// Queue SWFObject
 		wp_enqueue_script( 'swfobject', plugins_url('/kimili-flash-embed/js/swfobject.js'), array(), '2.1' );
 	}
 	
@@ -54,20 +58,43 @@ class KimiliFlashEmbed
 	}
 	
 	// Break the browser cache of TinyMCE
-	function tiny_mce_version( $version ) {
+	function tiny_mce_version( $version )
+	{
 		return $version . '-kfe' . $this->version;
 	}
 	
 	// Load the custom TinyMCE plugin
-	function mce_external_plugins( $plugins ) {
-		$plugins['kimiliflashembed'] = plugins_url('/kimili-flash-embed/resources/tinymce3/editor_plugin.js');
+	function mce_external_plugins( $plugins )
+	{
+		$plugins['kimiliflashembed'] = plugins_url('/kimili-flash-embed/lib/tinymce3/editor_plugin.js');
 		return $plugins;
 	}
 
 	// Add the custom TinyMCE buttons
-	function mce_buttons( $buttons ) {
+	function mce_buttons( $buttons )
+	{
 		array_push( $buttons, 'kimiliFlashEmbed' );
 		return $buttons;
+	}
+	
+	function add_quicktags()
+	{
+		$buttonshtml = '<input type="button" class="ed_button" onclick="Kimili.Flash.embed(); return false;" title="Embed a Flash Movie in your post" value="Kimili Flash Embed" />';
+?>
+<script type="text/javascript" charset="utf-8">
+	(function(){
+		
+		if (typeof jQuery === 'undefined') {
+			return;
+		}
+		
+		jQuery(document).ready(function(){
+			// Add the buttons to the HTML view
+			jQuery("#ed_toolbar").append('<?php echo $buttonshtml; ?>');
+		});
+	}());
+</script>
+<?php	
 	}
 }
 
