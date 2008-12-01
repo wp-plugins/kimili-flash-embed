@@ -79,23 +79,27 @@ class KimiliFlashEmbed
 			$atts['targetclass']		= (isset($atts['targetclass'])) ? $atts['targetclass'] : 'flashmovie';
 			$atts['publishmethod']		= (isset($atts['publishmethod'])) ? $atts['publishmethod'] : 'static';
 			$atts['useexpressinstall']	= (isset($atts['useexpressinstall'])) ? $atts['useexpressinstall'] : 'false';
-			$atts['xiswf']			= plugins_url('/kimili-flash-embed/lib/expressInstall.swf');
+			$atts['xiswf']				= plugins_url('/kimili-flash-embed/lib/expressInstall.swf');
 			
+			$rand	= mt_rand();  // For making sure this instance is unique
+
+			// Extract the filename minus the extension...
+			$swfname	= (strrpos($atts['movie'], "/") === false) ?
+									$atts['movie'] :
+									substr($atts['movie'], strrpos($atts['movie'], "/") + 1, strlen($atts['movie']));
+			$swfname	= (strrpos($swfname, ".") === false) ?
+									$swfname :
+									substr($swfname, 0, strrpos($swfname, "."));
+									
 			// set an ID for the movie if necessary
 			if (!isset($atts['fid'])) {
-				
-				$rand	= mt_rand();  // For making sure this instance is unique
-
-				// Extract the filename minus the extension...
-				$swfname	= (strrpos($atts['movie'], "/") === false) ?
-										$atts['movie'] :
-										substr($atts['movie'], strrpos($atts['movie'], "/") + 1, strlen($atts['movie']));
-				$swfname	= (strrpos($swfname, ".") === false) ?
-										$swfname :
-										substr($swfname, 0, strrpos($swfname, "."));
-
 				// ... to use as a default ID if an ID is not defined.
-				$atts['fid'] = "fm_" . $swfname . "_" . $rand;
+				$atts['fid']	= "fm_" . $swfname . "_" . $rand;
+			}
+			
+			if (!isset($atts['target'])) {
+				// ... and a target ID if need be for the dynamic publishing method
+				$atts['target']	= "so_targ_" . $swfname . "_" . $rand;
 			}
 
 			// Parse out the fvars
@@ -162,6 +166,21 @@ class KimiliFlashEmbed
 		return $this->buildObjectTag($atts);
 	}
 	
+	public function publishDynamic($atts)
+	{
+		if (is_array($atts)) {
+			extract($atts);
+		}
+		
+		$this->dynamicSwfs[] = $atts;
+		
+		$out = array();
+		
+		$out[]		= '<div id="' . $target . '" class="' . $targetclass . '">'.$alttext.'</div>';
+		
+		return join("\n", $out);
+	}
+	
 	public function addScriptPlaceholder()
 	{
 		echo 'KML_FLASHEMBED_PROCESS_SCRIPT_CALLS';
@@ -181,14 +200,32 @@ class KimiliFlashEmbed
 		$out[]		= '';
 		$out[]		= '	(function(){';
 		$out[]		= '		try {';
-		$out[]		= '			// Registering Statically Published SWFs';
+		if (count($this->staticSwfs) > 0) {
+			$out[]	= '			// Registering Statically Published SWFs';
+		}
 		
 		for ($i = 0; $i < count($this->staticSwfs); $i++) {
 			$curr	= $this->staticSwfs[$i];
 			$out[]	= '			swfobject.registerObject("' . $curr['id'] . '","' . $curr['version'] . '"'.(($curr['useexpressinstall'] == 'true') ? ',"'.$curr['xiswf'].'"' : '') . ');';
 		}
 		
-		$out[]		= '		} catch(e) {}';
+		if (count($this->dynamicSwfs) > 0) {
+			$out[]		= '';
+			$out[]	= '			// Registering Dynamically Published SWFs';
+		}
+		for ($i = 0; $i < count($this->dynamicSwfs); $i++) {
+			$curr		= $this->dynamicSwfs[$i];
+			$flashvars	= $this->parseFvars($curr['fvars'],'object');
+			$out[]		= '			swfobject.embedSWF("'.$curr['movie'].'","'.$curr['target'].'","'.$curr['width'].'","'.$curr['height'].'","'.$curr['fversion'].'","'.(($curr['useexpressinstall'] == 'true') ? ',"'.$curr['xiswf'].'"' : '').'",{';
+			for ($j = 0; $j < count($flashvars); $j++) {
+				$out[]	= '				'.$flashvars[$j].(($j < count($flashvars) - 1) ? ',' : '');
+			}
+			$out[]		= '			});';
+		}
+		
+		$out[]		= '		} catch(e) {';
+		$out[]		= '			throw e;';
+		$out[]		= '		}';
 		$out[]		= '	}())';
 		$out[]		= '</script>';
 		$out[]		= '';
@@ -204,37 +241,8 @@ class KimiliFlashEmbed
 		}
 
 		// Build a query string based on the $fvars attribute
-		$querystring = "";
-		for ($i = 0; $i < count($fvars); $i++) {
-			$thispair	= trim($fvars[$i]);
-			$nvpair		= explode("=",$thispair);
-			$name		= trim($nvpair[0]);
-			$value		= "";
-			for ($j = 1; $j < count($nvpair); $j++) {			// In case someone passes in a fvars with additional "="
-				$value		.= trim($nvpair[$j]);
-				$value		= preg_replace('/&#038;/', '&', $value);
-				if ((count($nvpair) - 1)  != $j) {
-					$value	.= "=";
-				}
-			}
-			// Prune out JS or PHP values
-			if (preg_match("/^\\$\\{.*\\}/i", $value)) { 		// JS
-				$endtrim 	= strlen($value) - 3;
-				$value		= substr($value, 2, $endtrim);
-				$value		= str_replace(';', '', $value);
-			} else if (preg_match("/^\\?\\{.*\\}/i", $value)) {	// PHP
-				$endtrim 	= strlen($value) - 3;
-				$value 		= substr($value, 2, $endtrim);
-				$value 		= eval("return " . $value);
-			}
-			// else {
-			//	$value = '"'.$value.'"';
-			//}
-			$querystring .= $name . '=' . $value;
-			if ($i < count($fvars) - 1) {
-				$querystring .= "&";
-			}
-		}
+		$querystring = join("&", $this->parseFvars($fvars));
+		
 										$out[] = '';    
 										$out[] = '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"';
 		if (isset($fid))				$out[] = '			id="'.$fid.'"';
@@ -286,6 +294,44 @@ class KimiliFlashEmbed
 
 		$ret .= join("\n", $out);
 		return $ret;
+	}
+	
+	public function parseFvars($fvars, $format='string')
+	{
+		$ret = array();
+		
+		for ($i = 0; $i < count($fvars); $i++) {
+			$thispair	= trim($fvars[$i]);
+			$nvpair		= explode("=",$thispair);
+			$name		= trim($nvpair[0]);
+			$value		= "";
+			for ($j = 1; $j < count($nvpair); $j++) {			// In case someone passes in a fvars with additional "="
+				$value		.= trim($nvpair[$j]);
+				$value		= preg_replace('/&#038;/', '&', $value);
+				if ((count($nvpair) - 1) != $j) {
+					$value	.= "=";
+				}
+			}
+			// Prune out JS or PHP values
+			if (preg_match("/^\\$\\{.*\\}/i", $value)) { 		// JS
+				$endtrim 	= strlen($value) - 3;
+				$value		= substr($value, 2, $endtrim);
+				$value		= str_replace(';', '', $value);
+			} else if (preg_match("/^\\?\\{.*\\}/i", $value)) {	// PHP
+				$endtrim 	= strlen($value) - 3;
+				$value 		= substr($value, 2, $endtrim);
+				$value 		= eval("return " . $value);
+			}
+			
+			if ($format == 'string') {
+				$ret[] = $name . '=' . $value;
+			} else {
+				$ret[] = $name . ' : "' . $value . '"';
+			}
+		}
+
+		return $ret;
+		
 	}
 	
 	public function doObStart()
