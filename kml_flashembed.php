@@ -26,6 +26,8 @@ class KimiliFlashEmbed
 {
 	
 	var $version = '2.0';
+	var $staticSwfs = array();
+	var $dynamicSwfs = array();
 	
 	function __construct()
 	{
@@ -46,6 +48,7 @@ class KimiliFlashEmbed
 		} else {
 			// Front-end
 			add_action('template_redirect', array(&$this, 'doObStart'));
+			add_action('wp_head', array(&$this, 'addScriptPlaceholder'));
 		}
 		
 		// Queue SWFObject
@@ -55,7 +58,8 @@ class KimiliFlashEmbed
 	public function parseShortcodes($content)
 	{
 		$pattern = '/(<p>[\s\n\r]*)?\[(kml_(flash|swf)embed)\b(.*?)(?:(\/))?\](?:(.+?)\[\/\2\])?([\s\n\r]*<\/p>)?/s';
-		$result = preg_replace_callback($pattern, array(&$this, 'processShortcode'), $content);
+		$temp 	= preg_replace_callback($pattern, array(&$this, 'processShortcode'), $content);
+		$result = preg_replace_callback('/KML_FLASHEMBED_PROCESS_SCRIPT_CALLS/s', array(&$this, 'scriptSwfs'), $temp);
 		return $result;
 	}
 	
@@ -71,10 +75,32 @@ class KimiliFlashEmbed
 
 		if (isset($atts['movie']) && isset($atts['height']) && isset($atts['width'])) {
 
-			$atts['fversion']	= (isset($atts['fversion'])) ? $atts['fversion'] : 6;
+			$atts['fversion']			= (isset($atts['fversion'])) ? $atts['fversion'] : 8;
+			$atts['targetclass']		= (isset($atts['targetclass'])) ? $atts['targetclass'] : 'flashmovie';
+			$atts['publishmethod']		= (isset($atts['publishmethod'])) ? $atts['publishmethod'] : 'static';
+			$atts['useexpressinstall']	= (isset($atts['useexpressinstall'])) ? $atts['useexpressinstall'] : 'false';
+			$atts['xiswf']			= plugins_url('/kimili-flash-embed/lib/expressInstall.swf');
+			
+			// set an ID for the movie if necessary
+			if (!isset($atts['fid'])) {
+				
+				$rand	= mt_rand();  // For making sure this instance is unique
 
+				// Extract the filename minus the extension...
+				$swfname	= (strrpos($atts['movie'], "/") === false) ?
+										$atts['movie'] :
+										substr($atts['movie'], strrpos($atts['movie'], "/") + 1, strlen($atts['movie']));
+				$swfname	= (strrpos($swfname, ".") === false) ?
+										$swfname :
+										substr($swfname, 0, strrpos($swfname, "."));
+
+				// ... to use as a default ID if an ID is not defined.
+				$atts['fid'] = "fm_" . $swfname . "_" . $rand;
+			}
+
+			// Parse out the fvars
 			if (isset($atts['fvars'])) {
-				$fvarpair_regex		= "/(?<!([$|\?]\{))\s+;\s+(?!\})/";
+				$fvarpair_regex		= "/(?<!([$|\?]\{))\s*;\s*(?!\})/";
 				$atts['fvars']		= preg_split($fvarpair_regex, $atts['fvars'], -1, PREG_SPLIT_NO_EMPTY);
 			}
 
@@ -85,7 +111,11 @@ class KimiliFlashEmbed
 			if (is_feed()) {
 				$r	= $this->buildObjectTag($atts);
 			} else {
-				$r	= $this->buildObjectTag($atts);
+				if ($atts['publishmethod'] == 'static') {
+					$r = $this->publishStatic($atts);
+				} else {
+					$r = $this->publishDynamic($atts);
+				}
 			}
 		}
 	 	return $r;
@@ -116,13 +146,65 @@ class KimiliFlashEmbed
 		return $atts;
 	}
 	
+	public function publishStatic($atts)
+	{
+		if (is_array($atts)) {
+			extract($atts);
+		}
+		
+		$this->staticSwfs[] = array(
+			'id'					=> $fid,
+			'version'				=> $fversion,
+			'useexpressinstall'		=> $useexpressinstall,
+			'xiswf'					=> $xiswf
+		);
+		
+		return $this->buildObjectTag($atts);
+	}
+	
+	public function addScriptPlaceholder()
+	{
+		echo 'KML_FLASHEMBED_PROCESS_SCRIPT_CALLS';
+	}
+	
+	public function scriptSwfs()
+	{
+		$out = array();
+		
+		$out[]		= '';
+		$out[]		= '<script type="text/javascript" charset="utf-8">';
+		$out[]		= '';
+		$out[]		= '	/**';
+		$out[]		= '	 * Courtesy of Kimili Flash Embed - Version ' . $this->version;
+		$out[]		= '	 * by Michael Bester - http://kimili.com';
+		$out[]		= '	 */';
+		$out[]		= '';
+		$out[]		= '	(function(){';
+		$out[]		= '		try {';
+		$out[]		= '			// Registering Statically Published SWFs';
+		
+		for ($i = 0; $i < count($this->staticSwfs); $i++) {
+			$curr	= $this->staticSwfs[$i];
+			$out[]	= '			swfobject.registerObject("' . $curr['id'] . '","' . $curr['version'] . '"'.(($curr['useexpressinstall'] == 'true') ? ',"'.$curr['xiswf'].'"' : '') . ');';
+		}
+		
+		$out[]		= '		} catch(e) {}';
+		$out[]		= '	}())';
+		$out[]		= '</script>';
+		$out[]		= '';
+		
+		return join("\n", $out);
+	}
+	
 	public function buildObjectTag($atts)
 	{
 		$out	= array();	
-		if (is_array($atts)) extract($atts);
+		if (is_array($atts)) {
+			extract($atts);
+		}
 
 		// Build a query string based on the $fvars attribute
-		$querystring = (count($fvars) > 0) ? "?" : "";
+		$querystring = "";
 		for ($i = 0; $i < count($fvars); $i++) {
 			$thispair	= trim($fvars[$i]);
 			$nvpair		= explode("=",$thispair);
@@ -153,12 +235,14 @@ class KimiliFlashEmbed
 				$querystring .= "&";
 			}
 		}
-
 										$out[] = '';    
 										$out[] = '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"';
+		if (isset($fid))				$out[] = '			id="'.$fid.'"';
+										$out[] = '			class="'.$targetclass.'"';
 										$out[] = '			width="'.$width.'"';
-										$out[] = '			height="'.$height.'">';										
-										$out[] = '	<param name="movie" value="' . $movie.$querystring . '" />';
+										$out[] = '			height="'.$height.'">';
+										$out[] = '	<param name="movie" value="' . $movie . '" />';
+		if (count($fvars) > 0)			$out[] = '	<param name="flashvars" value="' . $querystring . '" />';
 		if (isset($play))				$out[] = '	<param name="play" value="' . $play . '" />';
 		if (isset($loop))				$out[] = '	<param name="loop" value="' . $loop . '" />';
 		if (isset($menu)) 				$out[] = '	<param name="menu" value="' . $menu . '" />';
@@ -167,14 +251,32 @@ class KimiliFlashEmbed
 		if (isset($align)) 				$out[] = '	<param name="align" value="' . $align . '" />';
 		if (isset($salign)) 			$out[] = '	<param name="salign" value="' . $salign . '" />';    
 		if (isset($base)) 	   		 	$out[] = '	<param name="base" value="' . $base . '" />';
-		if (isset($allowscriptaccess))	$out[] = '	<param name="allowScriptAccess" value="' . $allowscriptaccess . '" />';
-		if (isset($allowfullscreen))	$out[] = '	<param name="allowFullScreen" value="' . $allowfullscreen . '" />';
+		if (isset($allowscriptaccess))	$out[] = '	<param name="allowscriptaccess" value="' . $allowscriptaccess . '" />';
+		if (isset($allowfullscreen))	$out[] = '	<param name="allowfullscreen" value="' . $allowfullscreen . '" />';
+		if (isset($seamlesstabbing))	$out[] = '	<param name="seamlesstabbing" value="' . $seamlesstabbing . '" />';
+		if (isset($devicefont))			$out[] = '	<param name="devicefont" value="' . $devicefont . '" />';
+		if (isset($allownetworking))	$out[] = '	<param name="allownetworking" value="' . $allownetworking . '" />';
 										$out[] = '	<!--[if !IE]>-->';
-							  	  		$out[] = '	<object	type="application/x-shockwave-flash"';
-										$out[] = '			data="'.$movie.$querystring.'"'; 
-		if (isset($base)) 	   		 	$out[] = '			base="'.$base.'"';
+										$out[] = '	<object	type="application/x-shockwave-flash"';
+										$out[] = '			data="'.$movie.'"'; 
+		if (isset($fid))				$out[] = '			name="'.$fid.'"';
 										$out[] = '			width="'.$width.'"';
 										$out[] = '			height="'.$height.'">';
+		if (count($fvars) > 0)			$out[] = '		<param name="flashvars" value="' . $querystring . '" />';
+		if (isset($play))				$out[] = '		<param name="play" value="' . $play . '" />';
+		if (isset($loop))				$out[] = '		<param name="loop" value="' . $loop . '" />';
+		if (isset($menu)) 				$out[] = '		<param name="menu" value="' . $menu . '" />';
+		if (isset($scale)) 				$out[] = '		<param name="scale" value="' . $scale . '" />';
+		if (isset($wmode)) 				$out[] = '		<param name="wmode" value="' . $wmode . '" />';
+		if (isset($align)) 				$out[] = '		<param name="align" value="' . $align . '" />';
+		if (isset($salign)) 			$out[] = '		<param name="salign" value="' . $salign . '" />';    
+		if (isset($base)) 	   		 	$out[] = '		<param name="base" value="' . $base . '" />';
+		if (isset($allowscriptaccess))	$out[] = '		<param name="allowscriptaccess" value="' . $allowscriptaccess . '" />';
+		if (isset($allowfullscreen))	$out[] = '		<param name="allowfullscreen" value="' . $allowfullscreen . '" />';
+		if (isset($seamlesstabbing))	$out[] = '		<param name="seamlesstabbing" value="' . $seamlesstabbing . '" />';
+		if (isset($devicefont))			$out[] = '		<param name="devicefont" value="' . $devicefont . '" />';
+		if (isset($allownetworking))	$out[] = '		<param name="allownetworking" value="' . $allownetworking . '" />';
+		if (isset($swliveconnect))		$out[] = '		<param name="swliveconnect" value="' . $swliveconnect . '" />';
 										$out[] = '	<!--[endif]>-->';
 		if (isset($alttext))			$out[] = '		'.$alttext;
 										$out[] = '	<!--[if !IE]>-->';
