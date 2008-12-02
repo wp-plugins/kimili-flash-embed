@@ -214,18 +214,52 @@ class KimiliFlashEmbed
 			$out[]	= '			// Registering Dynamically Published SWFs';
 		}
 		for ($i = 0; $i < count($this->dynamicSwfs); $i++) {
+			
 			$curr		= $this->dynamicSwfs[$i];
+			
+			// Flashvars
 			$flashvars	= $this->parseFvars($curr['fvars'],'object');
+			
+			// Parameters
+			$params = array();			
+			if (isset($curr['play']))				$params[] = '"play" : "' . $curr['play'] . '"';
+			if (isset($curr['loop']))				$params[] = '"loop" : "' . $curr['loop'] . '"';
+			if (isset($curr['menu'])) 				$params[] = '"menu" : "' . $curr['menu'] . '"';
+			if (isset($curr['quality']))			$params[] = '"quality" : "' . $curr['quality'] . '"';
+			if (isset($curr['scale'])) 				$params[] = '"scale" : "' . $curr['scale'] . '"';
+			if (isset($curr['wmode'])) 				$params[] = '"wmode" : "' . $curr['wmode'] . '"';
+			if (isset($curr['salign'])) 			$params[] = '"salign" : "' . $curr['salign'] . '"';  
+			if (isset($curr['base'])) 	   		 	$params[] = '"base" : "' . $curr['base'] . '"';
+			if (isset($curr['allowscriptaccess']))	$params[] = '"allowscriptaccess" : "' . $curr['allowscriptaccess'] . '"';
+			if (isset($curr['allowfullscreen']))	$params[] = '"allowfullscreen" : "' . $curr['allowfullscreen'] . '"';
+			if (isset($curr['seamlesstabbing']))	$params[] = '"seamlesstabbing" : "' . $curr['seamlesstabbing'] . '"';
+			if (isset($curr['devicefont']))			$params[] = '"devicefont" : "' . $curr['devicefont'] . '"';
+			if (isset($curr['allownetworking']))	$params[] = '"allownetworking" : "' . $curr['allownetworking'] . '"';
+			if (isset($curr['swliveconnect']))		$params[] = '"swliveconnect" : "' . $curr['swliveconnect'] . '"';
+			
+			// Attributes
+			$attributes = array();
+			if (isset($curr['align'])) 			$attributes[] = '"salign" : "' . $curr['align'] . '"';  
+			if (isset($curr['fid'])) 			$attributes[] = '"id" : "' . $curr['fid'] . '"';  
+			if (isset($curr['fid'])) 	   		$attributes[] = '"name" : "' . $curr['fid'] . '"';
+			if (isset($curr['targetclass']))	$attributes[] = '"class" : "' . $curr['targetclass'] . '"';
+			
 			$out[]		= '			swfobject.embedSWF("'.$curr['movie'].'","'.$curr['target'].'","'.$curr['width'].'","'.$curr['height'].'","'.$curr['fversion'].'","'.(($curr['useexpressinstall'] == 'true') ? ',"'.$curr['xiswf'].'"' : '').'",{';
 			for ($j = 0; $j < count($flashvars); $j++) {
 				$out[]	= '				'.$flashvars[$j].(($j < count($flashvars) - 1) ? ',' : '');
 			}
-			$out[]		= '			});';
+			$out[]	= '			},{';
+			for ($j = 0; $j < count($params); $j++) {
+				$out[]	= '				'.$params[$j].(($j < count($params) - 1) ? ',' : '');
+			}
+			$out[] = '			},{';
+			for ($j = 0; $j < count($attributes); $j++) {
+				$out[]	= '				'.$attributes[$j].(($j < count($attributes) - 1) ? ',' : '');
+			}
+			$out[] = '			});';
 		}
 		
-		$out[]		= '		} catch(e) {';
-		$out[]		= '			throw e;';
-		$out[]		= '		}';
+		$out[]		= '		} catch(e) {}';
 		$out[]		= '	}())';
 		$out[]		= '</script>';
 		$out[]		= '';
@@ -246,6 +280,7 @@ class KimiliFlashEmbed
 										$out[] = '';    
 										$out[] = '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"';
 		if (isset($fid))				$out[] = '			id="'.$fid.'"';
+		if (isset($align)) 				$out[] = '			align="' . $align . '"';
 										$out[] = '			class="'.$targetclass.'"';
 										$out[] = '			width="'.$width.'"';
 										$out[] = '			height="'.$height.'">';
@@ -254,9 +289,9 @@ class KimiliFlashEmbed
 		if (isset($play))				$out[] = '	<param name="play" value="' . $play . '" />';
 		if (isset($loop))				$out[] = '	<param name="loop" value="' . $loop . '" />';
 		if (isset($menu)) 				$out[] = '	<param name="menu" value="' . $menu . '" />';
+		if (isset($quality))			$out[] = '	<param name="quality" value="' . $quality . '" />';
 		if (isset($scale)) 				$out[] = '	<param name="scale" value="' . $scale . '" />';
 		if (isset($wmode)) 				$out[] = '	<param name="wmode" value="' . $wmode . '" />';
-		if (isset($align)) 				$out[] = '	<param name="align" value="' . $align . '" />';
 		if (isset($salign)) 			$out[] = '	<param name="salign" value="' . $salign . '" />';    
 		if (isset($base)) 	   		 	$out[] = '	<param name="base" value="' . $base . '" />';
 		if (isset($allowscriptaccess))	$out[] = '	<param name="allowscriptaccess" value="' . $allowscriptaccess . '" />';
@@ -264,10 +299,12 @@ class KimiliFlashEmbed
 		if (isset($seamlesstabbing))	$out[] = '	<param name="seamlesstabbing" value="' . $seamlesstabbing . '" />';
 		if (isset($devicefont))			$out[] = '	<param name="devicefont" value="' . $devicefont . '" />';
 		if (isset($allownetworking))	$out[] = '	<param name="allownetworking" value="' . $allownetworking . '" />';
+		if (isset($swliveconnect))		$out[] = '	<param name="swliveconnect" value="' . $swliveconnect . '" />';
 										$out[] = '	<!--[if !IE]>-->';
 										$out[] = '	<object	type="application/x-shockwave-flash"';
 										$out[] = '			data="'.$movie.'"'; 
 		if (isset($fid))				$out[] = '			name="'.$fid.'"';
+		if (isset($align)) 				$out[] = '			align="' . $align . '"';
 										$out[] = '			width="'.$width.'"';
 										$out[] = '			height="'.$height.'">';
 		if (count($fvars) > 0)			$out[] = '		<param name="flashvars" value="' . $querystring . '" />';
