@@ -40,6 +40,7 @@ class KimiliFlashEmbed
 			add_action( 'edit_form_advanced', array(&$this, 'add_quicktags') );
 			add_action( 'edit_page_form', array(&$this, 'add_quicktags') );
 			add_filter( 'mce_buttons', array(&$this, 'mce_buttons') );
+			add_action( 'admin_head', array(&$this, 'set_admin_js_vars'));
 			
 			// Queue Embed JS
 			wp_enqueue_script( 'kimiliflashembed', plugins_url('/kimili-flash-embed/js/kfe.js'), array(), $this->version );
@@ -396,12 +397,28 @@ class KimiliFlashEmbed
 		return $buttons;
 	}
 	
+	public function set_admin_js_vars()
+	{
+?>
+<script type="text/javascript" charset="utf-8">
+// <![CDATA[
+	if (typeof Kimili === 'undefined' || typeof Kimili.Flash === 'undefined') {
+		return;
+	}
+	
+	Kimili.Flash.configUrl = "<?php echo plugins_url('/kimili-flash-embed/admin/config.php'); ?>";
+// ]]>	
+</script>
+<?php
+	}
+	
 	// Add a button to the quicktag view
 	function add_quicktags()
 	{
-		$buttonshtml = '<input type="button" class="ed_button" onclick="Kimili.Flash.embed(); return false;" title="Embed a Flash Movie in your post" value="Kimili Flash Embed" />';
+		$buttonshtml = '<input type="button" class="ed_button" onclick="Kimili.Flash.embed.apply(Kimili.Flash); return false;" title="Embed a Flash Movie in your post" value="Kimili Flash Embed" />';
 ?>
 <script type="text/javascript" charset="utf-8">
+// <![CDATA[
 	(function(){
 		
 		if (typeof jQuery === 'undefined') {
@@ -413,6 +430,7 @@ class KimiliFlashEmbed
 			jQuery("#ed_toolbar").append('<?php echo $buttonshtml; ?>');
 		});
 	}());
+// ]]>
 </script>
 <?php	
 	}
