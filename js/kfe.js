@@ -62,7 +62,7 @@ var Kimili = window.Kimili || {};
 
 			win.ed.execCommand('mceInsertContent', false, tag);
 		} else {
-			win.edInsertContent(edCanvas, tag);
+			win.edInsertContent(win.edCanvas, tag);
 		}
 		
 		// Close Lightbox
