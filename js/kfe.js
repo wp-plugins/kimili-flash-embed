@@ -50,6 +50,26 @@ var Kimili = window.Kimili || {};
 		}
 	};
 	
+	var insertTag = function() {
+		
+		var tag = "KFE test";//buildTag();
+		var win = window.parent || window;
+				
+		if ( typeof win.tinyMCE !== 'undefined' && ( win.ed = win.tinyMCE.activeEditor ) && !win.ed.isHidden() ) {
+			win.ed.focus();
+			if (win.tinymce.isIE)
+				win.ed.selection.moveToBookmark(win.tinymce.EditorManager.activeEditor.windowManager.bookmark);
+
+			win.ed.execCommand('mceInsertContent', false, tag);
+		} else {
+			win.edInsertContent(edCanvas, tag);
+		}
+		
+		// Close Lightbox
+		win.tb_remove();
+		
+	};
+	
 	return {
 		
 		initialize : function() {
@@ -109,12 +129,15 @@ var Kimili = window.Kimili || {};
 				addFlashvar();
 				return false;
 			};
-			jQuery("#generate").onclick = function() {
-				generateOutput();
-			};
-			jQuery("#clear").onclick = function() {
-				clearOutput();
-			};
+			jQuery("#generate").click(function(e) {
+				e.preventDefault();
+				insertTag();
+			});
+			jQuery("#clear").click(function(e) {
+				e.preventDefault();
+				var win = window.parent || window;
+				win.tb_remove();
+			});
 			
 		}
 		

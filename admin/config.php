@@ -33,9 +33,11 @@ do_action("admin_print_scripts-$hook_suffix");
 do_action('admin_print_scripts');
 do_action("admin_head-$hook_suffix");
 do_action('admin_head');
+
+
 ?>
 <link rel="stylesheet" href="<?php echo plugins_url('/kimili-flash-embed/css/generator.css'); ?>" type="text/css" media="screen" title="no title" charset="utf-8" />
-
+<script src="/wp-includes/js/quicktags.js" type="text/javascript" charset="utf-8"></script>
 <!--
 	<?php echo wp_specialchars($title." Tag Generator" ); ?> is heavily based on
 	SWFObject 2 HTML and JavaScript generator v1.2 <http://code.google.com/p/swfobject/>

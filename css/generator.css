@@ -1,3 +1,7 @@
+body.wp-admin {
+	min-width: auto !important;
+}
+
 .wrap {
 	width: 640px;
 }
