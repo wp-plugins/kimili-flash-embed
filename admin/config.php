@@ -48,7 +48,7 @@ do_action('admin_head');
 </head>
 <body class="wp-admin <?php echo apply_filters( 'admin_body_class', '' ); ?>">
 
-	<div class="wrap">
+	<div class="wrap" id="KFE_Generator">
 	
 		<h2><?php echo wp_specialchars($title." Tag Generator" ); ?></h2> 
 
@@ -57,10 +57,10 @@ do_action('admin_head');
 			<legend>SWFObject configuration [ <a id="toggle1" href="#">-</a> ]</legend> 
 			<div id="toggleable1">
 				<div class="col1"> 
-					<label for="publishingMethod">Publishing method:</label> <span class="req">*</span> 
+					<label for="publishingMethod">Publish method:</label> <span class="req">*</span> 
 				</div> 
 				<div class="col2"> 
-					<select id="publishingMethod" name="publishingMethod"> 
+					<select id="publishingMethod" name="publishmethod"> 
 		  				<option value="static">Static publishing</option> 
 						<option value="dynamic">Dynamic publishing</option> 
 					</select> 
@@ -154,7 +154,7 @@ do_action('admin_head');
 						<label for="attClass" class="info" title="Classifies the Flash movie so that it can be referenced using a scripting language or by CSS">class</label> 
 					</div> 
 					<div class="col4"> 
-						<input type="text" id="attClass" name="targetclass" value="flashmovie" size="15" /> 
+						<input type="text" id="attClass" name="targetclass" value="" size="15" /> 
 					</div> 
 					<div class="clear">&nbsp;</div> 
 					<div class="col1">&nbsp;</div> 
@@ -163,7 +163,7 @@ do_action('admin_head');
 					</div> 
 					<div class="col4"> 
 						<select id="align" name="align"> 
-							<option value="0">Choose...</option> 
+							<option value="">Choose...</option> 
 							<option value="middle">middle</option> 
 			  				<option value="left">left</option> 
 							<option value="right">right</option> 
@@ -353,7 +353,7 @@ do_action('admin_head');
 						<label class="info" title="Method to pass variables to a Flash movie. You can use the Kimili Flash Embed format for fvars ( name=John Doe ; count= 3) or a query string format (name=John%20Doe&amp;count=3)">fvars:</label>
 					</div> 
 					<div class="col2"> 
-						<textarea name="fvars" rows="4" cols="40"></textarea>
+						<textarea name="fvars" id="fvars" rows="4" cols="40"></textarea>
 					</div> 
 					
 				</div>				

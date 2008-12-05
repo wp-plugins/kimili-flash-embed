@@ -50,9 +50,73 @@ var Kimili = window.Kimili || {};
 		}
 	};
 	
+	var buildTag = function() {
+		
+		var $generator = jQuery('#KFE_Generator'),
+			tag = '[kml_flashembed',
+			fversion = "",
+			width = "",
+			height = "";
+		
+		if ($generator.length === 0) {
+			return "";
+		}
+		
+		// Get the basic attributes.
+		$generator.find('input[type=text],input:checked,select').each(function(){
+			
+			var $this = jQuery(this);
+			
+			switch(this.name) {
+				case "major":
+				case "minor":
+					fversion += (this.value + ".");
+					break;
+					
+				case "release":
+					fversion += this.value;
+					tag += ' fversion="' + fversion + '"';
+					break;
+					
+				case "width":
+					width = this.value;
+					break;
+				
+				case "height":
+					height = this.value;
+					break;
+
+				case "unit":
+					tag += ' width="' + width + ((this.value === 'percentage') ? '%' : '') + '"';
+					tag += ' height="' + height + ((this.value === 'percentage') ? '%' : '') + '"';
+					break;
+					
+				default:
+					if (this.value !== "") {
+						tag += ' ' + this.name + '="' + this.value + '"';
+					}
+			}
+		});
+		
+		
+		
+		// Parse out the fvars
+		$generator.find('textarea#fvars').each(function(){
+			var $this = jQuery(this);
+			if ($this.attr('value') !== "") {
+				tag += ' ' + $this.attr('name') + '="' + $this.attr('value') + '"';
+			}
+		});
+		
+		//
+		tag += '/]';
+		return tag;
+		
+	};
+	
 	var insertTag = function() {
 		
-		var tag = "KFE test";//buildTag();
+		var tag = buildTag() || "";
 		var win = window.parent || window;
 				
 		if ( typeof win.tinyMCE !== 'undefined' && ( win.ed = win.tinyMCE.activeEditor ) && !win.ed.isHidden() ) {
