@@ -59,6 +59,7 @@ class KimiliFlashEmbed
 	public function parseShortcodes($content)
 	{
 		$pattern = '/(<p>[\s\n\r]*)?\[(kml_(flash|swf)embed)\b(.*?)(?:(\/))?\](?:(.+?)\[\/\2\])?([\s\n\r]*<\/p>)?/s';
+		//$pattern = '/\[(kml_(flash|swf)embed)\b(.*?)(?:(\/))?\](?:(.+?)\[\/\1\])?/s';
 		$temp 	= preg_replace_callback($pattern, array(&$this, 'processShortcode'), $content);
 		$result = preg_replace_callback('/KML_FLASHEMBED_PROCESS_SCRIPT_CALLS/s', array(&$this, 'scriptSwfs'), $temp);
 		return $result;
@@ -122,6 +123,12 @@ class KimiliFlashEmbed
 					$r = $this->publishDynamic($atts);
 				}
 			}
+		}
+		
+		$r = '';
+		
+		for ($x = 0; $x < count($code); $x++) {
+			$r .= '$code['.$x.'] = '.$code[$x] . '<br />';
 		}
 	 	return $r;
 	}
@@ -245,7 +252,7 @@ class KimiliFlashEmbed
 			if (isset($curr['fid'])) 	   		$attributes[] = '"name" : "' . $curr['fid'] . '"';
 			if (isset($curr['targetclass']))	$attributes[] = '"class" : "' . $curr['targetclass'] . '"';
 			
-			$out[]		= '			swfobject.embedSWF("'.$curr['movie'].'","'.$curr['target'].'","'.$curr['width'].'","'.$curr['height'].'","'.$curr['fversion'].'","'.(($curr['useexpressinstall'] == 'true') ? ',"'.$curr['xiswf'].'"' : '').'",{';
+			$out[]		= '			swfobject.embedSWF("'.$curr['movie'].'","'.$curr['target'].'","'.$curr['width'].'","'.$curr['height'].'","'.$curr['fversion'].'","'.(($curr['useexpressinstall'] == 'true') ? $curr['xiswf'] : '').'",{';
 			for ($j = 0; $j < count($flashvars); $j++) {
 				$out[]	= '				'.$flashvars[$j].(($j < count($flashvars) - 1) ? ',' : '');
 			}

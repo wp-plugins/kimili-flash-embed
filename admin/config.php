@@ -5,7 +5,7 @@ set_include_path (ABSPATH . 'wp-admin/');
 
 /** Load WordPress Administration Bootstrap */
 require_once('admin.php');
-$title = "Kimili Flash Embed"
+$title = "Flash Embed"
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" <?php do_action('admin_xml_ns'); ?> <?php language_attributes(); ?>>
@@ -362,9 +362,38 @@ do_action('admin_head');
 				<div class="clear">&nbsp;</div> 
 			</div> 
 		</fieldset> 
+		<fieldset>
+			<legend>Alternative Content [ <a id="toggle3" href="#">-</a> ]</legend>
+			<div id="toggleable3">
+				<div class="col1">
+					<label for="alternativeContent">Alternative content:</label>
+				</div>
+				<div class="col2">
+					<a id="toggleAlternativeContentHelp" href="#alternativeContentHelp">what is this?</a>
+				</div>
+				<div id="alternativeContentHelp" class="help">
+					<p>
+						The object element allows you to nest alternative HTML content inside of it, which will be displayed if Flash is not installed or supported. 
+						This content will also be picked up by search engines, making it a great tool for creating search-engine-friendly content.
+					</p>
+					<p>Summarized, you should use alternative content for the following:</p>
+					<ul>
+						<li>When you like to create content that is accessible for people who browse the Web without plugins</li>
+						<li>When you like to create search-engine-friendly content</li>
+						<li>To tell visitors that they can have a richer user experience by downloading the Flash plugin</li>
+					</ul>
+				</div>
+				<div class="clear"> </div>
+				<div class="col2">
+					<textarea id="alternativeContent" name="alternativeContent" rows="6" cols="10">
+<p><a href="http://adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a></p>
+					</textarea>
+				</div>
+				<div class="clear"> </div>
+			</div>
+		</fieldset>
 		<div class="col1"> 
-			<input type="button" class="button" id="generate" name="generate" value="Generate" /> 
-			<input type="button" class="button" id="clear" name="clear" value="Clear" /> 
+			<input type="button" class="button" id="generate" name="generate" value="Generate" />
 		</div> 
 		
 	</div>

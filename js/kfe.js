@@ -98,8 +98,6 @@ var Kimili = window.Kimili || {};
 			}
 		});
 		
-		
-		
 		// Parse out the fvars
 		$generator.find('textarea#fvars').each(function(){
 			var $this = jQuery(this);
@@ -108,8 +106,16 @@ var Kimili = window.Kimili || {};
 			}
 		});
 		
-		//
-		tag += '/]';
+		// Parse out the Alternative Content
+		$generator.find('textarea#alternativeContent').each(function(){
+			var $this = jQuery(this);
+			if ($this.attr('value') !== "") {
+				tag += ']\n' + $this.attr('value') + '\n[/kml_flashembed]';
+			} else {
+				tag += '/]';
+			}
+		});
+		
 		return tag;
 		
 	};
@@ -178,10 +184,6 @@ var Kimili = window.Kimili || {};
 			jQuery("#toggle3").click(function(e) {
 				e.preventDefault();
 				toggleSection(this, jQuery("#toggleable3"));
-			});
-			jQuery("#toggle4").click(function(e) {
-				e.preventDefault();
-				toggleSection(this, jQuery("#toggleable4"));
 			});
 			
 			jQuery("#toggleAttsParams").click(function(e) {
