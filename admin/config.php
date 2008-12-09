@@ -159,12 +159,11 @@ do_action('admin_head');
 					<div class="clear">&nbsp;</div> 
 					<div class="col1">&nbsp;</div> 
 					<div class="col3"> 
-						<label for="align" class="info" title="HTML alignment of the object element. If this attribute is omitted, it by default centers the movie and crops edges if the browser window is smaller than the movie.">align</label> 
+						<label for="align" class="info" title="HTML alignment of the object element. If this attribute is omitted, it by default centers the movie and crops edges if the browser window is smaller than the movie. NOTE: Using this attribute is not valid in XHTML 1.0 Strict.">align</label> 
 					</div> 
 					<div class="col4"> 
 						<select id="align" name="align"> 
-							<option value="">Choose...</option> 
-							<option value="middle">middle</option> 
+							<option value="">Choose...</option>
 			  				<option value="left">left</option> 
 							<option value="right">right</option> 
 							<option value="top">top</option> 

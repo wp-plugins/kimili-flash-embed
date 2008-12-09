@@ -59,7 +59,6 @@ class KimiliFlashEmbed
 	public function parseShortcodes($content)
 	{
 		$pattern = '/(<p>[\s\n\r]*)?\[(kml_(flash|swf)embed)\b(.*?)(?:(\/))?\](?:(.+?)\[\/\2\])?([\s\n\r]*<\/p>)?/s';
-		//$pattern = '/\[(kml_(flash|swf)embed)\b(.*?)(?:(\/))?\](?:(.+?)\[\/\1\])?/s';
 		$temp 	= preg_replace_callback($pattern, array(&$this, 'processShortcode'), $content);
 		$result = preg_replace_callback('/KML_FLASHEMBED_PROCESS_SCRIPT_CALLS/s', array(&$this, 'scriptSwfs'), $temp);
 		return $result;
@@ -106,12 +105,19 @@ class KimiliFlashEmbed
 
 			// Parse out the fvars
 			if (isset($atts['fvars'])) {
-				$fvarpair_regex		= "/(?<!([$|\?]\{))\s*;\s*(?!\})/";
+				$fvarpair_regex		= "/(?<!([$|\?]\{))\s*(;|\&(amp;)?)\s*(?!\})/";
 				$atts['fvars']		= preg_split($fvarpair_regex, $atts['fvars'], -1, PREG_SPLIT_NO_EMPTY);
 			}
 
 			// Convert any quasi-HTML in alttext back into tags
 			$atts['alttext']		= (isset($atts['alttext'])) ? preg_replace("/{(.*?)}/i", "<$1>", $atts['alttext']) : $altContent;
+			
+			// Strip leading </p> and trailing <p> - detritius from the way the tags are parsed out of the RTE
+			$patterns = array(
+				"/^[\s\n\r]*<\/p>/i",
+				"/<p>[\s\n\r]*$/i"
+			);
+			$atts['alttext'] = preg_replace($patterns, "", $atts['alttext']);
 
 			// If we're not serving up a feed, generate the script tags
 			if (is_feed()) {
@@ -130,6 +136,8 @@ class KimiliFlashEmbed
 		//for ($x = 0; $x < count($code); $x++) {
 		//	$r .= '$code['.$x.'] = '.$code[$x] . '<br />';
 		//}
+		//
+		//$r = 'ALTTEXT = "'.$atts['alttext'].'"';
 	 	return $r;
 	}
 	
@@ -247,7 +255,7 @@ class KimiliFlashEmbed
 			
 			// Attributes
 			$attributes = array();
-			if (isset($curr['align'])) 			$attributes[] = '"salign" : "' . $curr['align'] . '"';  
+			if (isset($curr['align'])) 			$attributes[] = '"align" : "' . $curr['align'] . '"';  
 			if (isset($curr['fid'])) 			$attributes[] = '"id" : "' . $curr['fid'] . '"';  
 			if (isset($curr['fid'])) 	   		$attributes[] = '"name" : "' . $curr['fid'] . '"';
 			if (isset($curr['targetclass']))	$attributes[] = '"class" : "' . $curr['targetclass'] . '"';
@@ -288,7 +296,7 @@ class KimiliFlashEmbed
 										$out[] = '';    
 										$out[] = '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"';
 		if (isset($fid))				$out[] = '			id="'.$fid.'"';
-		if (isset($align)) 				$out[] = '			align="' . $align . '"';
+		if (isset($align)) 				$out[] = '			align="'.$align.'"';
 										$out[] = '			class="'.$targetclass.'"';
 										$out[] = '			width="'.$width.'"';
 										$out[] = '			height="'.$height.'">';
@@ -312,7 +320,7 @@ class KimiliFlashEmbed
 										$out[] = '	<object	type="application/x-shockwave-flash"';
 										$out[] = '			data="'.$movie.'"'; 
 		if (isset($fid))				$out[] = '			name="'.$fid.'"';
-		if (isset($align)) 				$out[] = '			align="' . $align . '"';
+		if (isset($align)) 				$out[] = '			align="'.$align.'"';
 										$out[] = '			width="'.$width.'"';
 										$out[] = '			height="'.$height.'">';
 		if (count($fvars) > 0)			$out[] = '		<param name="flashvars" value="' . $querystring . '" />';
@@ -321,7 +329,6 @@ class KimiliFlashEmbed
 		if (isset($menu)) 				$out[] = '		<param name="menu" value="' . $menu . '" />';
 		if (isset($scale)) 				$out[] = '		<param name="scale" value="' . $scale . '" />';
 		if (isset($wmode)) 				$out[] = '		<param name="wmode" value="' . $wmode . '" />';
-		if (isset($align)) 				$out[] = '		<param name="align" value="' . $align . '" />';
 		if (isset($salign)) 			$out[] = '		<param name="salign" value="' . $salign . '" />';    
 		if (isset($base)) 	   		 	$out[] = '		<param name="base" value="' . $base . '" />';
 		if (isset($allowscriptaccess))	$out[] = '		<param name="allowscriptaccess" value="' . $allowscriptaccess . '" />';
