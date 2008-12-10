@@ -46,7 +46,7 @@ do_action('admin_head');
 -->
 
 </head>
-<body class="wp-admin <?php echo apply_filters( 'admin_body_class', '' ); ?>">
+<body class="<?php echo apply_filters( 'admin_body_class', '' ); ?>">
 
 	<div class="wrap" id="KFE_Generator">
 	
@@ -344,12 +344,12 @@ do_action('admin_head');
 					<div class="col3"> 
 						<label for="base" class="info" title="Specifies the base directory or URL used to resolve all relative path statements in the Flash Player movie. This attribute is helpful when your Flash Player movies are kept in a different directory from your other files.">base</label> 
 					</div> 
-					<div class="col4"> 
+					<div class="col5"> 
 						<input type="text" id="base" name="base" value="" size="15" /> 
 					</div> 
 					<div class="clear">&nbsp;</div> 
 					<div class="col1"> 
-						<label class="info" title="Method to pass variables to a Flash movie. You can use the Kimili Flash Embed format for fvars ( name=John Doe ; count= 3) or a query string format (name=John%20Doe&amp;count=3)">fvars:</label>
+						<label class="info" title="Method to pass variables to a Flash movie. You need to separate individual name/variable pairs with a semicolon (i.e. name=John Doe ; count=3).">fvars:</label>
 					</div> 
 					<div class="col2"> 
 						<textarea name="fvars" id="fvars" rows="4" cols="40"></textarea>

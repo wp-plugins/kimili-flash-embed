@@ -105,7 +105,9 @@ class KimiliFlashEmbed
 
 			// Parse out the fvars
 			if (isset($atts['fvars'])) {
-				$fvarpair_regex		= "/(?<!([$|\?]\{))\s*(;|\&(amp;)?)\s*(?!\})/";
+				$fvarpair_regex		= "/(?<!([$|\?]\{))\s*;\s*(?!\})/";
+				// Untexturize ampersands.
+				$atts['fvars']		= preg_replace('/&amp;/', '&', $atts['fvars']);
 				$atts['fvars']		= preg_split($fvarpair_regex, $atts['fvars'], -1, PREG_SPLIT_NO_EMPTY);
 			}
 
