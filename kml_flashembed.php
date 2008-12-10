@@ -416,7 +416,7 @@ class KimiliFlashEmbed
 ?>
 <script type="text/javascript" charset="utf-8">
 // <![CDATA[
-	if (typeof Kimili !== 'undefined' || typeof Kimili.Flash !== 'undefined') {
+	if (typeof Kimili !== 'undefined' && typeof Kimili.Flash !== 'undefined') {
 		Kimili.Flash.configUrl = "<?php echo plugins_url('/kimili-flash-embed/admin/config.php'); ?>";
 	}
 // ]]>	
