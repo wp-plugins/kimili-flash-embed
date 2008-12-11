@@ -408,7 +408,9 @@ do_action('admin_head');
 		jQuery(document).ready(function(){
 			try {
 				Kimili.Flash.Generator.initialize();
-			} catch (e) {}
+			} catch (e) {
+				throw "Kimili is not defined. This generator isn't going to put a KFE tag in your code.";
+			}
 		});
 		// ]]>
 	</script>
