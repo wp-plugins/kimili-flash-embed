@@ -7,11 +7,13 @@ $slash = ($iswin) ? "\\" : "/";
 $wp_path = preg_split('/(?=((\\\|\/)wp-content)).*/', dirname(__file__));
 $wp_path = (isset($wp_path[0]) && $wp_path[0] != "") ? $wp_path[0] : $_SERVER["DOCUMENT_ROOT"];
 
-define('ABSPATH', $wp_path . $slash);
-set_include_path (ABSPATH . 'wp-admin' . $slash);
+//define('ABSPATH', $wp_path . $slash);
+//set_include_path ($wp_path.$slash.'wp-admin' . $slash);
 
 /** Load WordPress Administration Bootstrap */
-require_once('admin.php');
+require_once($wp_path . $slash . 'wp-load.php');
+require_once($wp_path . $slash . 'wp-admin' . $slash . 'admin.php');
+
 $title = "Kimili Flash Embed";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
