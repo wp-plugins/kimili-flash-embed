@@ -1,10 +1,14 @@
 <?php
 
-$wp_path = preg_split('/(?=(\/wp-content)).*/', dirname(__file__));
+/* Finding the path to the wp-admin folder */
+$iswin = preg_match('/:\\\/', dirname(__file__));
+$slash = ($iswin) ? "\\" : "/";
+
+$wp_path = preg_split('/(?=((\\\|\/)wp-content)).*/', dirname(__file__));
 $wp_path = (isset($wp_path[0]) && $wp_path[0] != "") ? $wp_path[0] : $_SERVER["DOCUMENT_ROOT"];
 
-define('ABSPATH', $wp_path . '/');
-set_include_path (ABSPATH . 'wp-admin/');
+define('ABSPATH', $wp_path . $slash);
+set_include_path (ABSPATH . 'wp-admin' . $slash);
 
 /** Load WordPress Administration Bootstrap */
 require_once('admin.php');
