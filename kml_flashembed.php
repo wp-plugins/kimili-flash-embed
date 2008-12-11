@@ -56,7 +56,7 @@ class KimiliFlashEmbed
 		wp_enqueue_script( 'swfobject', plugins_url('/kimili-flash-embed/js/swfobject.js'), array(), '2.1' );
 	}
 	
-	public function parseShortcodes($content)
+	function parseShortcodes($content)
 	{
 		$pattern = '/(<p>[\s\n\r]*)?\[(kml_(flash|swf)embed)\b(.*?)(?:(\/))?\](?:(.+?)\[\/\2\])?([\s\n\r]*<\/p>)?/s';
 		$temp 	= preg_replace_callback($pattern, array(&$this, 'processShortcode'), $content);
@@ -65,7 +65,7 @@ class KimiliFlashEmbed
 	}
 	
 	// Thanks to WP shortcode API Code
-	public function processShortcode($code)
+	function processShortcode($code)
 	{
 		$r	= "";
 
@@ -144,7 +144,7 @@ class KimiliFlashEmbed
 	}
 	
 	// Thanks to WP shortcode API Code
-	public function parseAtts($text)
+	function parseAtts($text)
 	{
 		$atts = array();
 		$pattern = '/(\w+)\s*=\s*"([^"]*)"(?:\s|$)|(\w+)\s*=\s*\'([^\']*)\'(?:\s|$)|(\w+)\s*=\s*([^\s\'"]+)(?:\s|$)|"([^"]*)"(?:\s|$)|(\S+)(?:\s|$)/';
@@ -168,7 +168,7 @@ class KimiliFlashEmbed
 		return $atts;
 	}
 	
-	public function publishStatic($atts)
+	function publishStatic($atts)
 	{
 		if (is_array($atts)) {
 			extract($atts);
@@ -184,7 +184,7 @@ class KimiliFlashEmbed
 		return $this->buildObjectTag($atts);
 	}
 	
-	public function publishDynamic($atts)
+	function publishDynamic($atts)
 	{
 		if (is_array($atts)) {
 			extract($atts);
@@ -199,12 +199,12 @@ class KimiliFlashEmbed
 		return join("\n", $out);
 	}
 	
-	public function addScriptPlaceholder()
+	function addScriptPlaceholder()
 	{
 		echo 'KML_FLASHEMBED_PROCESS_SCRIPT_CALLS';
 	}
 	
-	public function scriptSwfs()
+	function scriptSwfs()
 	{
 		// If we don't have any swfs on the page, drop out.
 		if (count($this->dynamicSwfs) == 0 && count($this->dynamicSwfs) == 0) {
@@ -291,7 +291,7 @@ class KimiliFlashEmbed
 		return join("\n", $out);
 	}
 	
-	public function buildObjectTag($atts)
+	function buildObjectTag($atts)
 	{
 		$out	= array();	
 		if (is_array($atts)) {
@@ -356,7 +356,7 @@ class KimiliFlashEmbed
 		return $ret;
 	}
 	
-	public function parseFvars($fvars, $format='string')
+	function parseFvars($fvars, $format='string')
 	{
 		$ret = array();
 		
@@ -394,7 +394,7 @@ class KimiliFlashEmbed
 		
 	}
 	
-	public function doObStart()
+	function doObStart()
 	{
 		ob_start(array(&$this, 'parseShortcodes'));
 	}
@@ -419,7 +419,7 @@ class KimiliFlashEmbed
 		return $buttons;
 	}
 	
-	public function set_admin_js_vars()
+	function set_admin_js_vars()
 	{
 ?>
 <script type="text/javascript" charset="utf-8">
