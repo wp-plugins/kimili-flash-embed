@@ -7,9 +7,6 @@ $slash = ($iswin) ? "\\" : "/";
 $wp_path = preg_split('/(?=((\\\|\/)wp-content)).*/', dirname(__file__));
 $wp_path = (isset($wp_path[0]) && $wp_path[0] != "") ? $wp_path[0] : $_SERVER["DOCUMENT_ROOT"];
 
-//define('ABSPATH', $wp_path . $slash);
-//set_include_path ($wp_path.$slash.'wp-admin' . $slash);
-
 /** Load WordPress Administration Bootstrap */
 require_once($wp_path . $slash . 'wp-load.php');
 require_once($wp_path . $slash . 'wp-admin' . $slash . 'admin.php');
@@ -45,8 +42,8 @@ do_action('admin_head');
 
 
 ?>
-<link rel="stylesheet" href="<?php echo plugins_url('/kimili-flash-embed/css/generator.css'); ?>" type="text/css" media="screen" title="no title" charset="utf-8" />
-<script src="/wp-includes/js/quicktags.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" href="<?php echo plugins_url('/kimili-flash-embed/css/generator.css'); ?>?ver=<?php echo $KimiliFlashEmbed->version ?>" type="text/css" media="screen" title="no title" charset="utf-8" />
+<script src="<?php echo plugins_url('/kimili-flash-embed/js/kfe.js'); ?>?ver=<?php echo $KimiliFlashEmbed->version ?>" type="text/javascript" charset="utf-8"></script>
 <!--
 	<?php echo wp_specialchars($title." Tag Generator" ); ?> is heavily based on
 	SWFObject 2 HTML and JavaScript generator v1.2 <http://code.google.com/p/swfobject/>
@@ -409,7 +406,9 @@ do_action('admin_head');
 	<script type="text/javascript" charset="utf-8">
 		// <![CDATA[
 		jQuery(document).ready(function(){
-			Kimili.Flash.Generator.initialize();
+			try {
+				Kimili.Flash.Generator.initialize();
+			} catch (e) {}
 		});
 		// ]]>
 	</script>
