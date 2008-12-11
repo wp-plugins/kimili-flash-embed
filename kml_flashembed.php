@@ -206,7 +206,13 @@ class KimiliFlashEmbed
 	
 	public function scriptSwfs()
 	{
-		$out = array();
+		// If we don't have any swfs on the page, drop out.
+		if (count($this->dynamicSwfs) == 0 && count($this->dynamicSwfs) == 0) {
+			return '';
+		}
+		
+		// Otherwise build out the script.
+		$out = array();	
 		
 		$out[]		= '';
 		$out[]		= '<script type="text/javascript" charset="utf-8">';
