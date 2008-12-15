@@ -324,7 +324,7 @@ class KimiliFlashEmbed
 		if (isset($devicefont))			$out[] = '	<param name="devicefont" value="' . $devicefont . '" />';
 		if (isset($allownetworking))	$out[] = '	<param name="allownetworking" value="' . $allownetworking . '" />';
 		if (isset($swliveconnect))		$out[] = '	<param name="swliveconnect" value="' . $swliveconnect . '" />';
-										$out[] = '	<!--[if !IE]>-->';
+										$out[] = '	<!--[if !IE]>';
 										$out[] = '	<object	type="application/x-shockwave-flash"';
 										$out[] = '			data="'.$movie.'"'; 
 		if (isset($fid))				$out[] = '			name="'.$fid.'"';
@@ -345,11 +345,11 @@ class KimiliFlashEmbed
 		if (isset($devicefont))			$out[] = '		<param name="devicefont" value="' . $devicefont . '" />';
 		if (isset($allownetworking))	$out[] = '		<param name="allownetworking" value="' . $allownetworking . '" />';
 		if (isset($swliveconnect))		$out[] = '		<param name="swliveconnect" value="' . $swliveconnect . '" />';
-										$out[] = '	<!--[endif]>-->';
+										$out[] = '	<![endif]>-->';
 		if (isset($alttext))			$out[] = '		'.$alttext;
-										$out[] = '	<!--[if !IE]>-->';
+										$out[] = '	<!--[if !IE]>';
 							  	  		$out[] = '	</object>';
-										$out[] = '	<!--[endif]>-->';
+										$out[] = '	<![endif]>-->';
 		 								$out[] = '</object>';     
 
 		$ret .= join("\n", $out);
