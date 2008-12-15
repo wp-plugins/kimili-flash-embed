@@ -319,7 +319,7 @@ class KimiliFlashEmbed
 		if (isset($seamlesstabbing))	$out[] = '	<param name="seamlesstabbing" value="' . $seamlesstabbing . '" />';
 		if (isset($allowfullscreen))	$out[] = '	<param name="allowfullscreen" value="' . $allowfullscreen . '" />';
 		if (isset($allownetworking))	$out[] = '	<param name="allownetworking" value="' . $allownetworking . '" />';
-										$out[] = '	<!--[if !IE]>';
+										$out[] = '	<!--[if !IE]>-->';
 										$out[] = '	<object	type="application/x-shockwave-flash"';
 										$out[] = '			data="'.$movie.'"'; 
 		if (isset($fid))				$out[] = '			name="'.$fid.'"';
@@ -342,11 +342,11 @@ class KimiliFlashEmbed
 		if (isset($seamlesstabbing))	$out[] = '		<param name="seamlesstabbing" value="' . $seamlesstabbing . '" />';
 		if (isset($allowfullscreen))	$out[] = '		<param name="allowfullscreen" value="' . $allowfullscreen . '" />';
 		if (isset($allownetworking))	$out[] = '		<param name="allownetworking" value="' . $allownetworking . '" />';
-										$out[] = '	<![endif]>-->';
+										$out[] = '	<!--<![endif]-->';
 		if (isset($alttext))			$out[] = '		'.$alttext;
-										$out[] = '	<!--[if !IE]>';
+										$out[] = '	<!--[if !IE]>-->';
 							  	  		$out[] = '	</object>';
-										$out[] = '	<![endif]>-->';
+										$out[] = '	<!--<![endif]-->';
 		 								$out[] = '</object>';     
 
 		$ret .= join("\n", $out);
