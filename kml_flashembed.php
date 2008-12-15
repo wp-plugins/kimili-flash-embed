@@ -244,22 +244,23 @@ class KimiliFlashEmbed
 			if (isset($curr['menu'])) 				$params[] = '"menu" : "' . $curr['menu'] . '"';
 			if (isset($curr['quality']))			$params[] = '"quality" : "' . $curr['quality'] . '"';
 			if (isset($curr['scale'])) 				$params[] = '"scale" : "' . $curr['scale'] . '"';
+			if (isset($curr['salign'])) 			$params[] = '"salign" : "' . $curr['salign'] . '"';
 			if (isset($curr['wmode'])) 				$params[] = '"wmode" : "' . $curr['wmode'] . '"';
-			if (isset($curr['salign'])) 			$params[] = '"salign" : "' . $curr['salign'] . '"';  
+			if (isset($curr['bgcolor'])) 			$params[] = '"bgcolor" : "' . $curr['bgcolor'] . '"';
 			if (isset($curr['base'])) 	   		 	$params[] = '"base" : "' . $curr['base'] . '"';
-			if (isset($curr['allowscriptaccess']))	$params[] = '"allowscriptaccess" : "' . $curr['allowscriptaccess'] . '"';
-			if (isset($curr['allowfullscreen']))	$params[] = '"allowfullscreen" : "' . $curr['allowfullscreen'] . '"';
-			if (isset($curr['seamlesstabbing']))	$params[] = '"seamlesstabbing" : "' . $curr['seamlesstabbing'] . '"';
-			if (isset($curr['devicefont']))			$params[] = '"devicefont" : "' . $curr['devicefont'] . '"';
-			if (isset($curr['allownetworking']))	$params[] = '"allownetworking" : "' . $curr['allownetworking'] . '"';
 			if (isset($curr['swliveconnect']))		$params[] = '"swliveconnect" : "' . $curr['swliveconnect'] . '"';
+			if (isset($curr['devicefont']))			$params[] = '"devicefont" : "' . $curr['devicefont'] . '"';
+			if (isset($curr['allowscriptaccess']))	$params[] = '"allowscriptaccess" : "' . $curr['allowscriptaccess'] . '"';
+			if (isset($curr['seamlesstabbing']))	$params[] = '"seamlesstabbing" : "' . $curr['seamlesstabbing'] . '"';
+			if (isset($curr['allowfullscreen']))	$params[] = '"allowfullscreen" : "' . $curr['allowfullscreen'] . '"';
+			if (isset($curr['allownetworking']))	$params[] = '"allownetworking" : "' . $curr['allownetworking'] . '"';
 			
 			// Attributes
 			$attributes = array();
 			if (isset($curr['align'])) 			$attributes[] = '"align" : "' . $curr['align'] . '"';  
 			if (isset($curr['fid'])) 			$attributes[] = '"id" : "' . $curr['fid'] . '"';  
 			if (isset($curr['fid'])) 	   		$attributes[] = '"name" : "' . $curr['fid'] . '"';
-			if (isset($curr['targetclass']))	$attributes[] = '"class" : "' . $curr['targetclass'] . '"';
+			if (isset($curr['targetclass']))	$attributes[] = '"styleclass" : "' . $curr['targetclass'] . '"';
 			
 			$out[]		= '			swfobject.embedSWF("'.$curr['movie'].'","'.$curr['target'].'","'.$curr['width'].'","'.$curr['height'].'","'.$curr['fversion'].'","'.(($curr['useexpressinstall'] == 'true') ? $curr['xiswf'] : '').'",{';
 			for ($j = 0; $j < count($flashvars); $j++) {
@@ -308,15 +309,16 @@ class KimiliFlashEmbed
 		if (isset($menu)) 				$out[] = '	<param name="menu" value="' . $menu . '" />';
 		if (isset($quality))			$out[] = '	<param name="quality" value="' . $quality . '" />';
 		if (isset($scale)) 				$out[] = '	<param name="scale" value="' . $scale . '" />';
+		if (isset($salign)) 			$out[] = '	<param name="salign" value="' . $salign . '" />';
 		if (isset($wmode)) 				$out[] = '	<param name="wmode" value="' . $wmode . '" />';
-		if (isset($salign)) 			$out[] = '	<param name="salign" value="' . $salign . '" />';    
+		if (isset($bgcolor)) 			$out[] = '	<param name="bgcolor" value="' . $bgcolor . '" />';
 		if (isset($base)) 	   		 	$out[] = '	<param name="base" value="' . $base . '" />';
-		if (isset($allowscriptaccess))	$out[] = '	<param name="allowscriptaccess" value="' . $allowscriptaccess . '" />';
-		if (isset($allowfullscreen))	$out[] = '	<param name="allowfullscreen" value="' . $allowfullscreen . '" />';
-		if (isset($seamlesstabbing))	$out[] = '	<param name="seamlesstabbing" value="' . $seamlesstabbing . '" />';
-		if (isset($devicefont))			$out[] = '	<param name="devicefont" value="' . $devicefont . '" />';
-		if (isset($allownetworking))	$out[] = '	<param name="allownetworking" value="' . $allownetworking . '" />';
 		if (isset($swliveconnect))		$out[] = '	<param name="swliveconnect" value="' . $swliveconnect . '" />';
+		if (isset($devicefont))			$out[] = '	<param name="devicefont" value="' . $devicefont . '" />';
+		if (isset($allowscriptaccess))	$out[] = '	<param name="allowscriptaccess" value="' . $allowscriptaccess . '" />';
+		if (isset($seamlesstabbing))	$out[] = '	<param name="seamlesstabbing" value="' . $seamlesstabbing . '" />';
+		if (isset($allowfullscreen))	$out[] = '	<param name="allowfullscreen" value="' . $allowfullscreen . '" />';
+		if (isset($allownetworking))	$out[] = '	<param name="allownetworking" value="' . $allownetworking . '" />';
 										$out[] = '	<!--[if !IE]>';
 										$out[] = '	<object	type="application/x-shockwave-flash"';
 										$out[] = '			data="'.$movie.'"'; 
@@ -328,16 +330,18 @@ class KimiliFlashEmbed
 		if (isset($play))				$out[] = '		<param name="play" value="' . $play . '" />';
 		if (isset($loop))				$out[] = '		<param name="loop" value="' . $loop . '" />';
 		if (isset($menu)) 				$out[] = '		<param name="menu" value="' . $menu . '" />';
+		if (isset($quality))			$out[] = '		<param name="quality" value="' . $quality . '" />';
 		if (isset($scale)) 				$out[] = '		<param name="scale" value="' . $scale . '" />';
+		if (isset($salign)) 			$out[] = '		<param name="salign" value="' . $salign . '" />';
 		if (isset($wmode)) 				$out[] = '		<param name="wmode" value="' . $wmode . '" />';
-		if (isset($salign)) 			$out[] = '		<param name="salign" value="' . $salign . '" />';    
+		if (isset($bgcolor)) 			$out[] = '		<param name="bgcolor" value="' . $bgcolor . '" />';
 		if (isset($base)) 	   		 	$out[] = '		<param name="base" value="' . $base . '" />';
-		if (isset($allowscriptaccess))	$out[] = '		<param name="allowscriptaccess" value="' . $allowscriptaccess . '" />';
-		if (isset($allowfullscreen))	$out[] = '		<param name="allowfullscreen" value="' . $allowfullscreen . '" />';
-		if (isset($seamlesstabbing))	$out[] = '		<param name="seamlesstabbing" value="' . $seamlesstabbing . '" />';
-		if (isset($devicefont))			$out[] = '		<param name="devicefont" value="' . $devicefont . '" />';
-		if (isset($allownetworking))	$out[] = '		<param name="allownetworking" value="' . $allownetworking . '" />';
 		if (isset($swliveconnect))		$out[] = '		<param name="swliveconnect" value="' . $swliveconnect . '" />';
+		if (isset($devicefont))			$out[] = '		<param name="devicefont" value="' . $devicefont . '" />';
+		if (isset($allowscriptaccess))	$out[] = '		<param name="allowscriptaccess" value="' . $allowscriptaccess . '" />';
+		if (isset($seamlesstabbing))	$out[] = '		<param name="seamlesstabbing" value="' . $seamlesstabbing . '" />';
+		if (isset($allowfullscreen))	$out[] = '		<param name="allowfullscreen" value="' . $allowfullscreen . '" />';
+		if (isset($allownetworking))	$out[] = '		<param name="allownetworking" value="' . $allownetworking . '" />';
 										$out[] = '	<![endif]>-->';
 		if (isset($alttext))			$out[] = '		'.$alttext;
 										$out[] = '	<!--[if !IE]>';
