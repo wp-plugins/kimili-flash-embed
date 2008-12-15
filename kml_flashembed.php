@@ -133,13 +133,6 @@ class KimiliFlashEmbed
 			}
 		}
 		
-		//$r = '';
-		//
-		//for ($x = 0; $x < count($code); $x++) {
-		//	$r .= '$code['.$x.'] = '.$code[$x] . '<br />';
-		//}
-		//
-		//$r = 'ALTTEXT = "'.$atts['alttext'].'"';
 	 	return $r;
 	}
 	
