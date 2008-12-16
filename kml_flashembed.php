@@ -48,8 +48,10 @@ class KimiliFlashEmbed
 			
 		} else {
 			// Front-end
-			add_action('template_redirect', array(&$this, 'doObStart'));
+			add_action('wp_head', array(&$this, 'doObStart'));
 			add_action('wp_head', array(&$this, 'addScriptPlaceholder'));
+			add_action('wp_footer', array(&$this, 'doObEnd'));
+			
 		}
 		
 		// Queue SWFObject
@@ -200,7 +202,7 @@ class KimiliFlashEmbed
 	function scriptSwfs()
 	{
 		// If we don't have any swfs on the page, drop out.
-		if (count($this->dynamicSwfs) == 0 && count($this->dynamicSwfs) == 0) {
+		if (count($this->staticSwfs) == 0 && count($this->dynamicSwfs) == 0) {
 			return '';
 		}
 		
@@ -396,6 +398,21 @@ class KimiliFlashEmbed
 		ob_start(array(&$this, 'parseShortcodes'));
 	}
 	
+	function doObEnd()
+	{
+		// Check the output buffer
+		if (function_exists('ob_list_handlers')) {
+			$active_handlers = ob_list_handlers();
+		} else {
+			$active_handlers = array();
+		}
+		if (sizeof($active_handlers) > 0 &&
+			strtolower($active_handlers[sizeof($active_handlers) - 1]) ==
+			strtolower('KimiliFlashEmbed::parseShortcodes')) {
+			ob_end_flush();
+		}
+	}
+		
 	// Break the browser cache of TinyMCE
 	function tiny_mce_version( $version )
 	{
