@@ -25,11 +25,11 @@ Update: http://www.kimili.com/plugins/kml_flashembed/wp
 class KimiliFlashEmbed
 {
 	
-	var $version = '2.0';
+	var $version = '2.0rc1';
 	var $staticSwfs = array();
 	var $dynamicSwfs = array();
 	
-	function __construct()
+	function KimiliFlashEmbed()
 	{
 		// Register Hooks
 		if (is_admin()) {
