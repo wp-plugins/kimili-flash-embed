@@ -1,16 +1,16 @@
 === Kimili Flash Embed ===
 Contributors: Kimili
 Tags: flash, flex, swf, swfobject, javascript
-Requires at least: 2.0
-Tested up to: 2.6.1
-Stable tag: 1.4.3
+Requires at least: 2.5
+Tested up to: 2.7
+Stable tag: 2.0
 Donate Link: http://kimili.com/donate
 
-Provides a WordPress friendly interface for Geoff Stearns' excellent standards compliant Flash detection and embedding JavaScript, SWFObject
+Provides a WordPress interface for SWFObject, the best way to embed Flash content on any site.
 
 == Description ==
 
-Kimili Flash Embed is a plugin for Wordpress that allows you to easily place Flash movies on your site. Built upon Geoff Stearns' [SWFObject](http://blog.deconcept.com/swfobject) javascript code, it is standards compliant, search engine friendly, highly flexible and full featured, as well as easy to use.
+Kimili Flash Embed is a plugin for Wordpress that allows you to easily place Flash movies on your site. Built upon [SWFObject](http://blog.deconcept.com/swfobject) javascript code, it is standards compliant, search engine friendly, highly flexible and full featured, as well as easy to use.
 
 Kimili Flash Embed utilizes SWFObject 2.1, is fully compatible with Wordpress 2.x and plays well with most other plugins.
 
@@ -24,7 +24,7 @@ Once the plugin is installed and activated, you can add Flash content to your pa
 
 > `[kml_flashembed movie="filename.swf" height="150" width="300" /]`
 
-If you’re using the WYSIWYG editor in Wordpress 2.0 - 2.3 to write your posts, you should see a new button on the right end of the toolbar with a Flash player logo. Click it, and a basic KFE tag will be dropped into your post editor, ready to be populated with the SWF URL, width and height.
+When you use the Rich Text Editor in either Visual or HTML modes, you should see a button on the right end of the toolbar with a Flash player logo in the visual mode or a button that reads "Kimili Flash Embed" in HTML mode. Click it, and you will be presented with the Kimili Flash Embed tag generator which presents you with all possible embedding options. Set the options according to your needs and click the "Generate" button to drop a KFE tag in your editor.
 
 The only required attributes in a KFE tag are movie, height, and width. See the the following sections all available attributes and advanced usage.
 
@@ -39,22 +39,25 @@ HEIGHT (required)
 The height of the flash movie. You can specify in pixels using just a number or percentage.
 
 WIDTH (required)  
-The widthof the flash movie. You can specify in pixels using just a number or percentage.
+The width of the flash movie. You can specify in pixels using just a number or percentage.
 
 ALLOWFULLSCREEN  
 (true|false) Grants access for a Flash movie to enter full screen mode when using Flash Player 9.  Defaults to false.
 
+ALLOWNETWORKING
+(all|internal|none) - Controls a SWF file's access to network functionality. The default value is 'all' if this attribute is omitted.
+
 ALLOWSCRIPTACCESS  
-(always|never) Controls the ability to perform outbound scripting through use of FSCommand actions or getURL actions from within your SWF. If unspecified, the Flash Player defaults to "always".
+(always|sameDomain|never) Controls the ability to perform outbound scripting through use of FSCommand actions or getURL actions from within your SWF. If unspecified, the Flash Player defaults to "always".
 
 ALTTEXT (deprecated)  
-The text or html you want to display if the required flash player is not found. This attribute is ignored if target is used.
+The text or html you want to display if the required flash player is not found.
 
 BGCOLOR  
 (#RRGGBB, hexadecimal RGB value) - Specifies the background color of the Flash movie.
 
-DETECTKEY  
-This is the url variable name the script will look for when bypassing the detection. Defaults to 'detectflash'. For example: To bypass the Flash detection and simply write the Flash movie to the page, you could add ?detectflash=false to the url of the document containing the Flash movie.
+DEVICEFONT
+(true|false) - Specifies whether static text objects that the Device Font option has not been selected for will be drawn using device fonts anyway, if the necessary fonts are available from the operating system.
 
 FID  
 Use this attribute to give your movie a unique id on the page for scripting purposes.
@@ -74,7 +77,7 @@ These can be strung together in any order inside the fvars attribute:
 > `fvars=" href = ${document.location.href;} ; date = ?{date('F j, Y');} ; name = Johnny Bravo "`
 	
 FVERSION  
-You can specify what version of the flash player is required to play your movie. Defaults to 6.
+You can specify what version of the flash player is required to play your movie. Defaults to 8.0.0 or whatever you set as the default in the options.
 
 LOOP  
 (true, false) - Specifies whether the movie repeats indefinitely or stops when it reaches the last frame. The default value is true if this attribute is omitted.
@@ -83,35 +86,39 @@ MENU
 (true) displays the full menu, allowing the user a variety of options to enhance or control playback.  
 (false) displays a menu that contains only the Settings option and the About Flash option.
 
-NOSCRIPT  
-Text or html content you would like to display to users browsing on a non-javascript browser or with javascript disabled.
-
 PLAY  
-(true, false) - Specifies whether the movie begins playing immediately on loading in the browser. The default is true.
+(true|false) - Specifies whether the movie begins playing immediately on loading in the browser. The default is true.
+
+PUBLISHMETHOD
+(static|dynamic) - Defines which method is used to publish your swf. Static publishing embeds Flash content and alternative content using standards compliant markup, and use unobtrusive JavaScript to resolve the issues that markup alone cannot solve. Dynamic publishing creates alternative content using standards compliant markup and embed Flash content with unobtrusive JavaScript.
 
 QUALITY  
-(low, high, autolow, autohigh, best ) - Specifies the playback quality of the Flash movie.
+(low | high | autolow | autohigh | best ) - Specifies the playback quality of the Flash movie.
 
-REDIRECTURL  
-If you wish to redirect users who don't have the correct Flash Player version, use this parameter and they will be redirected. Ignored if using useexpressinstall.
+SALIGN
+(tr | tl | br | bl | l | t | r | b ) - Specifies where the content is placed within the application window and how it is cropped.
 
 SCALE  
-(showall, noborder, exactfit) - Dictates how the movie fills in the specified target area.
+(showall | noborder | exactfit) - Dictates how the movie fills in the specified target area.
+
+SEAMLESSTABBING
+(true | false) - Specifies whether users are allowed to use the Tab key to move keyboard focus out of a Flash movie and into the surrounding HTML (or the browser, if there is nothing focusable in the HTML following the Flash movie). The default value is true if this attribute is omitted.
+
+SWLIVECONNECT
+(true | false) - Specifies whether the browser should start Java when loading the Flash Player for the first time. The default value is false if this attribute is omitted. If you use JavaScript and Flash on the same page, Java must be running for the FSCommand to work.
 
 TARGET  
 This is the ID of an element on your page that you want your flash movie to display within.
 
 TARGETCLASS  
-This is the class name of the element on your page that you want your flash movie to display within. Defaults to "flashmovie".
+This is the class name of the element on your page that you want your flash movie to display within. Defaults to "flashmovie" or whatever you set as the default option
 
 USEEXPRESSINSTALL  
-(true) Use this if you want to invoke the Flash Player Express Install functionality. This gives users the option to easily update their Flash Player if it doesn't meet the required version without leaving your site. Also see XIREDIRECTURL
+(true) Use this if you want to invoke the Flash Player Express Install functionality. This gives users the option to easily update their Flash Player if it doesn't meet the required version without leaving your site.
 
 WMODE  
 (window, opaque, transparent) - Sets the Window Mode property of the Flash movie for transparency, layering, and positioning in the browser.
 
-XIREDIRECTURL  
-When using the useexpressinstall functionality, use this attribute to specify an alternate URL to redirect users who complete the Express Install upgrade. **Note** - The URL you define here must be a complete URL, including http://www.yourdomain.com/
 
 You can find out more about Flash player attributes at [Adobe's Knowledge Base](http://kb.adobe.com/selfservice/viewContent.do?externalId=tn_12701&sliceId=1)
 
@@ -152,6 +159,11 @@ So I can maintain them in one place, please see the Kimili Flash Embed FAQs at t
 == Version History ==
 
 > **Note:** Because this plugin has been around for a while and numerous older versions exist, yet version 1.4 is the first version to actually be included in the Wordpress Plugin Repository, any older versions are NOT available here.  If you'd like to download an older version, you can do so at the [Kimili Flash Embed for Wordpress Home Page](http://kimili.com/plugins/kml_flashembed/wp).
+
+= Version 2.0 =
+
+* Complete rewrite utilizing SWFObject 2.1
+* Fixes an incompatibility with the Rich Text Editor in Wordpress 2.7
 
 = Version 1.4.3 =
 
