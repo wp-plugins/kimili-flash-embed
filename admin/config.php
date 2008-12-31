@@ -67,8 +67,8 @@ do_action('admin_head');
 				</div> 
 				<div class="col2"> 
 					<select id="publishingMethod" name="publishmethod"> 
-		  				<option value="static">Static publishing</option> 
-						<option value="dynamic">Dynamic publishing</option> 
+		  				<option value="static" <?php if (!get_option('kml_flashembed_publish_method')) echo "selected=\"selected\""; ?>>Static publishing</option> 
+						<option value="dynamic" <?php if (get_option('kml_flashembed_publish_method')) echo "selected=\"selected\""; ?>>Dynamic publishing</option> 
 					</select> 
 					<a id="togglePublishingMethodHelp" href="#">what is this?</a> 
 				</div> 
@@ -93,11 +93,11 @@ do_action('admin_head');
 					<label title="Flash version consists of major, minor and release version" class="info">Flash version:</label> <span class="req">*</span> 
 				</div> 
 				<div class="col2"> 
-					<input type="text" id="major" name="major" value="9" size="4" maxlength="2" /> 
+					<input type="text" id="major" name="major" value="<?php echo get_option('kml_flashembed_version_major'); ?>" size="4" maxlength="2" /> 
 					.
-					<input type="text" id="minor" name="minor" value="0" size="4" maxlength="4" /> 
+					<input type="text" id="minor" name="minor" value="<?php echo get_option('kml_flashembed_version_minor'); ?>" size="4" maxlength="4" /> 
 					.
-					<input type="text" id="release" name="release" value="0" size="4" maxlength="4" /> 
+					<input type="text" id="release" name="release" value="<?php echo get_option('kml_flashembed_version_revision'); ?>" size="4" maxlength="4" /> 
 				</div> 
 				<div class="clear">&nbsp;</div> 
 				<div class="col1"> 
@@ -160,7 +160,7 @@ do_action('admin_head');
 						<label for="attClass" class="info" title="Classifies the Flash movie so that it can be referenced using a scripting language or by CSS">class</label> 
 					</div> 
 					<div class="col4"> 
-						<input type="text" id="attClass" name="targetclass" value="" size="15" /> 
+						<input type="text" id="attClass" name="targetclass" value="<?php echo get_option('kml_flashembed_target_class'); ?>" size="15" /> 
 					</div> 
 					<div class="clear">&nbsp;</div> 
 					<div class="col1">&nbsp;</div> 
@@ -390,9 +390,7 @@ do_action('admin_head');
 				</div>
 				<div class="clear"> </div>
 				<div class="col2">
-					<textarea id="alternativeContent" name="alternativeContent" rows="6" cols="10">
-<p><a href="http://adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a></p>
-					</textarea>
+					<textarea id="alternativeContent" name="alternativeContent" rows="6" cols="10"><?php echo stripcslashes(get_option('kml_flashembed_alt_content')); ?></textarea>
 				</div>
 				<div class="clear"> </div>
 			</div>

@@ -34,6 +34,19 @@ class KimiliFlashEmbed
 		// Register Hooks
 		if (is_admin()) {
 			
+			// Default Options
+			add_option('kml_flashembed_target_class', 'flashmovie');
+			add_option('kml_flashembed_publish_method', '0');
+			add_option('kml_flashembed_version_major', '8');
+			add_option('kml_flashembed_version_minor', '0');
+			add_option('kml_flashembed_version_revision', '0');
+			add_option('kml_flashembed_alt_content', '<p><a href="http://adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a></p>');
+			add_option('kml_flashembed_reference_swfobject', '1');
+			add_option('kml_flashembed_swfobject_source', '0');
+			
+			// Set up the options page
+			add_action('admin_menu', array(&$this, 'options_menu'));
+			
 			// Register editor buttons
 			add_filter( 'tiny_mce_version', array(&$this, 'tiny_mce_version') );
 			add_filter( 'mce_external_plugins', array(&$this, 'mce_external_plugins') );
@@ -55,7 +68,13 @@ class KimiliFlashEmbed
 		}
 		
 		// Queue SWFObject
-		wp_enqueue_script( 'swfobject', plugins_url('/kimili-flash-embed/js/swfobject.js'), array(), '2.1' );
+		if ( get_option('kml_flashembed_reference_swfobject') == '1') {
+			if ( get_option('kml_flashembed_swfobject_source') == '0' ) {
+				wp_enqueue_script( 'swfobject', 'http://ajax.googleapis.com/ajax/libs/swfobject/2.1/swfobject.js', array(), '2.1' );
+			} else {
+				wp_enqueue_script( 'swfobject', plugins_url('/kimili-flash-embed/js/swfobject.js'), array(), '2.1' );
+			}
+		}
 	}
 	
 	function parseShortcodes($content)
@@ -468,6 +487,131 @@ class KimiliFlashEmbed
 </script>
 <?php	
 	}
+	
+	// Set up the Plugin Options Page
+	function options_menu() {
+		add_options_page('Kimili Flash Embed Options', 'Kimili Flash Embed', 8, __FILE__, array(&$this, 'settings_page'));
+	}
+	
+	// Render the settings page
+	function settings_page() {
+		
+		$message = null;
+		$message_updated = __("Kimili Flash Embed Options Updated.", 'kimili_flash_embed');
+
+		// update options
+		if ($_POST['action'] && $_POST['action'] == 'kml_flashembed_update') {
+						
+			$target_class 			= preg_replace("/(^|&\S+;)|(<[^>]*>)/U", '', strip_tags($_POST['target_class']));
+			
+			$alt_content			= $_POST['alt_content'];
+			
+			$version_major 			= preg_replace("/\D/s", '', $_POST['version_major']);
+			$version_minor 			= preg_replace("/\D/s", '', $_POST['version_minor']);
+			$version_revision 		= preg_replace("/\D/s", '', $_POST['version_revision']);
+			
+			if (empty($version_major)) {
+				$version_major = '8';
+			}
+						
+			if (empty($version_minor)) {
+				$version_minor = '0';
+			}
+			
+			if (empty($version_revision)) {
+				$version_revision = '0';
+			}			
+			
+			$publish_method			= ($_POST['publish_method'] == '1') ? $_POST['publish_method'] : '0';
+			$reference_swfobject 	= ($_POST['reference_swfobject'] == '0') ? $_POST['reference_swfobject'] : '1';
+			$swfobject_source		= ($_POST['swfobject_source'] == '1') ? $_POST['swfobject_source'] : '0';
+			
+			$message = $message_updated;
+			update_option('kml_flashembed_target_class', $target_class);
+			update_option('kml_flashembed_publish_method', $publish_method);
+			update_option('kml_flashembed_version_major', $version_major);
+			update_option('kml_flashembed_version_minor', $version_minor);
+			update_option('kml_flashembed_version_revision', $version_revision);
+			update_option('kml_flashembed_alt_content', $alt_content);
+			update_option('kml_flashembed_reference_swfobject', $reference_swfobject);
+			update_option('kml_flashembed_swfobject_source', $swfobject_source);
+			
+			if (function_exists('wp_cache_flush')) {
+				wp_cache_flush();
+			}
+		
+		}
+			
+	?>
+	
+<?php if ($message) : ?>
+<div id="message" class="updated fade"><p><?php echo $message; ?></p></div>
+<?php endif; ?>
+	
+<form action="" method="post" accept-charset="utf-8">
+	<div class="wrap">
+		<h2>Kimili Flash Embed Preferences</h2>
+		
+
+		<h3>KFE Tag Defaults</h3> 
+		
+		<table class="form-table">
+			<tr>
+				<th scope="row" style="text-align:right; vertical-align:top;">Element Class Name</th>
+				<td><input type="text" name="target_class" value="<?php echo get_option('kml_flashembed_target_class'); ?>" /></td>
+			</tr>
+			<tr>
+				<th scope="row" style="text-align:right; vertical-align:top;">Publish Method</th>
+				<td>
+					<input type="radio" id="publish_method-0" name="publish_method" value="0" class="radio" <?php if (!get_option('kml_flashembed_publish_method')) echo "checked=\"checked\""; ?> /><label for="publish_method-0">Static Publishing</label>
+					<input type="radio" id="publish_method-1" name="publish_method" value="1" class="radio" <?php if (get_option('kml_flashembed_publish_method')) echo "checked=\"checked\""; ?> /><label for="publish_method-1">Dynamic Publishing</label>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" style="text-align:right; vertical-align:top;">Flash Version</th>
+				<td>
+					<input type="text" name="version_major" value="<?php echo get_option('kml_flashembed_version_major'); ?>" size="2" title="Major Version" />.
+					<input type="text" name="version_minor" value="<?php echo get_option('kml_flashembed_version_minor'); ?>" size="2" title="Minor Version" />.
+					<input type="text" name="version_revision" value="<?php echo get_option('kml_flashembed_version_revision'); ?>" size="3" title="Version Revision Number" />
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" style="text-align:right; vertical-align:top;">Alternate Content</th>
+				<td><textarea name="alt_content" cols="50" rows="4"><?php echo stripcslashes(get_option('kml_flashembed_alt_content')); ?></textarea></td>
+			</tr>
+		</table>
+
+		<h3>Javascript Options</h3> 
+		
+		<table class="form-table">
+			<tr>
+				<th scope="row" style="text-align:right; vertical-align:top;">Create a reference to SWFObject.js?</th>
+				<td>
+					<input type="radio" id="reference_swfobject-0" name="reference_swfobject" value="0" class="radio" <?php if (!get_option('kml_flashembed_reference_swfobject')) echo "checked=\"checked\""; ?> /><label for="reference_swfobject-0">No</label>
+					<input type="radio" id="reference_swfobject-1" name="reference_swfobject" value="1" class="radio" <?php if (get_option('kml_flashembed_reference_swfobject')) echo "checked=\"checked\""; ?> /><label for="reference_swfobject-1">Yes</label>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" style="text-align:right; vertical-align:top;">Where do you want to reference SWFObject.js from?</th>
+				<td>
+					<input type="radio" id="swfobject_source-0" name="swfobject_source" value="0" class="radio" <?php if (!get_option('kml_flashembed_swfobject_source')) echo "checked=\"checked\""; ?> /><label for="swfobject_source-0">Google Ajax Library</label>
+					<input type="radio" id="swfobject_source-1" name="swfobject_source" value="1" class="radio" <?php if (get_option('kml_flashembed_swfobject_source')) echo "checked=\"checked\""; ?> /><label for="swfobject_source-1">Internal</label>
+				</td>
+			</tr>
+		</table>
+		
+		<p class="submit">
+			<input type="hidden" name="action" value="kml_flashembed_update" /> 
+			<input type="submit" name="Submit" value="Update Options &raquo;" /> 
+		</p>
+
+	</div>
+	
+</form>
+	<?php
+		
+	}
+	
 }
 
 // Start this plugin once all other plugins are fully loaded
