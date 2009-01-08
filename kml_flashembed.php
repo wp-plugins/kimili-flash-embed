@@ -43,6 +43,8 @@ class KimiliFlashEmbed
 			add_option('kml_flashembed_alt_content', '<p><a href="http://adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a></p>');
 			add_option('kml_flashembed_reference_swfobject', '1');
 			add_option('kml_flashembed_swfobject_source', '0');
+			add_option('kml_flashembed_width', '400');
+			add_option('kml_flashembed_height', '300');
 			
 			// Set up the options page
 			add_action('admin_menu', array(&$this, 'options_menu'));
@@ -510,6 +512,9 @@ class KimiliFlashEmbed
 			$version_minor 			= preg_replace("/\D/s", '', $_POST['version_minor']);
 			$version_revision 		= preg_replace("/\D/s", '', $_POST['version_revision']);
 			
+			$width					= preg_replace("/[\D[^%]]/", '', $_POST['width']);
+			$height					= preg_replace("/[\D[^%]]/", '', $_POST['height']);
+			
 			if (empty($version_major)) {
 				$version_major = '8';
 			}
@@ -520,6 +525,14 @@ class KimiliFlashEmbed
 			
 			if (empty($version_revision)) {
 				$version_revision = '0';
+			}			
+						
+			if (empty($width)) {
+				$width = '400';
+			}		
+								
+			if (empty($height)) {
+				$height = '300';
 			}			
 			
 			$publish_method			= ($_POST['publish_method'] == '1') ? $_POST['publish_method'] : '0';
@@ -535,6 +548,8 @@ class KimiliFlashEmbed
 			update_option('kml_flashembed_alt_content', $alt_content);
 			update_option('kml_flashembed_reference_swfobject', $reference_swfobject);
 			update_option('kml_flashembed_swfobject_source', $swfobject_source);
+			update_option('kml_flashembed_width', $width);
+			update_option('kml_flashembed_height', $height);
 			
 			if (function_exists('wp_cache_flush')) {
 				wp_cache_flush();
@@ -557,18 +572,25 @@ class KimiliFlashEmbed
 		
 		<table class="form-table">
 			<tr>
-				<th scope="row" style="text-align:right; vertical-align:top;">Element Class Name</th>
+				<th scope="row" style="vertical-align:top;">Element Class Name</th>
 				<td><input type="text" name="target_class" value="<?php echo get_option('kml_flashembed_target_class'); ?>" /></td>
 			</tr>
 			<tr>
-				<th scope="row" style="text-align:right; vertical-align:top;">Publish Method</th>
+				<th scope="row" style="vertical-align:top;">Publish Method</th>
 				<td>
 					<input type="radio" id="publish_method-0" name="publish_method" value="0" class="radio" <?php if (!get_option('kml_flashembed_publish_method')) echo "checked=\"checked\""; ?> /><label for="publish_method-0">Static Publishing</label>
 					<input type="radio" id="publish_method-1" name="publish_method" value="1" class="radio" <?php if (get_option('kml_flashembed_publish_method')) echo "checked=\"checked\""; ?> /><label for="publish_method-1">Dynamic Publishing</label>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row" style="text-align:right; vertical-align:top;">Flash Version</th>
+				<th scope="row" style="vertical-align:top;">Dimensions (width&times;height)</th>
+				<td>
+					<input type="text" name="width" value="<?php echo get_option('kml_flashembed_width'); ?>" size="2" title="Width" />.
+					<input type="text" name="height" value="<?php echo get_option('kml_flashembed_height'); ?>" size="2" title="Height" />.
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" style="vertical-align:top;">Flash Version</th>
 				<td>
 					<input type="text" name="version_major" value="<?php echo get_option('kml_flashembed_version_major'); ?>" size="2" title="Major Version" />.
 					<input type="text" name="version_minor" value="<?php echo get_option('kml_flashembed_version_minor'); ?>" size="2" title="Minor Version" />.
@@ -576,7 +598,7 @@ class KimiliFlashEmbed
 				</td>
 			</tr>
 			<tr>
-				<th scope="row" style="text-align:right; vertical-align:top;">Alternate Content</th>
+				<th scope="row" style="vertical-align:top;">Alternate Content</th>
 				<td><textarea name="alt_content" cols="50" rows="4"><?php echo stripcslashes(get_option('kml_flashembed_alt_content')); ?></textarea></td>
 			</tr>
 		</table>
@@ -585,14 +607,14 @@ class KimiliFlashEmbed
 		
 		<table class="form-table">
 			<tr>
-				<th scope="row" style="text-align:right; vertical-align:top;">Create a reference to SWFObject.js?</th>
+				<th scope="row" style="vertical-align:top;">Create a reference to SWFObject.js?</th>
 				<td>
 					<input type="radio" id="reference_swfobject-0" name="reference_swfobject" value="0" class="radio" <?php if (!get_option('kml_flashembed_reference_swfobject')) echo "checked=\"checked\""; ?> /><label for="reference_swfobject-0">No</label>
 					<input type="radio" id="reference_swfobject-1" name="reference_swfobject" value="1" class="radio" <?php if (get_option('kml_flashembed_reference_swfobject')) echo "checked=\"checked\""; ?> /><label for="reference_swfobject-1">Yes</label>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row" style="text-align:right; vertical-align:top;">Where do you want to reference SWFObject.js from?</th>
+				<th scope="row" style="vertical-align:top;">Where do you want to reference SWFObject.js from?</th>
 				<td>
 					<input type="radio" id="swfobject_source-0" name="swfobject_source" value="0" class="radio" <?php if (!get_option('kml_flashembed_swfobject_source')) echo "checked=\"checked\""; ?> /><label for="swfobject_source-0">Google Ajax Library</label>
 					<input type="radio" id="swfobject_source-1" name="swfobject_source" value="1" class="radio" <?php if (get_option('kml_flashembed_swfobject_source')) echo "checked=\"checked\""; ?> /><label for="swfobject_source-1">Internal</label>

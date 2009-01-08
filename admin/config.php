@@ -134,12 +134,12 @@ do_action('admin_head');
 				</div> 
 				<div class="clear">&nbsp;</div> 
 				<div class="col1"> 
-					<label title="Width x height (unit)" class="info">Dimensions:</label> <span class="req">*</span> 
+					<label title="Width &times; height (unit)" class="info">Dimensions:</label> <span class="req">*</span> 
 				</div> 
 				<div class="col2"> 
-					<input type="text" id="width" name="width" value="800" size="6" maxlength="6" /> 
-					x
-					<input type="text" id="height" name="height" value="600" size="6" maxlength="6" /> 
+					<input type="text" id="width" name="width" value="<?php echo get_option('kml_flashembed_width'); ?>" size="5" maxlength="5" /> 
+					&times;
+					<input type="text" id="height" name="height" value="<?php echo get_option('kml_flashembed_height'); ?>" size="5" maxlength="5" /> 
 					<select id="unit" name="unit"> 
 		  				<option value="pixels">pixels</option> 
 						<option value="percentage">percentage</option> 
