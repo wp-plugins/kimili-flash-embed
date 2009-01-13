@@ -36,6 +36,7 @@ class KimiliFlashEmbed
 			
 			
 			// Default Options
+			add_option('kml_flashembed_filename', 'untitled.swf');
 			add_option('kml_flashembed_target_class', 'flashmovie');
 			add_option('kml_flashembed_publish_method', '0');
 			add_option('kml_flashembed_version_major', '8');
@@ -484,7 +485,8 @@ class KimiliFlashEmbed
 
 		// update options
 		if ($_POST['action'] && $_POST['action'] == 'kml_flashembed_update') {
-						
+			
+			$filename				= preg_replace("/(^|&\S+;)|(<[^>]*>)/U", '', strip_tags($_POST['filename']));						
 			$target_class 			= preg_replace("/(^|&\S+;)|(<[^>]*>)/U", '', strip_tags($_POST['target_class']));
 			
 			$alt_content			= $_POST['alt_content'];
@@ -521,6 +523,7 @@ class KimiliFlashEmbed
 			$swfobject_source		= ($_POST['swfobject_source'] == '1') ? $_POST['swfobject_source'] : '0';
 			
 			$message = $message_updated;
+			update_option('kml_flashembed_filename', $filename);
 			update_option('kml_flashembed_target_class', $target_class);
 			update_option('kml_flashembed_publish_method', $publish_method);
 			update_option('kml_flashembed_version_major', $version_major);
@@ -552,6 +555,10 @@ class KimiliFlashEmbed
 		<h3>KFE Tag Defaults</h3> 
 		
 		<table class="form-table">
+			<tr>
+				<th scope="row" style="vertical-align:top;">SWF Filename</th>
+				<td><input type="text" name="filename" value="<?php echo get_option('kml_flashembed_filename'); ?>" /></td>
+			</tr>
 			<tr>
 				<th scope="row" style="vertical-align:top;">Element Class Name</th>
 				<td><input type="text" name="target_class" value="<?php echo get_option('kml_flashembed_target_class'); ?>" /></td>

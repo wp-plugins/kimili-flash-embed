@@ -130,7 +130,7 @@ do_action('admin_head');
 					<label for="swf" title="The relative or absolute path to your Flash content .swf file" class="info">Flash (.swf):</label> <span class="req">*</span> 
 				</div> 
 				<div class="col2"> 
-					<input type="text" id="swf" name="movie" value="untitled.swf" size="20" /> 
+					<input type="text" id="swf" name="movie" value="<?php echo get_option('kml_flashembed_filename'); ?>" size="20" /> 
 				</div> 
 				<div class="clear">&nbsp;</div> 
 				<div class="col1"> 
