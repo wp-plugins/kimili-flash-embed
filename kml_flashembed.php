@@ -4,7 +4,7 @@
 Plugin Name: Kimili Flash Embed
 Plugin URI: http://www.kimili.com/plugins/kml_flashembed
 Description: Provides a full Wordpress interface for <a href="http://code.google.com/p/swfobject/">SWFObject</a> - the best way to embed Flash on your site.
-Version: 2.0
+Version: 2.0rc1
 Author: Michael Bester
 Author URI: http://www.kimili.com
 Update: http://www.kimili.com/plugins/kml_flashembed/wp
@@ -14,7 +14,7 @@ Update: http://www.kimili.com/plugins/kml_flashembed/wp
 *
 *	KIMILI FLASH EMBED
 *
-*	Copyright 2008 Michael Bester (http://www.kimili.com)
+*	Copyright 2009 Michael Bester (http://www.kimili.com)
 *	Released under the GNU General Public License (http://www.gnu.org/licenses/gpl.html)
 *
 */
@@ -34,6 +34,7 @@ class KimiliFlashEmbed
 		// Register Hooks
 		if (is_admin()) {
 			
+			
 			// Default Options
 			add_option('kml_flashembed_target_class', 'flashmovie');
 			add_option('kml_flashembed_publish_method', '0');
@@ -50,16 +51,15 @@ class KimiliFlashEmbed
 			add_action('admin_menu', array(&$this, 'options_menu'));
 			
 			// Register editor buttons
-			add_filter( 'tiny_mce_version', array(&$this, 'tiny_mce_version') );
-			add_filter( 'mce_external_plugins', array(&$this, 'mce_external_plugins') );
+			//add_action( 'init', array(&$this, 'register_with_mce'));
+			
 			add_action( 'edit_form_advanced', array(&$this, 'add_quicktags') );
 			add_action( 'edit_page_form', array(&$this, 'add_quicktags') );
-			add_filter( 'mce_buttons', array(&$this, 'mce_buttons') );
 			add_action( 'admin_head', array(&$this, 'set_admin_js_vars'));
-			
+				
 			// Queue Embed JS
 			wp_enqueue_script( 'kimiliflashembed', plugins_url('/kimili-flash-embed/js/kfe.js'), array(), $this->version );
-			
+
 			
 		} else {
 			// Front-end
@@ -433,26 +433,7 @@ class KimiliFlashEmbed
 			ob_end_flush();
 		}
 	}
-		
-	// Break the browser cache of TinyMCE
-	function tiny_mce_version( $version )
-	{
-		return $version . '-kfe' . $this->version;
-	}
-	
-	// Load the custom TinyMCE plugin
-	function mce_external_plugins( $plugins )
-	{
-		$plugins['kimiliflashembed'] = plugins_url('/kimili-flash-embed/lib/tinymce3/editor_plugin.js');
-		return $plugins;
-	}
 
-	// Add the custom TinyMCE buttons
-	function mce_buttons( $buttons )
-	{
-		array_push( $buttons, 'kimiliFlashEmbed' );
-		return $buttons;
-	}
 	
 	function set_admin_js_vars()
 	{
@@ -585,8 +566,8 @@ class KimiliFlashEmbed
 			<tr>
 				<th scope="row" style="vertical-align:top;">Dimensions (width&times;height)</th>
 				<td>
-					<input type="text" name="width" value="<?php echo get_option('kml_flashembed_width'); ?>" size="2" title="Width" />.
-					<input type="text" name="height" value="<?php echo get_option('kml_flashembed_height'); ?>" size="2" title="Height" />.
+					<input type="text" name="width" value="<?php echo get_option('kml_flashembed_width'); ?>" size="2" title="Width" />&times;
+					<input type="text" name="height" value="<?php echo get_option('kml_flashembed_height'); ?>" size="2" title="Height" />
 				</td>
 			</tr>
 			<tr>
@@ -641,6 +622,38 @@ add_action( 'plugins_loaded', 'KimiliFlashEmbed' );
 function KimiliFlashEmbed() {
 	global $KimiliFlashEmbed;
 	$KimiliFlashEmbed = new KimiliFlashEmbed();
+}
+
+/*
+	Adding the KFE button to the MCE toolbar. For some reason, WP 2.6 doesn't allow me to do this from within the KimiliFlashEmbed class.
+*/
+add_action( 'init', 'kml_flashembed_addbuttons');
+
+function kml_flashembed_addbuttons() {
+	if (!current_user_can('edit_posts') && !current_user_can('edit_pages') ) {
+		return;
+	}
+	if ( get_user_option('rich_editing') == 'true') {
+		add_filter( 'tiny_mce_version', 'tiny_mce_version', 0 );
+		add_filter( 'mce_external_plugins', 'kml_flashembed_plugin', 0 );
+		add_filter( 'mce_buttons', 'kml_flashembed_button', 0);
+	}
+}
+
+// Break the browser cache of TinyMCE
+function tiny_mce_version( $version ) {
+	return $version . '-kfe' . $this->version;
+}
+
+// Load the custom TinyMCE plugin
+function kml_flashembed_plugin( $plugins ) {
+	$plugins['kimiliflashembed'] = plugins_url('/kimili-flash-embed/lib/tinymce3/editor_plugin.js');
+	return $plugins;
+}
+
+function kml_flashembed_button( $buttons ) {
+	array_push( $buttons, 'separator', 'kimiliFlashEmbed' );
+	return $buttons;
 }
 
 ?>
