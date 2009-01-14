@@ -34,6 +34,9 @@ class KimiliFlashEmbed
 		// Register Hooks
 		if (is_admin()) {
 			
+			// Load up the localization file if we're using WordPress in a different language
+			// Place it in this plugin's "localization" folder and name it "kimili-flash-embed-[value in wp-config].mo"
+			load_plugin_textdomain( 'kimili-flash-embed', FALSE, '/kimili-flash-embed/langs');
 			
 			// Default Options
 			add_option('kml_flashembed_filename', 'untitled.swf');
@@ -57,10 +60,10 @@ class KimiliFlashEmbed
 			add_action( 'edit_form_advanced', array(&$this, 'add_quicktags') );
 			add_action( 'edit_page_form', array(&$this, 'add_quicktags') );
 			add_action( 'admin_head', array(&$this, 'set_admin_js_vars'));
-				
+			
 			// Queue Embed JS
 			wp_enqueue_script( 'kimiliflashembed', plugins_url('/kimili-flash-embed/js/kfe.js'), array(), $this->version );
-
+			
 			
 		} else {
 			// Front-end
@@ -549,29 +552,24 @@ class KimiliFlashEmbed
 	
 <form action="" method="post" accept-charset="utf-8">
 	<div class="wrap">
-		<h2>Kimili Flash Embed Preferences</h2>
-		
+		<h2><?php _e("Kimili Flash Embed Preferences", 'kimili-flash-embed'); ?></h2>
 
-		<h3>KFE Tag Defaults</h3> 
+		<h3><?php _e("KFE Tag Defaults", 'kimili-flash-embed'); ?></h3> 
 		
 		<table class="form-table">
 			<tr>
-				<th scope="row" style="vertical-align:top;">SWF Filename</th>
-				<td><input type="text" name="filename" value="<?php echo get_option('kml_flashembed_filename'); ?>" /></td>
-			</tr>
-			<tr>
-				<th scope="row" style="vertical-align:top;">Element Class Name</th>
+				<th scope="row" style="vertical-align:top;"><?php _e("Element Class Name", 'kimili-flash-embed'); ?></th>
 				<td><input type="text" name="target_class" value="<?php echo get_option('kml_flashembed_target_class'); ?>" /></td>
 			</tr>
 			<tr>
-				<th scope="row" style="vertical-align:top;">Publish Method</th>
+				<th scope="row" style="vertical-align:top;"><?php _e("Publish Method", 'kimili-flash-embed'); ?></th>
 				<td>
-					<input type="radio" id="publish_method-0" name="publish_method" value="0" class="radio" <?php if (!get_option('kml_flashembed_publish_method')) echo "checked=\"checked\""; ?> /><label for="publish_method-0">Static Publishing</label>
-					<input type="radio" id="publish_method-1" name="publish_method" value="1" class="radio" <?php if (get_option('kml_flashembed_publish_method')) echo "checked=\"checked\""; ?> /><label for="publish_method-1">Dynamic Publishing</label>
+					<input type="radio" id="publish_method-0" name="publish_method" value="0" class="radio" <?php if (!get_option('kml_flashembed_publish_method')) echo "checked=\"checked\""; ?> /><label for="publish_method-0"><?php _e("Static Publishing", 'kimili-flash-embed'); ?></label>
+					<input type="radio" id="publish_method-1" name="publish_method" value="1" class="radio" <?php if (get_option('kml_flashembed_publish_method')) echo "checked=\"checked\""; ?> /><label for="publish_method-1"><?php _e("Dynamic Publishing", 'kimili-flash-embed'); ?></label>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row" style="vertical-align:top;">Dimensions (width&times;height)</th>
+				<th scope="row" style="vertical-align:top;"><?php _e("Dimensions (width&times;height)", 'kimili-flash-embed'); ?></th>
 				<td>
 					<input type="text" name="width" value="<?php echo get_option('kml_flashembed_width'); ?>" size="2" title="Width" />&times;
 					<input type="text" name="height" value="<?php echo get_option('kml_flashembed_height'); ?>" size="2" title="Height" />
@@ -586,33 +584,33 @@ class KimiliFlashEmbed
 				</td>
 			</tr>
 			<tr>
-				<th scope="row" style="vertical-align:top;">Alternate Content</th>
+				<th scope="row" style="vertical-align:top;"><?php _e("Alternate Content", 'kimili-flash-embed'); ?></th>
 				<td><textarea name="alt_content" cols="50" rows="4"><?php echo stripcslashes(get_option('kml_flashembed_alt_content')); ?></textarea></td>
 			</tr>
 		</table>
 
-		<h3>Javascript Options</h3> 
+		<h3><?php _e("Javascript Options", 'kimili-flash-embed'); ?></h3> 
 		
 		<table class="form-table">
 			<tr>
-				<th scope="row" style="vertical-align:top;">Create a reference to SWFObject.js?</th>
+				<th scope="row" style="vertical-align:top;"><?php _e("Create a reference to SWFObject.js?", 'kimili-flash-embed'); ?></th>
 				<td>
-					<input type="radio" id="reference_swfobject-0" name="reference_swfobject" value="0" class="radio" <?php if (!get_option('kml_flashembed_reference_swfobject')) echo "checked=\"checked\""; ?> /><label for="reference_swfobject-0">No</label>
-					<input type="radio" id="reference_swfobject-1" name="reference_swfobject" value="1" class="radio" <?php if (get_option('kml_flashembed_reference_swfobject')) echo "checked=\"checked\""; ?> /><label for="reference_swfobject-1">Yes</label>
+					<input type="radio" id="reference_swfobject-0" name="reference_swfobject" value="0" class="radio" <?php if (!get_option('kml_flashembed_reference_swfobject')) echo "checked=\"checked\""; ?> /><label for="reference_swfobject-0"><?php _e("No", 'kimili-flash-embed'); ?></label>
+					<input type="radio" id="reference_swfobject-1" name="reference_swfobject" value="1" class="radio" <?php if (get_option('kml_flashembed_reference_swfobject')) echo "checked=\"checked\""; ?> /><label for="reference_swfobject-1"><?php _e("Yes", 'kimili-flash-embed'); ?></label>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row" style="vertical-align:top;">Where do you want to reference SWFObject.js from?</th>
+				<th scope="row" style="vertical-align:top;"><?php _e("Where do you want to reference SWFObject.js from?", 'kimili-flash-embed'); ?></th>
 				<td>
-					<input type="radio" id="swfobject_source-0" name="swfobject_source" value="0" class="radio" <?php if (!get_option('kml_flashembed_swfobject_source')) echo "checked=\"checked\""; ?> /><label for="swfobject_source-0">Google Ajax Library</label>
-					<input type="radio" id="swfobject_source-1" name="swfobject_source" value="1" class="radio" <?php if (get_option('kml_flashembed_swfobject_source')) echo "checked=\"checked\""; ?> /><label for="swfobject_source-1">Internal</label>
+					<input type="radio" id="swfobject_source-0" name="swfobject_source" value="0" class="radio" <?php if (!get_option('kml_flashembed_swfobject_source')) echo "checked=\"checked\""; ?> /><label for="swfobject_source-0"><?php _e("Google Ajax Library", 'kimili-flash-embed'); ?></label>
+					<input type="radio" id="swfobject_source-1" name="swfobject_source" value="1" class="radio" <?php if (get_option('kml_flashembed_swfobject_source')) echo "checked=\"checked\""; ?> /><label for="swfobject_source-1"><?php _e("Internal", 'kimili-flash-embed'); ?></label>
 				</td>
 			</tr>
 		</table>
 		
 		<p class="submit">
 			<input type="hidden" name="action" value="kml_flashembed_update" /> 
-			<input type="submit" name="Submit" value="Update Options &raquo;" /> 
+			<input type="submit" name="Submit" value="<?php _e("Update Options", 'kimili-flash-embed'); ?> &raquo;" /> 
 		</p>
 
 	</div>
