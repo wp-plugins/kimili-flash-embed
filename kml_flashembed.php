@@ -558,6 +558,10 @@ class KimiliFlashEmbed
 		
 		<table class="form-table">
 			<tr>
+				<th scope="row" style="vertical-align:top;"><?php _e("SWF Filename", 'kimili-flash-embed'); ?></th>
+				<td><input type="text" name="filename" value="<?php echo get_option('kml_flashembed_filename'); ?>" /></td>
+			</tr>
+			<tr>
 				<th scope="row" style="vertical-align:top;"><?php _e("Element Class Name", 'kimili-flash-embed'); ?></th>
 				<td><input type="text" name="target_class" value="<?php echo get_option('kml_flashembed_target_class'); ?>" /></td>
 			</tr>
