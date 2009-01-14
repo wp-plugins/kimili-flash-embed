@@ -56,41 +56,41 @@ do_action('admin_head');
 
 	<div class="wrap" id="KFE_Generator">
 	
-		<h2><?php echo wp_specialchars($title." Tag Generator" ); ?></h2> 
+		<h2><?php echo wp_specialchars($title." ".__("Tag Generator",'kimili-flash-embed') ); ?></h2> 
 
-		<div class="note">Asterisk (<span class="req">*</span>) indicates required field</div> 
+		<div class="note"><?php _e('Asterisk (<span class="req">*</span>) indicates required field','kimili-flash-embed'); ?></div> 
 		<fieldset> 
-			<legend>SWFObject configuration [ <a id="toggle1" href="#">-</a> ]</legend> 
+			<legend><?php _e("SWFObject Configuration",'kimili-flash-embed'); ?> [ <a id="toggle1" href="#">-</a> ]</legend> 
 			<div id="toggleable1">
 				<div class="col1"> 
-					<label for="publishingMethod">Publish method:</label> <span class="req">*</span> 
+					<label for="publishingMethod"><?php _e("Publish method",'kimili-flash-embed'); ?>:</label> <span class="req">*</span> 
 				</div> 
 				<div class="col2"> 
 					<select id="publishingMethod" name="publishmethod"> 
-		  				<option value="static" <?php if (!get_option('kml_flashembed_publish_method')) echo "selected=\"selected\""; ?>>Static publishing</option> 
-						<option value="dynamic" <?php if (get_option('kml_flashembed_publish_method')) echo "selected=\"selected\""; ?>>Dynamic publishing</option> 
+		  				<option value="static" <?php if (!get_option('kml_flashembed_publish_method')) echo "selected=\"selected\""; ?>><?php _e("Static publishing",'kimili-flash-embed'); ?></option> 
+						<option value="dynamic" <?php if (get_option('kml_flashembed_publish_method')) echo "selected=\"selected\""; ?>><?php _e("Dynamic publishing",'kimili-flash-embed'); ?></option> 
 					</select> 
-					<a id="togglePublishingMethodHelp" href="#">what is this?</a> 
+					<a id="togglePublishingMethodHelp" href="#"><?php _e("what is this?",'kimili-flash-embed'); ?>"</a> 
 				</div> 
 				<div class="clear">&nbsp;</div> 
 				<div id="publishingMethodHelp" class="help"> 
-					<h2>Static publishing</h2> 
-					<h3>Description</h3> 
-					<p>Embed Flash content and alternative content using standards compliant markup, and use unobtrusive JavaScript to resolve the issues that markup alone cannot solve.</p> 
-					<h3>Pros</h3> 
-					<p>The embedding of Flash content does not rely on JavaScript and the actual authoring of standards compliant markup is promoted.</p> 
-					<h3>Cons</h3> 
-					<p>Does not solve 'click-to-activate' mechanisms in Internet Explorer 6+ and Opera 9+.</p> 
-					<h2>Dynamic publishing</h2> 
-					<h3>Description</h3> 
-					<p>Create alternative content using standards compliant markup and embed Flash content with unobtrusive JavaScript.</p> 
-					<h3>Pros</h3> 
-					<p>Avoids 'click-to-activate' mechanisms in Internet Explorer 6+ and Opera 9+.</p> 
-					<h3>Cons</h3> 
-					<p>The embedding of Flash content relies on JavaScript, so if you have the Flash plug-in installed, but have JavaScript disabled or use a browser that doesn't support JavaScript, you will not be able to see your Flash content, however you will see alternative content instead. Flash content will also not be shown on a device like Sony PSP, which has very poor JavaScript support, and automated tools like RSS readers are not able to pick up Flash content.</p> 
+					<h2><?php _e("Static publishing",'kimili-flash-embed'); ?></h2> 
+					<h3><?php _e("Description",'kimili-flash-embed'); ?></h3> 
+					<p><?php _e("Embed Flash content and alternative content using standards compliant markup, and use unobtrusive JavaScript to resolve the issues that markup alone cannot solve.",'kimili-flash-embed'); ?></p> 
+					<h3><?php _e("Pros",'kimili-flash-embed'); ?></h3> 
+					<p><?php _e("The embedding of Flash content does not rely on JavaScript and the actual authoring of standards compliant markup is promoted.",'kimili-flash-embed'); ?></p> 
+					<h3><?php _e("Cons",'kimili-flash-embed'); ?></h3> 
+					<p><?php _e("Does not solve 'click-to-activate' mechanisms in Internet Explorer 6+ and Opera 9+.",'kimili-flash-embed'); ?></p> 
+					<h2><?php _e("Dynamic publishing",'kimili-flash-embed'); ?></h2> 
+					<h3><?php _e("Description",'kimili-flash-embed'); ?></h3> 
+					<p><?php _e("Create alternative content using standards compliant markup and embed Flash content with unobtrusive JavaScript.",'kimili-flash-embed'); ?></p> 
+					<h3><?php _e("Pros",'kimili-flash-embed'); ?></h3> 
+					<p><?php _e("Avoids 'click-to-activate' mechanisms in Internet Explorer 6+ and Opera 9+.",'kimili-flash-embed'); ?></p> 
+					<h3><?php _e("Cons",'kimili-flash-embed'); ?></h3> 
+					<p><?php _e("The embedding of Flash content relies on JavaScript, so if you have the Flash plug-in installed, but have JavaScript disabled or use a browser that doesn't support JavaScript, you will not be able to see your Flash content, however you will see alternative content instead. Flash content will also not be shown on a device like Sony PSP, which has very poor JavaScript support, and automated tools like RSS readers are not able to pick up Flash content.",'kimili-flash-embed'); ?></p> 
 				</div> 
 				<div class="col1"> 
-					<label title="Flash version consists of major, minor and release version" class="info">Flash version:</label> <span class="req">*</span> 
+					<label title="<?php _e("Flash version consists of major, minor and release version",'kimili-flash-embed'); ?>" class="info"><?php _e("Flash version:",'kimili-flash-embed'); ?></label> <span class="req">*</span> 
 				</div> 
 				<div class="col2"> 
 					<input type="text" id="major" name="major" value="<?php echo get_option('kml_flashembed_version_major'); ?>" size="4" maxlength="2" /> 
@@ -101,7 +101,7 @@ do_action('admin_head');
 				</div> 
 				<div class="clear">&nbsp;</div> 
 				<div class="col1"> 
-					<label for="expressInstall" title="Check checkbox to activate express install functionality on your swf." class="info">Adobe Express Install:</label> 
+					<label for="expressInstall" title="<?php _e("Check checkbox to activate express install functionality on your swf.",'kimili-flash-embed'); ?>" class="info"><?php _e("Adobe Express Install",'kimili-flash-embed'); ?>:</label> 
 				</div> 
 				<div class="col2"> 
 					<input type="checkbox" id="expressInstall" name="useexpressinstall" value="true" />
@@ -109,47 +109,47 @@ do_action('admin_head');
 				<div class="clear">&nbsp;</div> 
 				<div id="toggleReplaceId"> 
 					<div class="col1"> 
-						<label for="replaceId">HTML container id:</label> <span class="req">*</span> 
+						<label for="replaceId"><?php _e("HTML container ID",'kimili-flash-embed'); ?>:</label> <span class="req">*</span> 
 					</div> 
 					<div class="col2"> 
 						<input type="text" id="replaceId" name="replaceId" value="" size="20" /> 
-						<a id="toggleReplaceIdHelp" href="#">what is this?</a> 
+						<a id="toggleReplaceIdHelp" href="#"><?php _e("what is this?",'kimili-flash-embed'); ?></a> 
 					</div> 
 					<div id="replaceIdHelp" class="help"> 
-						<p>Specifies the id attribute of the HTML container element that will be replaced with Flash content if enough JavaScript and Flash support is available.</p> 
-						<p>This HTML container will be generated automatically and will embed your alternative HTML content as defined in the HTML section.</p> 
+						<p><?php _e("Specifies the id attribute of the HTML container element that will be replaced with Flash content if enough JavaScript and Flash support is available.",'kimili-flash-embed'); ?></p> 
+						<p><?php _e("This HTML container will be generated automatically and will embed your alternative HTML content as defined in the HTML section.",'kimili-flash-embed'); ?></p> 
 					</div> 
 					<div class="clear">&nbsp;</div> 
 				</div> 
 			</div> 
 		</fieldset> 
 		<fieldset> 
-			<legend>SWF definition [ <a id="toggle2" href="#">-</a> ]</legend> 
+			<legend><?php _e("SWF definition",'kimili-flash-embed'); ?> [ <a id="toggle2" href="#">-</a> ]</legend> 
 			<div id="toggleable2"> 
 				<div class="col1"> 
-					<label for="swf" title="The relative or absolute path to your Flash content .swf file" class="info">Flash (.swf):</label> <span class="req">*</span> 
+					<label for="swf" title="<?php _e("The relative or absolute path to your Flash content .swf file",'kimili-flash-embed'); ?>" class="info"><?php _e("Flash (.swf)",'kimili-flash-embed'); ?>:</label> <span class="req">*</span> 
 				</div> 
 				<div class="col2"> 
 					<input type="text" id="swf" name="movie" value="<?php echo get_option('kml_flashembed_filename'); ?>" size="20" /> 
 				</div> 
 				<div class="clear">&nbsp;</div> 
 				<div class="col1"> 
-					<label title="Width &times; height (unit)" class="info">Dimensions:</label> <span class="req">*</span> 
+					<label title="<?php _e("Width &times; height (unit)",'kimili-flash-embed'); ?>" class="info"><?php _e("Dimensions",'kimili-flash-embed'); ?>:</label> <span class="req">*</span> 
 				</div> 
 				<div class="col2"> 
 					<input type="text" id="width" name="width" value="<?php echo get_option('kml_flashembed_width'); ?>" size="5" maxlength="5" /> 
 					&times;
 					<input type="text" id="height" name="height" value="<?php echo get_option('kml_flashembed_height'); ?>" size="5" maxlength="5" /> 
 					<select id="unit" name="unit"> 
-		  				<option value="pixels">pixels</option> 
-						<option value="percentage">percentage</option> 
+		  				<option value="pixels"><?php _e("pixels",'kimili-flash-embed'); ?></option> 
+						<option value="percentage"><?php _e("percentage",'kimili-flash-embed'); ?></option> 
 					</select> 
 				</div> 
 				<div class="clear">&nbsp;</div> 
 				<div id="toggleAttsParamsContainer">			
-					<div class="col1"><label class="info" title="HTML object element attributes">Attributes:</label></div>
+					<div class="col1"><label class="info" title="<?php _e("HTML object element attributes",'kimili-flash-embed'); ?>"><?php _e("Attributes",'kimili-flash-embed'); ?>:</label></div>
 					<div class="col3">	
-						<label for="attId" class="info" title="Uniquely identifies the Flash movie so that it can be referenced using a scripting language or by CSS">Flash content id</label>
+						<label for="attId" class="info" title="<?php _e("Uniquely identifies the Flash movie so that it can be referenced using a scripting language or by CSS",'kimili-flash-embed'); ?>"><?php _e("Flash content ID",'kimili-flash-embed'); ?></label>
 					</div> 
 					<div class="col4"> 
 						<input type="text" id="attId" name="fid" value="" size="15" /> 
@@ -157,7 +157,7 @@ do_action('admin_head');
 					<div class="clear">&nbsp;</div>
 					<div class="col1">&nbsp;</div>
 					<div class="col3"> 
-						<label for="attClass" class="info" title="Classifies the Flash movie so that it can be referenced using a scripting language or by CSS">class</label> 
+						<label for="attClass" class="info" title="<?php _e("Classifies the Flash movie so that it can be referenced using a scripting language or by CSS",'kimili-flash-embed'); ?>">class</label> 
 					</div> 
 					<div class="col4"> 
 						<input type="text" id="attClass" name="targetclass" value="<?php echo get_option('kml_flashembed_target_class'); ?>" size="15" /> 
@@ -165,11 +165,11 @@ do_action('admin_head');
 					<div class="clear">&nbsp;</div> 
 					<div class="col1">&nbsp;</div> 
 					<div class="col3"> 
-						<label for="align" class="info" title="HTML alignment of the object element. If this attribute is omitted, it by default centers the movie and crops edges if the browser window is smaller than the movie. NOTE: Using this attribute is not valid in XHTML 1.0 Strict.">align</label> 
+						<label for="align" class="info" title="<?php _e("HTML alignment of the object element. If this attribute is omitted, it by default centers the movie and crops edges if the browser window is smaller than the movie. NOTE: Using this attribute is not valid in XHTML 1.0 Strict.",'kimili-flash-embed'); ?>">align</label> 
 					</div> 
 					<div class="col4"> 
 						<select id="align" name="align"> 
-							<option value="">Choose...</option>
+							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option>
 			  				<option value="left">left</option> 
 							<option value="right">right</option> 
 							<option value="top">top</option> 
@@ -178,24 +178,24 @@ do_action('admin_head');
 					</div> 
 					<div class="clear">&nbsp;</div> 
 					<div class="col1"> 
-						<label class="info" title="HTML object element nested param elements">Parameters:</label> 
+						<label class="info" title="<?php _e("HTML object element nested param elements",'kimili-flash-embed'); ?>"><?php _e("Parameters",'kimili-flash-embed'); ?>:</label> 
 					</div> 
 					<div class="col3"> 
-						<label for="play" class="info" title="Specifies whether the movie begins playing immediately on loading in the browser. The default value is true if this attribute is omitted.">play</label> 
+						<label for="play" class="info" title="<?php _e("Specifies whether the movie begins playing immediately on loading in the browser. The default value is true if this attribute is omitted.",'kimili-flash-embed'); ?>">play</label> 
 					</div> 
 					<div class="col4"> 
 						<select id="play" name="play"> 
-							<option value="">Choose...</option> 
+							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option> 
 							<option value="true">true</option> 
 			  				<option value="false">false</option> 
 						</select> 
 					</div> 
 					<div class="col3"> 
-						<label for="loop" class="info" title="Specifies whether the movie repeats indefinitely or stops when it reaches the last frame. The default value is true if this attribute is omitted.">loop</label> 
+						<label for="loop" class="info" title="<?php _e("Specifies whether the movie repeats indefinitely or stops when it reaches the last frame. The default value is true if this attribute is omitted",'kimili-flash-embed'); ?>.">loop</label> 
 					</div> 
 					<div class="col4"> 
 						<select id="loop" name="loop"> 
-							<option value="">Choose...</option> 
+							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option> 
 							<option value="true">true</option> 
 			  				<option value="false">false</option> 
 						</select> 
@@ -203,21 +203,21 @@ do_action('admin_head');
 					<div class="clear">&nbsp;</div> 
 					<div class="col1">&nbsp;</div> 
 					<div class="col3"> 
-						<label for="menu" class="info" title="Shows a shortcut menu when users right-click (Windows) or control-click (Macintosh) the SWF file. To show only About Flash in the shortcut menu, deselect this option. By default, this option is set to true.">menu</label> 
+						<label for="menu" class="info" title="<?php _e("Shows a shortcut menu when users right-click (Windows) or control-click (Macintosh) the SWF file. To show only About Flash in the shortcut menu, deselect this option. By default, this option is set to true.",'kimili-flash-embed'); ?>">menu</label> 
 					</div> 
 					<div class="col4"> 
 						<select id="menu" name="menu"> 
-							<option value="">Choose...</option> 
+							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option> 
 							<option value="true">true</option> 
 			  				<option value="false">false</option> 
 						</select> 
 					</div> 
 					<div class="col3"> 
-						<label for="quality" class="info" title="Specifies the trade-off between processing time and appearance. The default value is 'high' if this attribute is omitted.">quality</label> 
+						<label for="quality" class="info" title="<?php _e("Specifies the trade-off between processing time and appearance. The default value is 'high' if this attribute is omitted.",'kimili-flash-embed'); ?>">quality</label> 
 					</div> 
 					<div class="col4"> 
 						<select id="quality" name="quality"> 
-							<option value="">Choose...</option> 
+							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option> 
 							<option value="best">best</option> 
 			  				<option value="high">high</option> 
 							<option value="medium">medium</option> 
@@ -229,11 +229,11 @@ do_action('admin_head');
 					<div class="clear">&nbsp;</div> 
 					<div class="col1">&nbsp;</div> 
 					<div class="col3"> 
-						<label for="scale" class="info" title="Specifies scaling, aspect ratio, borders, distortion and cropping for if you have changed the document's original width and height.">scale</label> 
+						<label for="scale" class="info" title="<?php _e("Specifies scaling, aspect ratio, borders, distortion and cropping for if you have changed the document's original width and height.",'kimili-flash-embed'); ?>">scale</label> 
 					</div> 
 					<div class="col4"> 
 						<select id="scale" name="scale"> 
-							<option value="">Choose...</option> 
+							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option> 
 							<option value="showall">showall</option> 
 				  			<option value="noborder">noborder</option> 
 							<option value="exactfit">exactfit</option> 
@@ -241,11 +241,11 @@ do_action('admin_head');
 						</select> 
 					</div> 
 					<div class="col3"> 
-						<label for="salign" class="info" title="Specifies where the content is placed within the application window and how it is cropped.">salign</label> 
+						<label for="salign" class="info" title="<?php _e("Specifies where the content is placed within the application window and how it is cropped.",'kimili-flash-embed'); ?>">salign</label> 
 					</div> 
 					<div class="col4"> 
 						<select id="salign" name="salign"> 
-							<option value="">Choose...</option> 
+							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option> 
 							<option value="tl">tl</option> 
 				  			<option value="tr">tr</option> 
 							<option value="bl">bl</option> 
@@ -259,11 +259,11 @@ do_action('admin_head');
 					<div class="clear">&nbsp;</div> 
 					<div class="col1">&nbsp;</div> 
 					<div class="col3"> 
-						<label for="wmode" class="info" title="Sets the Window Mode property of the Flash movie for transparency, layering, and positioning in the browser. The default value is 'window' if this attribute is omitted.">wmode</label> 
+						<label for="wmode" class="info" title="<?php _e("Sets the Window Mode property of the Flash movie for transparency, layering, and positioning in the browser. The default value is 'window' if this attribute is omitted.",'kimili-flash-embed'); ?>">wmode</label> 
 					</div> 
 					<div class="col4"> 
 						<select id="wmode" name="wmode"> 
-							<option value="">Choose...</option> 
+							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option> 
 							<option value="window">window</option> 
 				  			<option value="opaque">opaque</option> 
 							<option value="transparent">transparent</option> 
@@ -272,7 +272,7 @@ do_action('admin_head');
 						</select> 
 					</div> 
 					<div class="col3"> 
-						<label for="bgcolor" class="info" title="Hexadecimal RGB value in the format #RRGGBB, which specifies the background color of the movie, which will override the background color setting specified in the Flash file.">bgcolor</label> 
+						<label for="bgcolor" class="info" title="<?php _e("Hexadecimal RGB value in the format #RRGGBB, which specifies the background color of the movie, which will override the background color setting specified in the Flash file.",'kimili-flash-embed'); ?>">bgcolor</label> 
 					</div> 
 					<div class="col4"> 
 						<input type="text" id="bgcolor" name="bgcolor" value="" size="15" maxlength="7" /> 
@@ -280,21 +280,21 @@ do_action('admin_head');
 					<div class="clear">&nbsp;</div> 
 					<div class="col1">&nbsp;</div> 
 					<div class="col3"> 
-						<label for="devicefont" class="info" title="Specifies whether static text objects that the Device Font option has not been selected for will be drawn using device fonts anyway, if the necessary fonts are available from the operating system.">devicefont</label> 
+						<label for="devicefont" class="info" title="<?php _e("Specifies whether static text objects that the Device Font option has not been selected for will be drawn using device fonts anyway, if the necessary fonts are available from the operating system.",'kimili-flash-embed'); ?>">devicefont</label> 
 					</div> 
 					<div class="col4"> 
 						<select id="devicefont" name="devicefont"> 
-							<option value="">Choose...</option> 
+							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option> 
 							<option value="true">true</option> 
 			  				<option value="false">false</option> 
 						</select> 
 					</div> 
 					<div class="col3"> 
-						<label for="seamlesstabbing" class="info" title="Specifies whether users are allowed to use the Tab key to move keyboard focus out of a Flash movie and into the surrounding HTML (or the browser, if there is nothing focusable in the HTML following the Flash movie). The default value is true if this attribute is omitted.">seamlesstabbing</label> 
+						<label for="seamlesstabbing" class="info" title="<?php _e("Specifies whether users are allowed to use the Tab key to move keyboard focus out of a Flash movie and into the surrounding HTML (or the browser, if there is nothing focusable in the HTML following the Flash movie). The default value is true if this attribute is omitted.",'kimili-flash-embed'); ?>">seamlesstabbing</label> 
 					</div> 
 					<div class="col4"> 
 						<select id="seamlesstabbing" name="seamlesstabbing"> 
-							<option value="">Choose...</option> 
+							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option> 
 							<option value="true">true</option> 
 			  				<option value="false">false</option> 
 						</select> 
@@ -302,21 +302,21 @@ do_action('admin_head');
 					<div class="clear">&nbsp;</div> 
 					<div class="col1">&nbsp;</div> 
 					<div class="col3"> 
-						<label for="swliveconnect" class="info" title="Specifies whether the browser should start Java when loading the Flash Player for the first time. The default value is false if this attribute is omitted. If you use JavaScript and Flash on the same page, Java must be running for the FSCommand to work.">swliveconnect</label> 
+						<label for="swliveconnect" class="info" title="<?php _e("Specifies whether the browser should start Java when loading the Flash Player for the first time. The default value is false if this attribute is omitted. If you use JavaScript and Flash on the same page, Java must be running for the FSCommand to work.",'kimili-flash-embed'); ?>">swliveconnect</label> 
 					</div> 
 					<div class="col4"> 
 						<select id="swliveconnect" name="swliveconnect"> 
-							<option value="">Choose...</option> 
+							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option> 
 							<option value="true">true</option> 
 			  				<option value="false">false</option> 
 						</select> 
 					</div> 
 					<div class="col3"> 
-						<label for="allowfullscreen" class="info" title="Enables full-screen mode. The default value is false if this attribute is omitted. You must have version 9,0,28,0 or greater of Flash Player installed to use full-screen mode.">allowfullscreen</label> 
+						<label for="allowfullscreen" class="info" title="<?php _e("Enables full-screen mode. The default value is false if this attribute is omitted. You must have version 9,0,28,0 or greater of Flash Player installed to use full-screen mode.",'kimili-flash-embed'); ?>">allowfullscreen</label> 
 					</div> 
 					<div class="col4"> 
 						<select id="allowfullscreen" name="allowfullscreen"> 
-							<option value="">Choose...</option> 
+							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option> 
 							<option value="true">true</option> 
 			  				<option value="false">false</option> 
 						</select> 
@@ -324,22 +324,22 @@ do_action('admin_head');
 					<div class="clear">&nbsp;</div> 
 					<div class="col1">&nbsp;</div> 
 					<div class="col3"> 
-						<label for="allowscriptaccess" class="info" title="Controls the ability to perform outbound scripting from within a Flash SWF. The default value is 'always' if this attribute is omitted.">allowscriptaccess</label> 
+						<label for="allowscriptaccess" class="info" title="<?php _e("Controls the ability to perform outbound scripting from within a Flash SWF. The default value is 'always' if this attribute is omitted.",'kimili-flash-embed'); ?>">allowscriptaccess</label> 
 					</div> 
 					<div class="col4"> 
 						<select id="allowscriptaccess" name="allowscriptaccess"> 
-							<option value="">Choose...</option> 
+							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option> 
 							<option value="always">always</option> 
 							<option value="sameDomain">sameDomain</option> 
 			  				<option value="never">never</option> 
 						</select> 
 					</div> 
 					<div class="col3"> 
-						<label for="allownetworking" class="info" title="Controls a SWF file's access to network functionality. The default value is 'all' if this attribute is omitted.">allownetworking</label> 
+						<label for="allownetworking" class="info" title="<?php _e("Controls a SWF file's access to network functionality. The default value is 'all' if this attribute is omitted.",'kimili-flash-embed'); ?>">allownetworking</label> 
 					</div> 
 					<div class="col4"> 
 						<select id="allownetworking" name="allownetworking"> 
-							<option value="">Choose...</option> 
+							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option> 
 							<option value="all">all</option> 
 			  				<option value="internal">internal</option> 
 							<option value="none">none</option> 
@@ -348,14 +348,14 @@ do_action('admin_head');
 					<div class="clear">&nbsp;</div> 
 					<div class="col1">&nbsp;</div> 
 					<div class="col3"> 
-						<label for="base" class="info" title="Specifies the base directory or URL used to resolve all relative path statements in the Flash Player movie. This attribute is helpful when your Flash Player movies are kept in a different directory from your other files.">base</label> 
+						<label for="base" class="info" title="<?php _e("Specifies the base directory or URL used to resolve all relative path statements in the Flash Player movie. This attribute is helpful when your Flash Player movies are kept in a different directory from your other files.",'kimili-flash-embed'); ?>">base</label> 
 					</div> 
 					<div class="col5"> 
 						<input type="text" id="base" name="base" value="" size="15" /> 
 					</div> 
 					<div class="clear">&nbsp;</div> 
 					<div class="col1"> 
-						<label class="info" title="Method to pass variables to a Flash movie. You need to separate individual name/variable pairs with a semicolon (i.e. name=John Doe ; count=3).">fvars:</label>
+						<label class="info" title="<?php _e("Method to pass variables to a Flash movie. You need to separate individual name/variable pairs with a semicolon (i.e. name=John Doe ; count=3).",'kimili-flash-embed'); ?>">fvars:</label>
 					</div> 
 					<div class="col2"> 
 						<textarea name="fvars" id="fvars" rows="4" cols="40"></textarea>
@@ -363,29 +363,29 @@ do_action('admin_head');
 					
 				</div>				
 				<div class="clear">&nbsp;</div> 
-				<div class="col1"><a id="toggleAttsParams" href="#">more</a></div> 
+				<div class="col1"><a id="toggleAttsParams" href="#"><?php _e("more",'kimili-flash-embed'); ?></a></div> 
 				<div class="clear">&nbsp;</div> 
 			</div> 
 		</fieldset> 
 		<fieldset>
-			<legend>Alternative Content [ <a id="toggle3" href="#">-</a> ]</legend>
+			<legend><?php _e("Alternative Content",'kimili-flash-embed'); ?> [ <a id="toggle3" href="#">-</a> ]</legend>
 			<div id="toggleable3">
 				<div class="col1">
-					<label for="alternativeContent">Alternative content:</label>
+					<label for="alternativeContent"><?php _e("Alternative content",'kimili-flash-embed'); ?>:</label>
 				</div>
 				<div class="col2">
-					<a id="toggleAlternativeContentHelp" href="#alternativeContentHelp">what is this?</a>
+					<a id="toggleAlternativeContentHelp" href="#alternativeContentHelp"><?php _e("what is this",'kimili-flash-embed'); ?>?</a>
 				</div>
 				<div id="alternativeContentHelp" class="help">
 					<p>
-						The object element allows you to nest alternative HTML content inside of it, which will be displayed if Flash is not installed or supported. 
-						This content will also be picked up by search engines, making it a great tool for creating search-engine-friendly content.
+						<?php _e("The object element allows you to nest alternative HTML content inside of it, which will be displayed if Flash is not installed or supported. 
+						This content will also be picked up by search engines, making it a great tool for creating search-engine-friendly content.",'kimili-flash-embed'); ?>
 					</p>
-					<p>Summarized, you should use alternative content for the following:</p>
+					<p><?php _e("Summarized, you should use alternative content for the following:",'kimili-flash-embed'); ?></p>
 					<ul>
-						<li>When you like to create content that is accessible for people who browse the Web without plugins</li>
-						<li>When you like to create search-engine-friendly content</li>
-						<li>To tell visitors that they can have a richer user experience by downloading the Flash plugin</li>
+						<li><?php _e("When you like to create content that is accessible for people who browse the Web without plugins",'kimili-flash-embed'); ?></li>
+						<li><?php _e("When you like to create search-engine-friendly content",'kimili-flash-embed'); ?></li>
+						<li><?php _e("To tell visitors that they can have a richer user experience by downloading the Flash plugin",'kimili-flash-embed'); ?></li>
 					</ul>
 				</div>
 				<div class="clear"> </div>
@@ -396,7 +396,7 @@ do_action('admin_head');
 			</div>
 		</fieldset>
 		<div class="col1"> 
-			<input type="button" class="button" id="generate" name="generate" value="Generate" />
+			<input type="button" class="button" id="generate" name="generate" value="<?php _e("Generate",'kimili-flash-embed'); ?>" />
 		</div> 
 		
 	</div>
@@ -406,8 +406,12 @@ do_action('admin_head');
 		jQuery(document).ready(function(){
 			try {
 				Kimili.Flash.Generator.initialize();
+				Kimili.Flash.Generator.i18n = {
+					more : "<?php _e("more",'kimili-flash-embed'); ?>",
+					less : "<?php _e("less",'kimili-flash-embed'); ?>"
+				};
 			} catch (e) {
-				throw "Kimili is not defined. This generator isn't going to put a KFE tag in your code.";
+				throw "<?php _e("Kimili is not defined. This generator isn't going to put a KFE tag in your code.",'kimili-flash-embed'); ?>";
 			}
 		});
 		// ]]>

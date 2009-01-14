@@ -647,7 +647,8 @@ function kml_flashembed_addbuttons() {
 
 // Break the browser cache of TinyMCE
 function tiny_mce_version( $version ) {
-	return $version . '-kfe' . $this->version;
+	global $KimiliFlashEmbed;
+	return $version . '-kfe' . $KimiliFlashEmbed->version;
 }
 
 // Load the custom TinyMCE plugin

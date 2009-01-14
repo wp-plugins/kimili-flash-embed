@@ -42,11 +42,11 @@ var Kimili = window.Kimili || {};
 		var $tc = jQuery("#toggleAttsParamsContainer");
 		if ($tc.css('display') === "" || $tc.css('display') === "none") {
 			$tc.css('display','block');
-			$tb.get(0).firstChild.nodeValue = "less";
+			$tb.get(0).firstChild.nodeValue = Kimili.Flash.Generator.i18n.less;
 		}
 		else {
 			$tc.css('display','none');
-			$tb.get(0).firstChild.nodeValue = "more";
+			$tb.get(0).firstChild.nodeValue = Kimili.Flash.Generator.i18n.more;
 		}
 	};
 	
@@ -147,15 +147,6 @@ var Kimili = window.Kimili || {};
 			if (typeof jQuery === 'undefined') {
 				return;
 			}
-			
-			//checkRequired();
-			jQuery("#publishingMethod").change(function(e) {
-				checkRequired();
-			});
-			//checkAltContent();
-			jQuery("#htmlTemplate").change(function(e) {
-				checkAltContent();
-			});
 			
 			jQuery("#togglePublishingMethodHelp").click(function(e) {
 				e.preventDefault();
