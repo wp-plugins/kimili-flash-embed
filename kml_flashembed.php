@@ -55,7 +55,7 @@ class KimiliFlashEmbed
 			add_action('admin_menu', array(&$this, 'options_menu'));
 			
 			// Add Quicktag
-			if (current_user_can('edit_posts') && current_user_can('edit_pages') ) {
+			if (current_user_can('edit_posts') || current_user_can('edit_pages') ) {
 				add_action( 'edit_form_advanced', array(&$this, 'add_quicktags') );
 				add_action( 'edit_page_form', array(&$this, 'add_quicktags') );
 			}
