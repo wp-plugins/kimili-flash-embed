@@ -148,6 +148,14 @@ var Kimili = window.Kimili || {};
 				return;
 			}
 			
+			jQuery("#publishingMethod").change(function(){
+				var pm = this.selectedIndex,
+					wrap = jQuery('#toggleReplaceId'),
+					el = jQuery('#replaceId');
+				wrap.css('display', (pm ? "block" : "none"));
+				el.attr('value', (pm ? el.attr('value') : ""));
+			}).trigger('change');
+			
 			jQuery("#togglePublishingMethodHelp").click(function(e) {
 				e.preventDefault();
 				var el = jQuery("#publishingMethodHelp");

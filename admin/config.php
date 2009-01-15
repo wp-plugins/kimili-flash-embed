@@ -70,7 +70,7 @@ do_action('admin_head');
 		  				<option value="static" <?php if (!get_option('kml_flashembed_publish_method')) echo "selected=\"selected\""; ?>><?php _e("Static publishing",'kimili-flash-embed'); ?></option> 
 						<option value="dynamic" <?php if (get_option('kml_flashembed_publish_method')) echo "selected=\"selected\""; ?>><?php _e("Dynamic publishing",'kimili-flash-embed'); ?></option> 
 					</select> 
-					<a id="togglePublishingMethodHelp" href="#"><?php _e("what is this?",'kimili-flash-embed'); ?>"</a> 
+					<a id="togglePublishingMethodHelp" href="#"><?php _e("what is this?",'kimili-flash-embed'); ?></a> 
 				</div> 
 				<div class="clear">&nbsp;</div> 
 				<div id="publishingMethodHelp" class="help"> 
@@ -109,7 +109,7 @@ do_action('admin_head');
 				<div class="clear">&nbsp;</div> 
 				<div id="toggleReplaceId"> 
 					<div class="col1"> 
-						<label for="replaceId"><?php _e("HTML container ID",'kimili-flash-embed'); ?>:</label> <span class="req">*</span> 
+						<label for="replaceId"><?php _e("HTML container ID",'kimili-flash-embed'); ?>:</label>
 					</div> 
 					<div class="col2"> 
 						<input type="text" id="replaceId" name="replaceId" value="" size="20" /> 
@@ -118,6 +118,7 @@ do_action('admin_head');
 					<div id="replaceIdHelp" class="help"> 
 						<p><?php _e("Specifies the id attribute of the HTML container element that will be replaced with Flash content if enough JavaScript and Flash support is available.",'kimili-flash-embed'); ?></p> 
 						<p><?php _e("This HTML container will be generated automatically and will embed your alternative HTML content as defined in the HTML section.",'kimili-flash-embed'); ?></p> 
+						<p><?php _e("If you don't define an ID here, KFE will randomly generate an ID for you.",'kimili-flash-embed'); ?></p>
 					</div> 
 					<div class="clear">&nbsp;</div> 
 				</div> 

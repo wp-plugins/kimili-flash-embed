@@ -75,6 +75,10 @@ input {
 	line-height: normal;
 }
 
+input#replaceId {
+	width: 50%;
+}
+
 input[type=text],
 select,
 textarea {
