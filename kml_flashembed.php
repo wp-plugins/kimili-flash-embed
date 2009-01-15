@@ -54,14 +54,14 @@ class KimiliFlashEmbed
 			// Set up the options page
 			add_action('admin_menu', array(&$this, 'options_menu'));
 			
-			// Register editor buttons
-			//add_action( 'init', array(&$this, 'register_with_mce'));
-			
-			add_action( 'edit_form_advanced', array(&$this, 'add_quicktags') );
-			add_action( 'edit_page_form', array(&$this, 'add_quicktags') );
-			add_action( 'admin_head', array(&$this, 'set_admin_js_vars'));
-			
+			// Add Quicktag
+			if (current_user_can('edit_posts') && current_user_can('edit_pages') ) {
+				add_action( 'edit_form_advanced', array(&$this, 'add_quicktags') );
+				add_action( 'edit_page_form', array(&$this, 'add_quicktags') );
+			}
+
 			// Queue Embed JS
+			add_action( 'admin_head', array(&$this, 'set_admin_js_vars'));
 			wp_enqueue_script( 'kimiliflashembed', plugins_url('/kimili-flash-embed/js/kfe.js'), array(), $this->version );
 			
 			
