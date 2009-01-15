@@ -101,11 +101,13 @@ class KimiliFlashEmbed
 
 		$attpairs	= preg_split('/\|/', $elements, -1, PREG_SPLIT_NO_EMPTY);
 
-		if (isset($atts['movie']) && isset($atts['height']) && isset($atts['width'])) {
-
-			$atts['fversion']			= (isset($atts['fversion'])) ? $atts['fversion'] : 8;
-			$atts['targetclass']		= (isset($atts['targetclass'])) ? $atts['targetclass'] : 'flashmovie';
-			$atts['publishmethod']		= (isset($atts['publishmethod'])) ? $atts['publishmethod'] : 'static';
+		if (isset($atts['movie'])) {
+			
+			$atts['height']				= (isset($atts['height'])) ? $atts['height'] : get_option('kml_flashembed_height');
+			$atts['width']				= (isset($atts['width'])) ? $atts['width'] : get_option('kml_flashembed_width');
+			$atts['fversion']			= (isset($atts['fversion'])) ? $atts['fversion'] : get_option('kml_flashembed_version_major').'.'.get_option('kml_flashembed_version_minor').'.'.get_option('kml_flashembed_version_revision');
+			$atts['targetclass']		= (isset($atts['targetclass'])) ? $atts['targetclass'] : get_option('kml_flashembed_target_class');
+			$atts['publishmethod']		= (isset($atts['publishmethod'])) ? $atts['publishmethod'] : (get_option('kml_flashembed_publish_method') ? 'dynamic' : 'static');
 			$atts['useexpressinstall']	= (isset($atts['useexpressinstall'])) ? $atts['useexpressinstall'] : 'false';
 			$atts['xiswf']				= plugins_url('/kimili-flash-embed/lib/expressInstall.swf');
 			
@@ -489,7 +491,7 @@ class KimiliFlashEmbed
 		// update options
 		if ($_POST['action'] && $_POST['action'] == 'kml_flashembed_update') {
 			
-			$filename				= preg_replace("/(^|&\S+;)|(<[^>]*>)/U", '', strip_tags($_POST['filename']));						
+			$filename				= preg_replace("/(^|&\S+;)|(<[^>]*>)/U", '', strip_tags($_POST['filename']));
 			$target_class 			= preg_replace("/(^|&\S+;)|(<[^>]*>)/U", '', strip_tags($_POST['target_class']));
 			
 			$alt_content			= $_POST['alt_content'];
