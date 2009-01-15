@@ -632,8 +632,11 @@ class KimiliFlashEmbed
 	
 }
 
-// Start it up
-add_action( 'template_redirect', 'KimiliFlashEmbed' );
+
+
+// Start it up - on template_redirect for feeds, plugins_loaded for everything else.
+add_action( (preg_match("/(\/\?feed=|\/feed)/i",$_SERVER['REQUEST_URI'])) ? 'template_redirect' : 'plugins_loaded', 'KimiliFlashEmbed' );
+
 function KimiliFlashEmbed() {
 	global $KimiliFlashEmbed;
 	$KimiliFlashEmbed = new KimiliFlashEmbed();
