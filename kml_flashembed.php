@@ -67,9 +67,13 @@ class KimiliFlashEmbed
 			
 		} else {
 			// Front-end
-			add_action('wp_head', array(&$this, 'doObStart'));
-			add_action('wp_head', array(&$this, 'addScriptPlaceholder'));
-			add_action('wp_footer', array(&$this, 'doObEnd'));
+			if (is_feed()) {
+				$this->doObStart();
+			} else {
+				add_action('wp_head', array(&$this, 'doObStart'));
+				add_action('wp_head', array(&$this, 'addScriptPlaceholder'));
+				add_action('wp_footer', array(&$this, 'doObEnd'));
+			}
 			
 		}
 		
@@ -628,8 +632,8 @@ class KimiliFlashEmbed
 	
 }
 
-// Start this plugin once all other plugins are fully loaded
-add_action( 'plugins_loaded', 'KimiliFlashEmbed' );
+// Start it up
+add_action( 'template_redirect', 'KimiliFlashEmbed' );
 function KimiliFlashEmbed() {
 	global $KimiliFlashEmbed;
 	$KimiliFlashEmbed = new KimiliFlashEmbed();
