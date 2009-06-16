@@ -11,6 +11,8 @@ $wp_path = (isset($wp_path[0]) && $wp_path[0] != "") ? $wp_path[0] : $_SERVER["D
 require_once($wp_path . $slash . 'wp-load.php');
 require_once($wp_path . $slash . 'wp-admin' . $slash . 'admin.php');
 
+load_plugin_textdomain( 'kimili-flash-embed', FALSE, 'kimili-flash-embed/langs/');
+
 $title = "Kimili Flash Embed";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

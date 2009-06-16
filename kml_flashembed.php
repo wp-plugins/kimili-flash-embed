@@ -4,7 +4,7 @@
 Plugin Name: Kimili Flash Embed
 Plugin URI: http://www.kimili.com/plugins/kml_flashembed
 Description: Provides a full Wordpress interface for <a href="http://code.google.com/p/swfobject/">SWFObject</a> - the best way to embed Flash on your site.
-Version: 2.0.1
+Version: 2.0.2
 Author: Michael Bester
 Author URI: http://www.kimili.com
 Update: http://www.kimili.com/plugins/kml_flashembed/wp
@@ -25,7 +25,7 @@ Update: http://www.kimili.com/plugins/kml_flashembed/wp
 class KimiliFlashEmbed
 {
 	
-	var $version = '2.0.1';
+	var $version = '2.0.2';
 	var $staticSwfs = array();
 	var $dynamicSwfs = array();
 	
@@ -35,8 +35,8 @@ class KimiliFlashEmbed
 		if (is_admin()) {
 			
 			// Load up the localization file if we're using WordPress in a different language
-			// Place it in this plugin's "localization" folder and name it "kimili-flash-embed-[value in wp-config].mo"
-			load_plugin_textdomain( 'kimili-flash-embed', FALSE, '/kimili-flash-embed/langs');
+			// Place it in this plugin's "langs" folder and name it "kimili-flash-embed-[value in wp-config].mo"
+			load_plugin_textdomain( 'kimili-flash-embed', FALSE, 'kimili-flash-embed/langs/');
 			
 			// Default Options
 			add_option('kml_flashembed_filename', 'untitled.swf');
@@ -326,7 +326,7 @@ class KimiliFlashEmbed
 		}
 
 		// Build a query string based on the $fvars attribute
-		$querystring = join("&", $this->parseFvars($fvars));
+		$querystring = join("&amp;", $this->parseFvars($fvars));
 		
 										$out[] = '';    
 										$out[] = '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"';
