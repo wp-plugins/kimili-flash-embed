@@ -373,10 +373,8 @@ do_action('admin_head');
 		<fieldset>
 			<legend><?php _e("Alternative Content",'kimili-flash-embed'); ?> [ <a id="toggle3" href="#">-</a> ]</legend>
 			<div id="toggleable3">
-				<div class="col1">
-					<label for="alternativeContent"><?php _e("Alternative content",'kimili-flash-embed'); ?>:</label>
-				</div>
 				<div class="col2">
+					<label for="alternativeContent"><?php _e("Alternative content",'kimili-flash-embed'); ?>:</label>
 					<a id="toggleAlternativeContentHelp" href="#alternativeContentHelp"><?php _e("what is this",'kimili-flash-embed'); ?>?</a>
 				</div>
 				<div id="alternativeContentHelp" class="help">

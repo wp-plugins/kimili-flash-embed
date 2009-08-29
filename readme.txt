@@ -2,8 +2,8 @@
 Contributors: Kimili
 Tags: flash, flex, swf, swfobject, javascript
 Requires at least: 2.6
-Tested up to: 2.8
-Stable tag: 2.0.2
+Tested up to: 2.8.4
+Stable tag: 2.0.3
 Donate Link: http://kimili.com/donate
 
 Provides a WordPress interface for SWFObject, the best way to embed Flash content on any site.
@@ -219,9 +219,14 @@ One other minor backwards compatibility issue for you has to do with the format 
 
 So I can maintain them in one place, please see the Kimili Flash Embed FAQs at the [Kimili Flash Embed Home](http://kimili.com/plugins/kml_flashembed#faqs)
 
-== Version History ==
+== Changelog ==
 
 > **Note:** Because this plugin has been around for a while and numerous older versions exist, yet version 1.4 is the first version to actually be included in the Wordpress Plugin Repository, any older versions are NOT available here.  If you'd like to download an older version, you can do so at the [Kimili Flash Embed for Wordpress Home Page](http://kimili.com/plugins/kml_flashembed/wp).
+
+= Version 2.0.3 =
+
+* Added Russian localization (Thanks to [Fat Cow](http://www.fatcow.com))
+* Added Belarusian localization (Thanks to [ilyuha](http://antsar.info/))
 
 = Version 2.0.2 =
 
