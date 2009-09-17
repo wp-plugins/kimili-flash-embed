@@ -225,8 +225,7 @@ So I can maintain them in one place, please see the Kimili Flash Embed FAQs at t
 
 = Version 2.0.3 =
 
-* Added Russian localization (Thanks to [Fat Cow](http://www.fatcow.com))
-* Added Belarusian localization (Thanks to [ilyuha](http://antsar.info/))
+* Added Russian & Belarusian localizations (Thanks to [Fat Cow](http://www.fatcow.com))
 
 = Version 2.0.2 =
 
