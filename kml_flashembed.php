@@ -4,7 +4,7 @@
 Plugin Name: Kimili Flash Embed
 Plugin URI: http://www.kimili.com/plugins/kml_flashembed
 Description: Provides a full Wordpress interface for <a href="http://code.google.com/p/swfobject/">SWFObject</a> - the best way to embed Flash on your site.
-Version: 2.0.3
+Version: 2.0.4
 Author: Michael Bester
 Author URI: http://www.kimili.com
 Update: http://www.kimili.com/plugins/kml_flashembed/wp
@@ -25,7 +25,7 @@ Update: http://www.kimili.com/plugins/kml_flashembed/wp
 class KimiliFlashEmbed
 {
 	
-	var $version = '2.0.3';
+	var $version = '2.0.4';
 	var $staticSwfs = array();
 	var $dynamicSwfs = array();
 	
@@ -79,11 +79,15 @@ class KimiliFlashEmbed
 		
 		// Queue SWFObject
 		if ( get_option('kml_flashembed_reference_swfobject') == '1') {
+			// Let's override WP's bundled swfobject, cause it's still using 2.1
+			wp_deregister_script('swfobject');
+			// and register our own.
 			if ( get_option('kml_flashembed_swfobject_source') == '0' ) {
-				wp_enqueue_script( 'swfobject', 'http://ajax.googleapis.com/ajax/libs/swfobject/2.1/swfobject.js', array(), '2.1' );
+				wp_register_script( 'swfobject', 'http' . (is_ssl() ? 's' : '') . '://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js', array(), '2.2' );
 			} else {
-				wp_enqueue_script( 'swfobject', plugins_url('/kimili-flash-embed/js/swfobject.js'), array(), '2.1' );
+				wp_retister_script( 'swfobject', plugins_url('/kimili-flash-embed/js/swfobject.js'), array(), '2.2' );
 			}
+			wp_enqueue_script('swfobject');
 		}
 	}
 	
@@ -250,6 +254,10 @@ class KimiliFlashEmbed
 		$out[]		= '';
 		$out[]		= '	(function(){';
 		$out[]		= '		try {';
+		if (!get_option('kml_flashembed_swfobject_use_autohide')) {
+			$out[]	= '			// Disabling SWFObject\'s Autohide feature';
+			$out[]	= '			swfobject.switchOffAutoHide();';
+		}
 		if (count($this->staticSwfs) > 0) {
 			$out[]	= '			// Registering Statically Published SWFs';
 		}
@@ -530,6 +538,7 @@ class KimiliFlashEmbed
 			$publish_method			= ($_POST['publish_method'] == '1') ? $_POST['publish_method'] : '0';
 			$reference_swfobject 	= ($_POST['reference_swfobject'] == '0') ? $_POST['reference_swfobject'] : '1';
 			$swfobject_source		= ($_POST['swfobject_source'] == '1') ? $_POST['swfobject_source'] : '0';
+			$swfobject_use_autohide	= ($_POST['swfobject_use_autohide'] == '0') ? $_POST['swfobject_use_autohide'] : '1';
 			
 			$message = $message_updated;
 			update_option('kml_flashembed_filename', $filename);
@@ -541,6 +550,7 @@ class KimiliFlashEmbed
 			update_option('kml_flashembed_alt_content', $alt_content);
 			update_option('kml_flashembed_reference_swfobject', $reference_swfobject);
 			update_option('kml_flashembed_swfobject_source', $swfobject_source);
+			update_option('kml_flashembed_swfobject_use_autohide', $swfobject_use_autohide);
 			update_option('kml_flashembed_width', $width);
 			update_option('kml_flashembed_height', $height);
 			
@@ -614,6 +624,14 @@ class KimiliFlashEmbed
 				<td>
 					<input type="radio" id="swfobject_source-0" name="swfobject_source" value="0" class="radio" <?php if (!get_option('kml_flashembed_swfobject_source')) echo "checked=\"checked\""; ?> /><label for="swfobject_source-0"><?php _e("Google Ajax Library", 'kimili-flash-embed'); ?></label>
 					<input type="radio" id="swfobject_source-1" name="swfobject_source" value="1" class="radio" <?php if (get_option('kml_flashembed_swfobject_source')) echo "checked=\"checked\""; ?> /><label for="swfobject_source-1"><?php _e("Internal", 'kimili-flash-embed'); ?></label>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" style="vertical-align:top;"><?php _e("Do you want to use SWFObject's autohide function?", 'kimili-flash-embed'); ?></th>
+				<td>
+					<input type="radio" id="swfobject_use_autohide-0" name="swfobject_use_autohide" value="0" class="radio" <?php if (!get_option('kml_flashembed_swfobject_use_autohide')) echo "checked=\"checked\""; ?> /><label for="swfobject_source-0"><?php _e("No", 'kimili-flash-embed'); ?></label>
+					<input type="radio" id="swfobject_use_autohide-1" name="swfobject_use_autohide" value="1" class="radio" <?php if (get_option('kml_flashembed_swfobject_use_autohide')) echo "checked=\"checked\""; ?> /><label for="swfobject_source-1"><?php _e("Yes", 'kimili-flash-embed'); ?></label><br />
+					<em><?php _e("(By default, SWFObject temporarily hides your SWF or alternative content until the library has decided which content to display.)", 'kimili-flash-embed'); ?></em>
 				</td>
 			</tr>
 		</table>
