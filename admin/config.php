@@ -69,7 +69,7 @@ do_action('admin_head');
 				</div> 
 				<div class="col2"> 
 					<select id="publishingMethod" name="publishmethod"> 
-		  				<option value="static" <?php if (!get_option('kml_flashembed_publish_method')) echo "selected=\"selected\""; ?>><?php _e("Static publishing",'kimili-flash-embed'); ?></option> 
+						<option value="static" <?php if (!get_option('kml_flashembed_publish_method')) echo "selected=\"selected\""; ?>><?php _e("Static publishing",'kimili-flash-embed'); ?></option> 
 						<option value="dynamic" <?php if (get_option('kml_flashembed_publish_method')) echo "selected=\"selected\""; ?>><?php _e("Dynamic publishing",'kimili-flash-embed'); ?></option> 
 					</select> 
 					<a id="togglePublishingMethodHelp" href="#"><?php _e("what is this?",'kimili-flash-embed'); ?></a> 
@@ -106,7 +106,7 @@ do_action('admin_head');
 					<label for="expressInstall" title="<?php _e("Check checkbox to activate express install functionality on your swf.",'kimili-flash-embed'); ?>" class="info"><?php _e("Adobe Express Install",'kimili-flash-embed'); ?>:</label> 
 				</div> 
 				<div class="col2"> 
-					<input type="checkbox" id="expressInstall" name="useexpressinstall" value="true" />
+					<input type="checkbox" id="expressInstall" name="useexpressinstall" value="true" <?php if (get_option('kml_flashembed_use_express_install')) echo "checked=\"checked\""; ?> />
 				</div> 
 				<div class="clear">&nbsp;</div> 
 				<div id="toggleReplaceId"> 
@@ -144,7 +144,7 @@ do_action('admin_head');
 					&times;
 					<input type="text" id="height" name="height" value="<?php echo get_option('kml_flashembed_height'); ?>" size="5" maxlength="5" /> 
 					<select id="unit" name="unit"> 
-		  				<option value="pixels"><?php _e("pixels",'kimili-flash-embed'); ?></option> 
+						<option value="pixels"><?php _e("pixels",'kimili-flash-embed'); ?></option> 
 						<option value="percentage"><?php _e("percentage",'kimili-flash-embed'); ?></option> 
 					</select> 
 				</div> 
@@ -155,7 +155,7 @@ do_action('admin_head');
 						<label for="attId" class="info" title="<?php _e("Uniquely identifies the Flash movie so that it can be referenced using a scripting language or by CSS",'kimili-flash-embed'); ?>"><?php _e("Flash content ID",'kimili-flash-embed'); ?></label>
 					</div> 
 					<div class="col4"> 
-						<input type="text" id="attId" name="fid" value="" size="15" /> 
+						<input type="text" id="attId" name="fid" value="<?php echo get_option('kml_flashembed_flash_id'); ?>" size="15" /> 
 					</div> 
 					<div class="clear">&nbsp;</div>
 					<div class="col1">&nbsp;</div>
@@ -173,10 +173,10 @@ do_action('admin_head');
 					<div class="col4"> 
 						<select id="align" name="align"> 
 							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option>
-			  				<option value="left">left</option> 
-							<option value="right">right</option> 
-							<option value="top">top</option> 
-							<option value="bottom">bottom</option> 
+							<option <?php if (get_option('kml_flashembed_align') == "left") echo "selected=\"selected\""; ?> value="left">left</option> 
+							<option <?php if (get_option('kml_flashembed_align') == "right") echo "selected=\"selected\""; ?> value="right">right</option> 
+							<option <?php if (get_option('kml_flashembed_align') == "top") echo "selected=\"selected\""; ?> value="top">top</option> 
+							<option <?php if (get_option('kml_flashembed_align') == "bottom") echo "selected=\"selected\""; ?> value="bottom">bottom</option> 
 						</select> 
 					</div> 
 					<div class="clear">&nbsp;</div> 
@@ -189,8 +189,8 @@ do_action('admin_head');
 					<div class="col4"> 
 						<select id="play" name="play"> 
 							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option> 
-							<option value="true">true</option> 
-			  				<option value="false">false</option> 
+							<option <?php if (get_option('kml_flashembed_play') == "true") echo "selected=\"selected\""; ?> value="true">true</option> 
+							<option <?php if (get_option('kml_flashembed_play') == "false") echo "selected=\"selected\""; ?> value="false">false</option> 
 						</select> 
 					</div> 
 					<div class="col3"> 
@@ -199,8 +199,8 @@ do_action('admin_head');
 					<div class="col4"> 
 						<select id="loop" name="loop"> 
 							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option> 
-							<option value="true">true</option> 
-			  				<option value="false">false</option> 
+							<option <?php if (get_option('kml_flashembed_loop') == "true") echo "selected=\"selected\""; ?> value="true">true</option> 
+							<option <?php if (get_option('kml_flashembed_loop') == "false") echo "selected=\"selected\""; ?> value="false">false</option> 
 						</select> 
 					</div> 
 					<div class="clear">&nbsp;</div> 
@@ -211,8 +211,8 @@ do_action('admin_head');
 					<div class="col4"> 
 						<select id="menu" name="menu"> 
 							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option> 
-							<option value="true">true</option> 
-			  				<option value="false">false</option> 
+							<option <?php if (get_option('kml_flashembed_menu') == "true") echo "selected=\"selected\""; ?> value="true">true</option> 
+							<option <?php if (get_option('kml_flashembed_menu') == "false") echo "selected=\"selected\""; ?> value="false">false</option> 
 						</select> 
 					</div> 
 					<div class="col3"> 
@@ -221,12 +221,12 @@ do_action('admin_head');
 					<div class="col4"> 
 						<select id="quality" name="quality"> 
 							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option> 
-							<option value="best">best</option> 
-			  				<option value="high">high</option> 
-							<option value="medium">medium</option> 
-							<option value="autohigh">autohigh</option> 
-							<option value="autolow">autolow</option> 
-							<option value="low">low</option> 
+							<option <?php if (get_option('kml_flashembed_quality') == "best") echo "selected=\"selected\""; ?> value="best">best</option> 
+							<option <?php if (get_option('kml_flashembed_quality') == "high") echo "selected=\"selected\""; ?> value="high">high</option> 
+							<option <?php if (get_option('kml_flashembed_quality') == "medium") echo "selected=\"selected\""; ?> value="medium">medium</option> 
+							<option <?php if (get_option('kml_flashembed_quality') == "autohigh") echo "selected=\"selected\""; ?> value="autohigh">autohigh</option> 
+							<option <?php if (get_option('kml_flashembed_quality') == "autolow") echo "selected=\"selected\""; ?> value="autolow">autolow</option> 
+							<option <?php if (get_option('kml_flashembed_quality') == "low") echo "selected=\"selected\""; ?> value="low">low</option> 
 						</select> 
 					</div> 
 					<div class="clear">&nbsp;</div> 
@@ -237,10 +237,10 @@ do_action('admin_head');
 					<div class="col4"> 
 						<select id="scale" name="scale"> 
 							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option> 
-							<option value="showall">showall</option> 
-				  			<option value="noborder">noborder</option> 
-							<option value="exactfit">exactfit</option> 
-				  			<option value="noscale">noscale</option> 
+							<option <?php if (get_option('kml_flashembed_scale') == "showall") echo "selected=\"selected\""; ?> value="showall">showall</option> 
+							<option <?php if (get_option('kml_flashembed_scale') == "noborder") echo "selected=\"selected\""; ?> value="noborder">noborder</option> 
+							<option <?php if (get_option('kml_flashembed_scale') == "exactfit") echo "selected=\"selected\""; ?> value="exactfit">exactfit</option> 
+							<option <?php if (get_option('kml_flashembed_scale') == "noscale") echo "selected=\"selected\""; ?> value="noscale">noscale</option> 
 						</select> 
 					</div> 
 					<div class="col3"> 
@@ -249,14 +249,14 @@ do_action('admin_head');
 					<div class="col4"> 
 						<select id="salign" name="salign"> 
 							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option> 
-							<option value="tl">tl</option> 
-				  			<option value="tr">tr</option> 
-							<option value="bl">bl</option> 
-				  			<option value="br">br</option> 
-							<option value="l">l</option> 
-				  			<option value="t">t</option> 
-							<option value="r">r</option> 
-				  			<option value="b">b</option> 
+							<option <?php if (get_option('kml_flashembed_salign') == "tl") echo "selected=\"selected\""; ?> value="tl">tl</option> 
+							<option <?php if (get_option('kml_flashembed_salign') == "tr") echo "selected=\"selected\""; ?> value="tr">tr</option> 
+							<option <?php if (get_option('kml_flashembed_salign') == "bl") echo "selected=\"selected\""; ?> value="bl">bl</option> 
+							<option <?php if (get_option('kml_flashembed_salign') == "br") echo "selected=\"selected\""; ?> value="br">br</option> 
+							<option <?php if (get_option('kml_flashembed_salign') == "l") echo "selected=\"selected\""; ?> value="l">l</option> 
+							<option <?php if (get_option('kml_flashembed_salign') == "t") echo "selected=\"selected\""; ?> value="t">t</option> 
+							<option <?php if (get_option('kml_flashembed_salign') == "r") echo "selected=\"selected\""; ?> value="r">r</option> 
+							<option <?php if (get_option('kml_flashembed_salign') == "b") echo "selected=\"selected\""; ?> value="b">b</option> 
 						</select> 
 					</div> 
 					<div class="clear">&nbsp;</div> 
@@ -267,18 +267,18 @@ do_action('admin_head');
 					<div class="col4"> 
 						<select id="wmode" name="wmode"> 
 							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option> 
-							<option value="window">window</option> 
-				  			<option value="opaque">opaque</option> 
-							<option value="transparent">transparent</option> 
-							<option value="direct">direct</option> 
-							<option value="gpu">gpu</option> 
+							<option <?php if (get_option('kml_flashembed_wmode') == "window") echo "selected=\"selected\""; ?> value="window">window</option> 
+							<option <?php if (get_option('kml_flashembed_wmode') == "opaque") echo "selected=\"selected\""; ?> value="opaque">opaque</option> 
+							<option <?php if (get_option('kml_flashembed_wmode') == "transparent") echo "selected=\"selected\""; ?> value="transparent">transparent</option> 
+							<option <?php if (get_option('kml_flashembed_wmode') == "direct") echo "selected=\"selected\""; ?> value="direct">direct</option> 
+							<option <?php if (get_option('kml_flashembed_wmode') == "gpu") echo "selected=\"selected\""; ?> value="gpu">gpu</option>
 						</select> 
 					</div> 
 					<div class="col3"> 
 						<label for="bgcolor" class="info" title="<?php _e("Hexadecimal RGB value in the format #RRGGBB, which specifies the background color of the movie, which will override the background color setting specified in the Flash file.",'kimili-flash-embed'); ?>">bgcolor</label> 
 					</div> 
 					<div class="col4"> 
-						<input type="text" id="bgcolor" name="bgcolor" value="" size="15" maxlength="7" /> 
+						<input type="text" id="bgcolor" name="bgcolor" value="<?php echo get_option('kml_flashembed_bgcolor'); ?>" size="15" maxlength="7" /> 
 					</div> 
 					<div class="clear">&nbsp;</div> 
 					<div class="col1">&nbsp;</div> 
@@ -288,8 +288,8 @@ do_action('admin_head');
 					<div class="col4"> 
 						<select id="devicefont" name="devicefont"> 
 							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option> 
-							<option value="true">true</option> 
-			  				<option value="false">false</option> 
+							<option <?php if (get_option('kml_flashembed_devicefont') == "true") echo "selected=\"selected\""; ?> value="true">true</option> 
+							<option <?php if (get_option('kml_flashembed_devicefont') == "false") echo "selected=\"selected\""; ?> value="false">false</option> 
 						</select> 
 					</div> 
 					<div class="col3"> 
@@ -298,8 +298,8 @@ do_action('admin_head');
 					<div class="col4"> 
 						<select id="seamlesstabbing" name="seamlesstabbing"> 
 							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option> 
-							<option value="true">true</option> 
-			  				<option value="false">false</option> 
+							<option <?php if (get_option('kml_flashembed_seamlesstabbing') == "true") echo "selected=\"selected\""; ?> value="true">true</option> 
+							<option <?php if (get_option('kml_flashembed_seamlesstabbing') == "false") echo "selected=\"selected\""; ?> value="false">false</option> 
 						</select> 
 					</div> 
 					<div class="clear">&nbsp;</div> 
@@ -310,8 +310,8 @@ do_action('admin_head');
 					<div class="col4"> 
 						<select id="swliveconnect" name="swliveconnect"> 
 							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option> 
-							<option value="true">true</option> 
-			  				<option value="false">false</option> 
+							<option <?php if (get_option('kml_flashembed_swliveconnect') == "true") echo "selected=\"selected\""; ?> value="true">true</option> 
+							<option <?php if (get_option('kml_flashembed_swliveconnect') == "false") echo "selected=\"selected\""; ?> value="false">false</option> 
 						</select> 
 					</div> 
 					<div class="col3"> 
@@ -320,8 +320,8 @@ do_action('admin_head');
 					<div class="col4"> 
 						<select id="allowfullscreen" name="allowfullscreen"> 
 							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option> 
-							<option value="true">true</option> 
-			  				<option value="false">false</option> 
+							<option <?php if (get_option('kml_flashembed_allowfullscreen') == "true") echo "selected=\"selected\""; ?> value="true">true</option> 
+							<option <?php if (get_option('kml_flashembed_allowfullscreen') == "false") echo "selected=\"selected\""; ?> value="false">false</option> 
 						</select> 
 					</div> 
 					<div class="clear">&nbsp;</div> 
@@ -332,9 +332,9 @@ do_action('admin_head');
 					<div class="col4"> 
 						<select id="allowscriptaccess" name="allowscriptaccess"> 
 							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option> 
-							<option value="always">always</option> 
-							<option value="sameDomain">sameDomain</option> 
-			  				<option value="never">never</option> 
+							<option <?php if (get_option('kml_flashembed_allowscriptaccess') == "always") echo "selected=\"selected\""; ?> value="always">always</option> 
+							<option <?php if (get_option('kml_flashembed_allowscriptaccess') == "sameDomain") echo "selected=\"selected\""; ?> value="sameDomain">sameDomain</option> 
+							<option <?php if (get_option('kml_flashembed_allowscriptaccess') == "never") echo "selected=\"selected\""; ?> value="never">never</option> 
 						</select> 
 					</div> 
 					<div class="col3"> 
@@ -343,9 +343,9 @@ do_action('admin_head');
 					<div class="col4"> 
 						<select id="allownetworking" name="allownetworking"> 
 							<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option> 
-							<option value="all">all</option> 
-			  				<option value="internal">internal</option> 
-							<option value="none">none</option> 
+							<option <?php if (get_option('kml_flashembed_allownetworking') == "all") echo "selected=\"selected\""; ?> value="all">all</option> 
+							<option <?php if (get_option('kml_flashembed_allownetworking') == "internal") echo "selected=\"selected\""; ?> value="internal">internal</option> 
+							<option <?php if (get_option('kml_flashembed_allownetworking') == "none") echo "selected=\"selected\""; ?> value="none">none</option>
 						</select> 
 					</div> 
 					<div class="clear">&nbsp;</div> 
@@ -354,16 +354,15 @@ do_action('admin_head');
 						<label for="base" class="info" title="<?php _e("Specifies the base directory or URL used to resolve all relative path statements in the Flash Player movie. This attribute is helpful when your Flash Player movies are kept in a different directory from your other files.",'kimili-flash-embed'); ?>">base</label> 
 					</div> 
 					<div class="col5"> 
-						<input type="text" id="base" name="base" value="" size="15" /> 
+						<input type="text" id="base" name="base" value="<?php echo get_option('kml_flashembed_base'); ?>" size="15" /> 
 					</div> 
 					<div class="clear">&nbsp;</div> 
 					<div class="col1"> 
 						<label class="info" title="<?php _e("Method to pass variables to a Flash movie. You need to separate individual name/variable pairs with a semicolon (i.e. name=John Doe ; count=3).",'kimili-flash-embed'); ?>">fvars:</label>
 					</div> 
 					<div class="col2"> 
-						<textarea name="fvars" id="fvars" rows="4" cols="40"></textarea>
+						<textarea name="fvars" id="fvars" rows="4" cols="40"><?php echo stripcslashes(get_option('kml_flashembed_fvars')); ?></textarea>
 					</div> 
-					
 				</div>				
 				<div class="clear">&nbsp;</div> 
 				<div class="col1"><a id="toggleAttsParams" href="#"><?php _e("more",'kimili-flash-embed'); ?></a></div> 

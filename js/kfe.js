@@ -92,8 +92,8 @@ var Kimili = window.Kimili || {};
 					break;
 					
 				default:
-					if (this.value !== "") {
-						tag += ' ' + this.name + '="' + this.value + '"';
+					if ($this.val() !== "") {
+						tag += ' ' + $this.attr('name') + '="' + $this.val() + '"';
 					}
 			}
 		});

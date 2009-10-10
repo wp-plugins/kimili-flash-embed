@@ -505,8 +505,10 @@ class KimiliFlashEmbed
 			
 			$filename				= preg_replace("/(^|&\S+;)|(<[^>]*>)/U", '', strip_tags($_POST['filename']));
 			$target_class 			= preg_replace("/(^|&\S+;)|(<[^>]*>)/U", '', strip_tags($_POST['target_class']));
+			$flash_id				= preg_replace("/(^|&\S+;)|(<[^>]*>)/U", '', strip_tags($_POST['flash_id']));
 			
 			$alt_content			= $_POST['alt_content'];
+			$fvars					= $_POST['fvars'];
 			
 			$version_major 			= preg_replace("/\D/s", '', $_POST['version_major']);
 			$version_minor 			= preg_replace("/\D/s", '', $_POST['version_minor']);
@@ -514,6 +516,13 @@ class KimiliFlashEmbed
 			
 			$width					= preg_replace("/[\D[^%]]/", '', $_POST['width']);
 			$height					= preg_replace("/[\D[^%]]/", '', $_POST['height']);
+			
+			$bgcolor				= (preg_match("/^#?[0-9a-f]{6}$/i", $_POST['bgcolor'])) ? $_POST['bgcolor'] : "";
+			$base					= preg_replace("/(^|&\S+;)|(<[^>]*>)/U", '', strip_tags($_POST['base']));
+			
+			if ($bgcolor != "" && !preg_match("/^#/", $bgcolor)) {
+				$bgcolor = "#" . $bgcolor;
+			}
 			
 			if (empty($version_major)) {
 				$version_major = '8';
@@ -539,10 +548,12 @@ class KimiliFlashEmbed
 			$reference_swfobject 	= ($_POST['reference_swfobject'] == '0') ? $_POST['reference_swfobject'] : '1';
 			$swfobject_source		= ($_POST['swfobject_source'] == '1') ? $_POST['swfobject_source'] : '0';
 			$swfobject_use_autohide	= ($_POST['swfobject_use_autohide'] == '0') ? $_POST['swfobject_use_autohide'] : '1';
+			$use_express_install	= ($_POST['use_express_install'] == '0') ? $_POST['use_express_install'] : '1';
 			
 			$message = $message_updated;
 			update_option('kml_flashembed_filename', $filename);
 			update_option('kml_flashembed_target_class', $target_class);
+			update_option('kml_flashembed_flash_id', $flash_id);
 			update_option('kml_flashembed_publish_method', $publish_method);
 			update_option('kml_flashembed_version_major', $version_major);
 			update_option('kml_flashembed_version_minor', $version_minor);
@@ -553,6 +564,24 @@ class KimiliFlashEmbed
 			update_option('kml_flashembed_swfobject_use_autohide', $swfobject_use_autohide);
 			update_option('kml_flashembed_width', $width);
 			update_option('kml_flashembed_height', $height);
+			update_option('kml_flashembed_use_express_install', $use_express_install);
+			update_option('kml_flashembed_align', $_POST['align']);
+			update_option('kml_flashembed_play', $_POST['play']);
+			update_option('kml_flashembed_loop', $_POST['loop']);
+			update_option('kml_flashembed_menu', $_POST['menu']);
+			update_option('kml_flashembed_quality', $_POST['quality']);
+			update_option('kml_flashembed_scale', $_POST['scale']);
+			update_option('kml_flashembed_salign', $_POST['salign']);
+			update_option('kml_flashembed_wmode', $_POST['wmode']);
+			update_option('kml_flashembed_bgcolor', $bgcolor);
+			update_option('kml_flashembed_devicefont', $_POST['devicefont']);
+			update_option('kml_flashembed_seamlesstabbing', $_POST['seamlesstabbing']);
+			update_option('kml_flashembed_swliveconnect', $_POST['swliveconnect']);
+			update_option('kml_flashembed_allowfullscreen', $_POST['allowfullscreen']);
+			update_option('kml_flashembed_allowscriptaccess', $_POST['allowscriptaccess']);
+			update_option('kml_flashembed_allownetworking', $_POST['allownetworking']);
+			update_option('kml_flashembed_base', $base);
+			update_option('kml_flashembed_fvars', $fvars);
 			
 			if (function_exists('wp_cache_flush')) {
 				wp_cache_flush();
@@ -565,34 +594,53 @@ class KimiliFlashEmbed
 <?php if ($message) : ?>
 <div id="message" class="updated fade"><p><?php echo $message; ?></p></div>
 <?php endif; ?>
+
+<style type="text/css" media="screen">
+	h3 {
+		background: #ddd;
+		padding: 8px;
+		margin: 2em 0 0;
+		border-top: 1px solid #fff;
+		border-bottom: 1px solid #aaa;
+	}
+	h2 + h3 {
+		margin-top: 1em;
+	}
+	table.form-table {
+		border-collapse: fixed;
+	}
+	table.form-table th[colspan] {
+		background: #eee;
+		border-top: 1px solid #fff;
+		border-bottom: 1px solid #ccc;
+		margin-top: 1em;
+	}
+	table.form-table th h4 {
+		margin: 3px 0;
+	}
+	table.form-table th, 
+	table.form-table td {
+		padding: 5px 8px;
+	}
+	.info {
+		border-bottom: 1px dotted #666;
+		cursor: help;
+	}
+	
+</style>
 	
 <form action="" method="post" accept-charset="utf-8">
 	<div class="wrap">
 		<h2><?php _e("Kimili Flash Embed Preferences", 'kimili-flash-embed'); ?></h2>
 
-		<h3><?php _e("KFE Tag Defaults", 'kimili-flash-embed'); ?></h3> 
+		<h3><?php _e("SWFObject Configuration Defaults", 'kimili-flash-embed'); ?></h3> 
 		
 		<table class="form-table">
-			<tr>
-				<th scope="row" style="vertical-align:top;"><?php _e("SWF Filename", 'kimili-flash-embed'); ?></th>
-				<td><input type="text" name="filename" value="<?php echo get_option('kml_flashembed_filename'); ?>" /></td>
-			</tr>
-			<tr>
-				<th scope="row" style="vertical-align:top;"><?php _e("Element Class Name", 'kimili-flash-embed'); ?></th>
-				<td><input type="text" name="target_class" value="<?php echo get_option('kml_flashembed_target_class'); ?>" /></td>
-			</tr>
 			<tr>
 				<th scope="row" style="vertical-align:top;"><?php _e("Publish Method", 'kimili-flash-embed'); ?></th>
 				<td>
 					<input type="radio" id="publish_method-0" name="publish_method" value="0" class="radio" <?php if (!get_option('kml_flashembed_publish_method')) echo "checked=\"checked\""; ?> /><label for="publish_method-0"><?php _e("Static Publishing", 'kimili-flash-embed'); ?></label>
 					<input type="radio" id="publish_method-1" name="publish_method" value="1" class="radio" <?php if (get_option('kml_flashembed_publish_method')) echo "checked=\"checked\""; ?> /><label for="publish_method-1"><?php _e("Dynamic Publishing", 'kimili-flash-embed'); ?></label>
-				</td>
-			</tr>
-			<tr>
-				<th scope="row" style="vertical-align:top;"><?php _e("Dimensions (width&times;height)", 'kimili-flash-embed'); ?></th>
-				<td>
-					<input type="text" name="width" value="<?php echo get_option('kml_flashembed_width'); ?>" size="2" title="Width" />&times;
-					<input type="text" name="height" value="<?php echo get_option('kml_flashembed_height'); ?>" size="2" title="Height" />
 				</td>
 			</tr>
 			<tr>
@@ -603,6 +651,225 @@ class KimiliFlashEmbed
 					<input type="text" name="version_revision" value="<?php echo get_option('kml_flashembed_version_revision'); ?>" size="3" title="Version Revision Number" />
 				</td>
 			</tr>
+			<tr>
+				<th scope="row" style="vertical-align:top;"><?php _e("Use Adobe Express Install?", 'kimili-flash-embed'); ?></th>
+				<td>
+					<input type="radio" id="use_express_install-0" name="use_express_install" value="0" class="radio" <?php if (!get_option('kml_flashembed_use_express_install')) echo "checked=\"checked\""; ?> /><label for="use_express_install-0"><?php _e("No", 'kimili-flash-embed'); ?></label>
+					<input type="radio" id="use_express_install-1" name="use_express_install" value="1" class="radio" <?php if (get_option('kml_flashembed_use_express_install')) echo "checked=\"checked\""; ?> /><label for="use_express_install-1"><?php _e("Yes", 'kimili-flash-embed'); ?></label>
+				</td>
+			</tr>
+		</table>
+		
+		<h3><?php _e("SWF Definition Defaults",'kimili-flash-embed'); ?></h3>
+		
+		<table class="form-table">	
+			<tr>
+				<th scope="row" style="vertical-align:top;"><?php _e("SWF Filename", 'kimili-flash-embed'); ?></th>
+				<td><input type="text" name="filename" value="<?php echo get_option('kml_flashembed_filename'); ?>" /></td>
+			</tr>
+			<tr>
+				<th scope="row" style="vertical-align:top;"><?php _e("Dimensions (width&times;height)", 'kimili-flash-embed'); ?></th>
+				<td>
+					<input type="text" name="width" value="<?php echo get_option('kml_flashembed_width'); ?>" size="4" title="Width" />&times;
+					<input type="text" name="height" value="<?php echo get_option('kml_flashembed_height'); ?>" size="4" title="Height" />
+				</td>
+			</tr>
+			<tr>
+				<th colspan="2">
+					<h4><?php _e("Attributes",'kimili-flash-embed'); ?></h4>
+				</th>
+			</tr>
+			<tr>
+				<th scope="row" style="vertical-align:top;"><label for="flash_id" class="info" title="<?php _e("Uniquely identifies the Flash movie so that it can be referenced using a scripting language or by CSS",'kimili-flash-embed'); ?>"><?php _e("Flash content ID",'kimili-flash-embed'); ?></label></th>
+				<td><input type="text" id="flash_id" name="flash_id" value="<?php echo get_option('kml_flashembed_flash_id'); ?>" /></td>
+			</tr>
+			<tr>
+				<th scope="row" style="vertical-align:top;"><label for="target_class" class="info" title="<?php _e("Classifies the Flash movie so that it can be referenced using a scripting language or by CSS",'kimili-flash-embed'); ?>"><?php _e("Element Class Name", 'kimili-flash-embed'); ?></label></th>
+				<td><input type="text" id="target_class" name="target_class" value="<?php echo get_option('kml_flashembed_target_class'); ?>" /></td>
+			</tr>
+			<tr>
+				<th scope="row" style="vertical-align:top;"><label for="align" class="info" title="<?php _e("HTML alignment of the object element. If this attribute is omitted, it by default centers the movie and crops edges if the browser window is smaller than the movie. NOTE: Using this attribute is not valid in XHTML 1.0 Strict.",'kimili-flash-embed'); ?>">align</label></th>
+				<td>
+					<select id="align" name="align"> 
+						<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option>
+		  				<option <?php if (get_option('kml_flashembed_align') == "left") echo "selected=\"selected\""; ?> value="left" >left</option> 
+						<option <?php if (get_option('kml_flashembed_align') == "right") echo "selected=\"selected\""; ?> value="right">right</option> 
+						<option <?php if (get_option('kml_flashembed_align') == "top") echo "selected=\"selected\""; ?> value="top">top</option> 
+						<option <?php if (get_option('kml_flashembed_align') == "bottom") echo "selected=\"selected\""; ?> value="bottom">bottom</option> 
+					</select>
+				</td>
+			</tr>
+			
+			<tr>
+				<th colspan="2">
+					<h4><?php _e("Parameters",'kimili-flash-embed'); ?></h4>
+				</th>
+			</tr>
+			
+			<tr>
+				<th scope="row" style="vertical-align:top;"><label for="play" class="info" title="<?php _e("Specifies whether the movie begins playing immediately on loading in the browser. The default value is true if this attribute is omitted.",'kimili-flash-embed'); ?>">play</label></th>
+				<td>
+					<select id="play" name="play"> 
+						<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option>
+		  				<option <?php if (get_option('kml_flashembed_play') == "true") echo "selected=\"selected\""; ?> value="true" >true</option> 
+						<option <?php if (get_option('kml_flashembed_play') == "false") echo "selected=\"selected\""; ?> value="false">false</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" style="vertical-align:top;"><label for="loop" class="info" title="<?php _e("Specifies whether the movie repeats indefinitely or stops when it reaches the last frame. The default value is true if this attribute is omitted",'kimili-flash-embed'); ?>.">loop</label></th>
+				<td>
+					<select id="loop" name="loop"> 
+						<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option>
+		  				<option <?php if (get_option('kml_flashembed_loop') == "true") echo "selected=\"selected\""; ?> value="true" >true</option> 
+						<option <?php if (get_option('kml_flashembed_loop') == "false") echo "selected=\"selected\""; ?> value="false">false</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" style="vertical-align:top;"><label for="menu" class="info" title="<?php _e("Shows a shortcut menu when users right-click (Windows) or control-click (Macintosh) the SWF file. To show only About Flash in the shortcut menu, deselect this option. By default, this option is set to true.",'kimili-flash-embed'); ?>">menu</label></th>
+				<td>
+					<select id="menu" name="menu"> 
+						<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option>
+		  				<option <?php if (get_option('kml_flashembed_menu') == "true") echo "selected=\"selected\""; ?> value="true" >true</option> 
+						<option <?php if (get_option('kml_flashembed_menu') == "false") echo "selected=\"selected\""; ?> value="false">false</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" style="vertical-align:top;"><label for="quality" class="info" title="<?php _e("Specifies the trade-off between processing time and appearance. The default value is 'high' if this attribute is omitted.",'kimili-flash-embed'); ?>">quality</label></th>
+				<td>
+					<select id="quality" name="quality"> 
+						<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option>
+						<option <?php if (get_option('kml_flashembed_quality') == "best") echo "selected=\"selected\""; ?> value="best">best</option> 
+		  				<option <?php if (get_option('kml_flashembed_quality') == "high") echo "selected=\"selected\""; ?> value="high">high</option> 
+						<option <?php if (get_option('kml_flashembed_quality') == "medium") echo "selected=\"selected\""; ?> value="medium">medium</option> 
+						<option <?php if (get_option('kml_flashembed_quality') == "autohigh") echo "selected=\"selected\""; ?> value="autohigh">autohigh</option> 
+						<option <?php if (get_option('kml_flashembed_quality') == "autolow") echo "selected=\"selected\""; ?> value="autolow">autolow</option> 
+						<option <?php if (get_option('kml_flashembed_quality') == "low") echo "selected=\"selected\""; ?> value="low">low</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" style="vertical-align:top;"><label for="scale" class="info"  title="<?php _e("Specifies scaling, aspect ratio, borders, distortion and cropping for if you have changed the document's original width and height.",'kimili-flash-embed'); ?>">scale</label></th>
+				<td>
+					<select id="scale" name="scale"> 
+						<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option>
+						<option <?php if (get_option('kml_flashembed_scale') == "showall") echo "selected=\"selected\""; ?> value="showall">showall</option> 
+		  				<option <?php if (get_option('kml_flashembed_scale') == "noborder") echo "selected=\"selected\""; ?> value="noborder">noborder</option> 
+						<option <?php if (get_option('kml_flashembed_scale') == "exactfit") echo "selected=\"selected\""; ?> value="exactfit">exactfit</option> 
+						<option <?php if (get_option('kml_flashembed_scale') == "noscale") echo "selected=\"selected\""; ?> value="noscale">noscale</option> 
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" style="vertical-align:top;"><label for="salign" class="info" title="<?php _e("Specifies where the content is placed within the application window and how it is cropped.",'kimili-flash-embed'); ?>">salign</label></th>
+				<td>
+					<select id="salign" name="salign"> 
+						<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option>
+						<option <?php if (get_option('kml_flashembed_salign') == "tl") echo "selected=\"selected\""; ?> value="tl">tl</option> 
+			  			<option <?php if (get_option('kml_flashembed_salign') == "tr") echo "selected=\"selected\""; ?> value="tr">tr</option> 
+						<option <?php if (get_option('kml_flashembed_salign') == "bl") echo "selected=\"selected\""; ?> value="bl">bl</option> 
+			  			<option <?php if (get_option('kml_flashembed_salign') == "br") echo "selected=\"selected\""; ?> value="br">br</option> 
+						<option <?php if (get_option('kml_flashembed_salign') == "l") echo "selected=\"selected\""; ?> value="l">l</option> 
+			  			<option <?php if (get_option('kml_flashembed_salign') == "t") echo "selected=\"selected\""; ?> value="t">t</option> 
+						<option <?php if (get_option('kml_flashembed_salign') == "r") echo "selected=\"selected\""; ?> value="r">r</option> 
+			  			<option <?php if (get_option('kml_flashembed_salign') == "b") echo "selected=\"selected\""; ?> value="b">b</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" style="vertical-align:top;"><label for="wmode" class="info" title="<?php _e("Sets the Window Mode property of the Flash movie for transparency, layering, and positioning in the browser. The default value is 'window' if this attribute is omitted.",'kimili-flash-embed'); ?>">wmode</label></th>
+				<td>
+					<select id="wmode" name="wmode"> 
+						<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option>
+						<option <?php if (get_option('kml_flashembed_wmode') == "window") echo "selected=\"selected\""; ?> value="window">window</option> 
+			  			<option <?php if (get_option('kml_flashembed_wmode') == "opaque") echo "selected=\"selected\""; ?> value="opaque">opaque</option> 
+						<option <?php if (get_option('kml_flashembed_wmode') == "transparent") echo "selected=\"selected\""; ?> value="transparent">transparent</option> 
+						<option <?php if (get_option('kml_flashembed_wmode') == "direct") echo "selected=\"selected\""; ?> value="direct">direct</option> 
+						<option <?php if (get_option('kml_flashembed_wmode') == "gpu") echo "selected=\"selected\""; ?> value="gpu">gpu</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" style="vertical-align:top;"><label for="bgcolor" class="info" title="<?php _e("Hexadecimal RGB value in the format #RRGGBB, which specifies the background color of the movie, which will override the background color setting specified in the Flash file.",'kimili-flash-embed'); ?>">bgcolor</label></th>
+				<td><input type="text" id="bgcolor" name="bgcolor" value="<?php echo get_option('kml_flashembed_bgcolor'); ?>" /></td>
+			</tr>
+			<tr>
+				<th scope="row" style="vertical-align:top;"><label for="devicefont" class="info" title="<?php _e("Specifies whether static text objects that the Device Font option has not been selected for will be drawn using device fonts anyway, if the necessary fonts are available from the operating system.",'kimili-flash-embed'); ?>">devicefont</label></th>
+				<td>
+					<select id="devicefont" name="devicefont"> 
+						<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option>
+		  				<option <?php if (get_option('kml_flashembed_devicefont') == "true") echo "selected=\"selected\""; ?> value="true" >true</option> 
+						<option <?php if (get_option('kml_flashembed_devicefont') == "false") echo "selected=\"selected\""; ?> value="false">false</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" style="vertical-align:top;"><label for="seamlesstabbing" class="info" title="<?php _e("Specifies whether users are allowed to use the Tab key to move keyboard focus out of a Flash movie and into the surrounding HTML (or the browser, if there is nothing focusable in the HTML following the Flash movie). The default value is true if this attribute is omitted.",'kimili-flash-embed'); ?>">seamlesstabbing</label></th>
+				<td>
+					<select id="seamlesstabbing" name="seamlesstabbing"> 
+						<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option>
+		  				<option <?php if (get_option('kml_flashembed_seamlesstabbing') == "true") echo "selected=\"selected\""; ?> value="true" >true</option> 
+						<option <?php if (get_option('kml_flashembed_seamlesstabbing') == "false") echo "selected=\"selected\""; ?> value="false">false</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" style="vertical-align:top;"><label for="seamlesstabbing" class="info" title="<?php _e("Specifies whether the browser should start Java when loading the Flash Player for the first time. The default value is false if this attribute is omitted. If you use JavaScript and Flash on the same page, Java must be running for the FSCommand to work.",'kimili-flash-embed'); ?>">swliveconnect</label></th>
+				<td>
+					<select id="swliveconnect" name="swliveconnect"> 
+						<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option>
+						<option <?php if (get_option('kml_flashembed_swliveconnect') == "true") echo "selected=\"selected\""; ?> value="true">true</option> 
+		  				<option <?php if (get_option('kml_flashembed_swliveconnect') == "false") echo "selected=\"selected\""; ?> value="false">false</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" style="vertical-align:top;"><label for="allowfullscreen" class="info" title="<?php _e("Enables full-screen mode. The default value is false if this attribute is omitted. You must have version 9,0,28,0 or greater of Flash Player installed to use full-screen mode.",'kimili-flash-embed'); ?>">allowfullscreen</label></th>
+				<td>
+					<select id="allowfullscreen" name="allowfullscreen"> 
+						<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option>
+		  				<option <?php if (get_option('kml_flashembed_allowfullscreen') == "true") echo "selected=\"selected\""; ?> value="true" >true</option> 
+						<option <?php if (get_option('kml_flashembed_allowfullscreen') == "false") echo "selected=\"selected\""; ?> value="false">false</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" style="vertical-align:top;"><label for="allowscriptaccess" class="info" title="<?php _e("Controls the ability to perform outbound scripting from within a Flash SWF. The default value is 'always' if this attribute is omitted.",'kimili-flash-embed'); ?>">allowscriptaccess</label></th>
+				<td>
+					<select id="allowscriptaccess" name="allowscriptaccess"> 
+						<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option>
+						<option <?php if (get_option('kml_flashembed_allowscriptaccess') == "always") echo "selected=\"selected\""; ?> value="always">always</option> 
+						<option <?php if (get_option('kml_flashembed_allowscriptaccess') == "sameDomain") echo "selected=\"selected\""; ?> value="sameDomain">sameDomain</option> 
+		  				<option <?php if (get_option('kml_flashembed_allowscriptaccess') == "never") echo "selected=\"selected\""; ?> value="never">never</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" style="vertical-align:top;"><label for="allownetworking" class="info" title="<?php _e("Controls a SWF file's access to network functionality. The default value is 'all' if this attribute is omitted.",'kimili-flash-embed'); ?>">allownetworking</label></th>
+				<td>
+					<select id="allownetworking" name="allownetworking"> 
+						<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option>
+						<option <?php if (get_option('kml_flashembed_allownetworking') == "all") echo "selected=\"selected\""; ?> value="all">all</option> 
+						<option <?php if (get_option('kml_flashembed_allownetworking') == "internal") echo "selected=\"selected\""; ?> value="internal">internal</option> 
+		  				<option <?php if (get_option('kml_flashembed_allownetworking') == "none") echo "selected=\"selected\""; ?> value="none">none</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" style="vertical-align:top;"><label for="base" class="info" title="<?php _e("Specifies the base directory or URL used to resolve all relative path statements in the Flash Player movie. This attribute is helpful when your Flash Player movies are kept in a different directory from your other files.",'kimili-flash-embed'); ?>">base</label></th>
+				<td><input type="text" id="base" name="base" value="<?php echo get_option('kml_flashembed_base'); ?>" /></td>
+			</tr>
+			<tr>
+				<th scope="row" style="vertical-align:top;"><label for="fvars" class="info" title="<?php _e("Method to pass variables to a Flash movie. You need to separate individual name/variable pairs with a semicolon (i.e. name=John Doe ; count=3).",'kimili-flash-embed'); ?>">fvars</label></th>
+				<td><textarea name="fvars" id="fvars" cols="50" rows="4"><?php echo stripcslashes(get_option('kml_flashembed_fvars')); ?></textarea></td>
+			</tr>
+		</table>
+		
+		<h3><?php _e("Alternative Content Default", 'kimili-flash-embed'); ?></h3> 
+		
+		<table class="form-table">
 			<tr>
 				<th scope="row" style="vertical-align:top;"><?php _e("Alternate Content", 'kimili-flash-embed'); ?></th>
 				<td><textarea name="alt_content" cols="50" rows="4"><?php echo stripcslashes(get_option('kml_flashembed_alt_content')); ?></textarea></td>
@@ -629,8 +896,8 @@ class KimiliFlashEmbed
 			<tr>
 				<th scope="row" style="vertical-align:top;"><?php _e("Do you want to use SWFObject's autohide function?", 'kimili-flash-embed'); ?></th>
 				<td>
-					<input type="radio" id="swfobject_use_autohide-0" name="swfobject_use_autohide" value="0" class="radio" <?php if (!get_option('kml_flashembed_swfobject_use_autohide')) echo "checked=\"checked\""; ?> /><label for="swfobject_source-0"><?php _e("No", 'kimili-flash-embed'); ?></label>
-					<input type="radio" id="swfobject_use_autohide-1" name="swfobject_use_autohide" value="1" class="radio" <?php if (get_option('kml_flashembed_swfobject_use_autohide')) echo "checked=\"checked\""; ?> /><label for="swfobject_source-1"><?php _e("Yes", 'kimili-flash-embed'); ?></label><br />
+					<input type="radio" id="swfobject_use_autohide-0" name="swfobject_use_autohide" value="0" class="radio" <?php if (!get_option('kml_flashembed_swfobject_use_autohide')) echo "checked=\"checked\""; ?> /><label for="swfobject_use_autohide-0"><?php _e("No", 'kimili-flash-embed'); ?></label>
+					<input type="radio" id="swfobject_use_autohide-1" name="swfobject_use_autohide" value="1" class="radio" <?php if (get_option('kml_flashembed_swfobject_use_autohide')) echo "checked=\"checked\""; ?> /><label for="swfobject_use_autohide-1"><?php _e("Yes", 'kimili-flash-embed'); ?></label><br />
 					<em><?php _e("(By default, SWFObject temporarily hides your SWF or alternative content until the library has decided which content to display.)", 'kimili-flash-embed'); ?></em>
 				</td>
 			</tr>
