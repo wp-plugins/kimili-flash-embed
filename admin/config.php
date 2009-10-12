@@ -92,7 +92,7 @@ do_action('admin_head');
 					<p><?php _e("The embedding of Flash content relies on JavaScript, so if you have the Flash plug-in installed, but have JavaScript disabled or use a browser that doesn't support JavaScript, you will not be able to see your Flash content, however you will see alternative content instead. Flash content will also not be shown on a device like Sony PSP, which has very poor JavaScript support, and automated tools like RSS readers are not able to pick up Flash content.",'kimili-flash-embed'); ?></p> 
 				</div> 
 				<div class="col1"> 
-					<label title="<?php _e("Flash version consists of major, minor and release version",'kimili-flash-embed'); ?>" class="info"><?php _e("Flash version:",'kimili-flash-embed'); ?></label> <span class="req">*</span> 
+					<label title="<?php _e("Flash version consists of major, minor and release version",'kimili-flash-embed'); ?>" class="info"><?php _e("Flash Version",'kimili-flash-embed'); ?></label>: <span class="req">*</span> 
 				</div> 
 				<div class="col2"> 
 					<input type="text" id="major" name="major" value="<?php echo get_option('kml_flashembed_version_major'); ?>" size="4" maxlength="2" /> 
@@ -144,8 +144,8 @@ do_action('admin_head');
 					&times;
 					<input type="text" id="height" name="height" value="<?php echo get_option('kml_flashembed_height'); ?>" size="5" maxlength="5" /> 
 					<select id="unit" name="unit"> 
-						<option value="pixels"><?php _e("pixels",'kimili-flash-embed'); ?></option> 
-						<option value="percentage"><?php _e("percentage",'kimili-flash-embed'); ?></option> 
+						<option <?php if (get_option('kml_flashembed_dimensions_unit') == "pixels") echo "selected=\"selected\""; ?>  value="pixels"><?php _e("pixels",'kimili-flash-embed'); ?></option> 
+						<option <?php if (get_option('kml_flashembed_dimensions_unit') == "percentage") echo "selected=\"selected\""; ?>  value="percentage"><?php _e("percentage",'kimili-flash-embed'); ?></option> 
 					</select> 
 				</div> 
 				<div class="clear">&nbsp;</div> 

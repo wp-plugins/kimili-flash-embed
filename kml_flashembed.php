@@ -499,6 +499,9 @@ class KimiliFlashEmbed
 		
 		$message = null;
 		$message_updated = __("Kimili Flash Embed Options Updated.", 'kimili_flash_embed');
+		
+		// Create a link to the KFE JS
+		wp_enqueue_script( 'kimiliflashembed', plugins_url('/kimili-flash-embed/js/kfe.js'), array(), $this->version );
 
 		// update options
 		if ($_POST['action'] && $_POST['action'] == 'kml_flashembed_update') {
@@ -549,6 +552,7 @@ class KimiliFlashEmbed
 			$swfobject_source		= ($_POST['swfobject_source'] == '1') ? $_POST['swfobject_source'] : '0';
 			$swfobject_use_autohide	= ($_POST['swfobject_use_autohide'] == '0') ? $_POST['swfobject_use_autohide'] : '1';
 			$use_express_install	= ($_POST['use_express_install'] == '0') ? $_POST['use_express_install'] : '1';
+			$dimensions_unit		= ($_POST['unit'] == 'percentage') ? $_POST['unit'] : 'pixels';
 			
 			$message = $message_updated;
 			update_option('kml_flashembed_filename', $filename);
@@ -564,6 +568,7 @@ class KimiliFlashEmbed
 			update_option('kml_flashembed_swfobject_use_autohide', $swfobject_use_autohide);
 			update_option('kml_flashembed_width', $width);
 			update_option('kml_flashembed_height', $height);
+			update_option('kml_flashembed_dimensions_unit', $dimensions_unit);
 			update_option('kml_flashembed_use_express_install', $use_express_install);
 			update_option('kml_flashembed_align', $_POST['align']);
 			update_option('kml_flashembed_play', $_POST['play']);
@@ -627,7 +632,42 @@ class KimiliFlashEmbed
 		cursor: help;
 	}
 	
+	/* Help */
+
+	#publishingMethodHelp, #alternativeContentHelp, #replaceIdHelp, #SWFObjectReference, #toggleReplaceId, #isIdReq, #toggleAttsParamsContainer, #autohideHelp {
+		display: none;
+	}
+	
+	.help {
+		margin: 0 0 10px;
+		padding: 10px 10px 0;
+		border: 1px solid #ccc;
+		background-color: #ffc;
+	}
+
+	.help h4, .help h5, .help p, .help ul, .help li {
+		margin: 0 !important;
+		font-size: 11px;
+		line-height: 14px;
+	}
+
+	.help h4, .help p, .help ul {
+		padding-bottom: 10px;
+	}
+
+	.help h5 {
+		color: #666;
+	}
+	
 </style>
+
+<script type="text/javascript" charset="utf-8">
+	jQuery(document).ready(function(){
+		try {
+			Kimili.Flash.Generator.initialize();
+		} catch(e) {}
+	})
+</script>
 	
 <form action="" method="post" accept-charset="utf-8">
 	<div class="wrap">
@@ -641,10 +681,30 @@ class KimiliFlashEmbed
 				<td>
 					<input type="radio" id="publish_method-0" name="publish_method" value="0" class="radio" <?php if (!get_option('kml_flashembed_publish_method')) echo "checked=\"checked\""; ?> /><label for="publish_method-0"><?php _e("Static Publishing", 'kimili-flash-embed'); ?></label>
 					<input type="radio" id="publish_method-1" name="publish_method" value="1" class="radio" <?php if (get_option('kml_flashembed_publish_method')) echo "checked=\"checked\""; ?> /><label for="publish_method-1"><?php _e("Dynamic Publishing", 'kimili-flash-embed'); ?></label>
+					<br />
+					<a id="togglePublishingMethodHelp" href="#"><?php _e("what is this?",'kimili-flash-embed'); ?></a>
+					<div id="publishingMethodHelp" class="help"> 
+						<h4><?php _e("Static publishing",'kimili-flash-embed'); ?></h4> 
+						<h5><?php _e("Description",'kimili-flash-embed'); ?></h5> 
+						<p><?php _e("Embed Flash content and alternative content using standards compliant markup, and use unobtrusive JavaScript to resolve the issues that markup alone cannot solve.",'kimili-flash-embed'); ?></p> 
+						<h5><?php _e("Pros",'kimili-flash-embed'); ?></h5> 
+						<p><?php _e("The embedding of Flash content does not rely on JavaScript and the actual authoring of standards compliant markup is promoted.",'kimili-flash-embed'); ?></p> 
+						<h5><?php _e("Cons",'kimili-flash-embed'); ?></h5> 
+						<p><?php _e("Does not solve 'click-to-activate' mechanisms in Internet Explorer 6+ and Opera 9+.",'kimili-flash-embed'); ?></p> 
+						<h4><?php _e("Dynamic publishing",'kimili-flash-embed'); ?></h4> 
+						<h5><?php _e("Description",'kimili-flash-embed'); ?></h5> 
+						<p><?php _e("Create alternative content using standards compliant markup and embed Flash content with unobtrusive JavaScript.",'kimili-flash-embed'); ?></p> 
+						<h5><?php _e("Pros",'kimili-flash-embed'); ?></h5> 
+						<p><?php _e("Avoids 'click-to-activate' mechanisms in Internet Explorer 6+ and Opera 9+.",'kimili-flash-embed'); ?></p> 
+						<h5><?php _e("Cons",'kimili-flash-embed'); ?></h5> 
+						<p><?php _e("The embedding of Flash content relies on JavaScript, so if you have the Flash plug-in installed, but have JavaScript disabled or use a browser that doesn't support JavaScript, you will not be able to see your Flash content, however you will see alternative content instead. Flash content will also not be shown on a device like Sony PSP, which has very poor JavaScript support, and automated tools like RSS readers are not able to pick up Flash content.",'kimili-flash-embed'); ?></p> 
+					</div>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row" style="vertical-align:top;">Flash Version</th>
+				<th scope="row" style="vertical-align:top;">
+					<label title="<?php _e("Flash version consists of major, minor and release version",'kimili-flash-embed'); ?>" class="info"><?php _e("Flash Version",'kimili-flash-embed'); ?></label>
+				</th>
 				<td>
 					<input type="text" name="version_major" value="<?php echo get_option('kml_flashembed_version_major'); ?>" size="2" title="Major Version" />.
 					<input type="text" name="version_minor" value="<?php echo get_option('kml_flashembed_version_minor'); ?>" size="2" title="Minor Version" />.
@@ -652,7 +712,9 @@ class KimiliFlashEmbed
 				</td>
 			</tr>
 			<tr>
-				<th scope="row" style="vertical-align:top;"><?php _e("Use Adobe Express Install?", 'kimili-flash-embed'); ?></th>
+				<th scope="row" style="vertical-align:top;">
+					<label for="expressInstall" title="<?php _e("Check checkbox to activate express install functionality on your swf.",'kimili-flash-embed'); ?>" class="info"><?php _e("Adobe Express Install",'kimili-flash-embed'); ?>:</label>
+				</th>
 				<td>
 					<input type="radio" id="use_express_install-0" name="use_express_install" value="0" class="radio" <?php if (!get_option('kml_flashembed_use_express_install')) echo "checked=\"checked\""; ?> /><label for="use_express_install-0"><?php _e("No", 'kimili-flash-embed'); ?></label>
 					<input type="radio" id="use_express_install-1" name="use_express_install" value="1" class="radio" <?php if (get_option('kml_flashembed_use_express_install')) echo "checked=\"checked\""; ?> /><label for="use_express_install-1"><?php _e("Yes", 'kimili-flash-embed'); ?></label>
@@ -664,14 +726,18 @@ class KimiliFlashEmbed
 		
 		<table class="form-table">	
 			<tr>
-				<th scope="row" style="vertical-align:top;"><?php _e("SWF Filename", 'kimili-flash-embed'); ?></th>
+				<th scope="row" style="vertical-align:top;"><label for="swf" title="<?php _e("The relative or absolute path to your Flash content .swf file",'kimili-flash-embed'); ?>" class="info"><?php _e("Flash (.swf)",'kimili-flash-embed'); ?></label></th>
 				<td><input type="text" name="filename" value="<?php echo get_option('kml_flashembed_filename'); ?>" /></td>
 			</tr>
 			<tr>
-				<th scope="row" style="vertical-align:top;"><?php _e("Dimensions (width&times;height)", 'kimili-flash-embed'); ?></th>
+				<th scope="row" style="vertical-align:top;"><label title="<?php _e("Width &times; height (unit)",'kimili-flash-embed'); ?>" class="info"><?php _e("Dimensions",'kimili-flash-embed'); ?></label></th>
 				<td>
 					<input type="text" name="width" value="<?php echo get_option('kml_flashembed_width'); ?>" size="4" title="Width" />&times;
 					<input type="text" name="height" value="<?php echo get_option('kml_flashembed_height'); ?>" size="4" title="Height" />
+					<select id="unit" name="unit"> 
+						<option <?php if (get_option('kml_flashembed_dimensions_unit') == "pixels") echo "selected=\"selected\""; ?>  value="pixels"><?php _e("pixels",'kimili-flash-embed'); ?></option> 
+						<option <?php if (get_option('kml_flashembed_dimensions_unit') == "percentage") echo "selected=\"selected\""; ?>  value="percentage"><?php _e("percentage",'kimili-flash-embed'); ?></option> 
+					</select>
 				</td>
 			</tr>
 			<tr>
@@ -684,7 +750,7 @@ class KimiliFlashEmbed
 				<td><input type="text" id="flash_id" name="flash_id" value="<?php echo get_option('kml_flashembed_flash_id'); ?>" /></td>
 			</tr>
 			<tr>
-				<th scope="row" style="vertical-align:top;"><label for="target_class" class="info" title="<?php _e("Classifies the Flash movie so that it can be referenced using a scripting language or by CSS",'kimili-flash-embed'); ?>"><?php _e("Element Class Name", 'kimili-flash-embed'); ?></label></th>
+				<th scope="row" style="vertical-align:top;"><label for="target_class" class="info" title="<?php _e("Classifies the Flash movie so that it can be referenced using a scripting language or by CSS",'kimili-flash-embed'); ?>"><?php _e("class", 'kimili-flash-embed'); ?></label></th>
 				<td><input type="text" id="target_class" name="target_class" value="<?php echo get_option('kml_flashembed_target_class'); ?>" /></td>
 			</tr>
 			<tr>
@@ -872,7 +938,23 @@ class KimiliFlashEmbed
 		<table class="form-table">
 			<tr>
 				<th scope="row" style="vertical-align:top;"><?php _e("Alternate Content", 'kimili-flash-embed'); ?></th>
-				<td><textarea name="alt_content" cols="50" rows="4"><?php echo stripcslashes(get_option('kml_flashembed_alt_content')); ?></textarea></td>
+				<td>
+					<textarea name="alt_content" cols="50" rows="4"><?php echo stripcslashes(get_option('kml_flashembed_alt_content')); ?></textarea>
+					<br />
+					<a id="toggleAlternativeContentHelp" href="#alternativeContentHelp"><?php _e("what is this",'kimili-flash-embed'); ?>?</a>
+					<div id="alternativeContentHelp" class="help">
+						<p>
+							<?php _e("The object element allows you to nest alternative HTML content inside of it, which will be displayed if Flash is not installed or supported. 
+							This content will also be picked up by search engines, making it a great tool for creating search-engine-friendly content.",'kimili-flash-embed'); ?>
+						</p>
+						<p><?php _e("Summarized, you should use alternative content for the following:",'kimili-flash-embed'); ?></p>
+						<ul>
+							<li><?php _e("When you like to create content that is accessible for people who browse the Web without plugins",'kimili-flash-embed'); ?></li>
+							<li><?php _e("When you like to create search-engine-friendly content",'kimili-flash-embed'); ?></li>
+							<li><?php _e("To tell visitors that they can have a richer user experience by downloading the Flash plugin",'kimili-flash-embed'); ?></li>
+						</ul>
+					</div>
+				</td>
 			</tr>
 		</table>
 
@@ -891,14 +973,31 @@ class KimiliFlashEmbed
 				<td>
 					<input type="radio" id="swfobject_source-0" name="swfobject_source" value="0" class="radio" <?php if (!get_option('kml_flashembed_swfobject_source')) echo "checked=\"checked\""; ?> /><label for="swfobject_source-0"><?php _e("Google Ajax Library", 'kimili-flash-embed'); ?></label>
 					<input type="radio" id="swfobject_source-1" name="swfobject_source" value="1" class="radio" <?php if (get_option('kml_flashembed_swfobject_source')) echo "checked=\"checked\""; ?> /><label for="swfobject_source-1"><?php _e("Internal", 'kimili-flash-embed'); ?></label>
+					<br />
+					<a id="toggleSWFObjectReference" href="#SWFObjectReference"><?php _e("what is this",'kimili-flash-embed'); ?>?</a>
+					<div id="SWFObjectReference" class="help">
+						<p>
+							<?php _e("If you choose to use Kimili Flash Embed to create a reference to swfobject.js (which is necessary for KFE to function properly), you have two options from where to reference the file:",'kimili-flash-embed'); ?>
+						</p>
+						<h4><?php _e("Google Ajax Library", 'kimili-flash-embed'); ?></h4>
+						<p><?php _e("The Google Ajax Library is a content distribution network the most popular open source JavaScript libraries, including SWFObject. Google hosts these libraries, correctly sets cache headers, and stays up to date with the most recent release versions.", 'kimili-flash-embed'); ?></p>
+						<p><?php _e("Choosing this option offers fast, reliable access to the SWFObject code. It also increases the chances that your users may already have SWFObject cached in their browsers if they have visited other sites that also utilize the Google hosted copy of SWFObject, making your site load even faster.", 'kimili-flash-embed'); ?></p>
+						<h4><?php _e("Internal", 'kimili-flash-embed'); ?></h4>
+						<p><?php _e("If you'd rather not rely on an external service to serve SWFObject to your users, you can choose to reference a copy of SWFObject which comes bundles with Kimili Flash Embed so it is served from the same server as the rest of your website.", 'kimili-flash-embed'); ?></p>
+					</div>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row" style="vertical-align:top;"><?php _e("Do you want to use SWFObject's autohide function?", 'kimili-flash-embed'); ?></th>
+				<th scope="row" style="vertical-align:top;">
+					<?php _e("Do you want to use SWFObject's autohide function?", 'kimili-flash-embed'); ?></th>
 				<td>
 					<input type="radio" id="swfobject_use_autohide-0" name="swfobject_use_autohide" value="0" class="radio" <?php if (!get_option('kml_flashembed_swfobject_use_autohide')) echo "checked=\"checked\""; ?> /><label for="swfobject_use_autohide-0"><?php _e("No", 'kimili-flash-embed'); ?></label>
-					<input type="radio" id="swfobject_use_autohide-1" name="swfobject_use_autohide" value="1" class="radio" <?php if (get_option('kml_flashembed_swfobject_use_autohide')) echo "checked=\"checked\""; ?> /><label for="swfobject_use_autohide-1"><?php _e("Yes", 'kimili-flash-embed'); ?></label><br />
-					<em><?php _e("(By default, SWFObject temporarily hides your SWF or alternative content until the library has decided which content to display.)", 'kimili-flash-embed'); ?></em>
+					<input type="radio" id="swfobject_use_autohide-1" name="swfobject_use_autohide" value="1" class="radio" <?php if (get_option('kml_flashembed_swfobject_use_autohide')) echo "checked=\"checked\""; ?> /><label for="swfobject_use_autohide-1"><?php _e("Yes", 'kimili-flash-embed'); ?></label>
+					<br />
+					<a id="toggleAutohideHelp" href="#autohideHelp"><?php _e("what is this",'kimili-flash-embed'); ?>?</a>
+					<div id="autohideHelp" class="help">
+						<p><?php _e("By default, SWFObject temporarily hides your SWF or alternative content until the library has decided which content to display. This option allows you to disable that behavior.", 'kimili-flash-embed'); ?></p>
+					</div>
 				</td>
 			</tr>
 		</table>

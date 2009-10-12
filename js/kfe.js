@@ -167,6 +167,16 @@ var Kimili = window.Kimili || {};
 				var el = jQuery("#alternativeContentHelp");
 				el.css('display', (el.css('display') === "block" ? "none" : "block"));
 			});
+			jQuery("#toggleSWFObjectReference").click(function(e) {
+				e.preventDefault();
+				var el = jQuery("#SWFObjectReference");
+				el.css('display', (el.css('display') === "block" ? "none" : "block"));	
+			});
+			jQuery("#toggleAutohideHelp").click(function(e) {
+				e.preventDefault();
+				var el = jQuery("#autohideHelp");
+				el.css('display', (el.css('display') === "block" ? "none" : "block"));
+			});
 			jQuery("#toggleReplaceIdHelp").click(function(e) {
 				e.preventDefault();
 				var el = jQuery("#replaceIdHelp");
