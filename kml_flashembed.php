@@ -14,7 +14,7 @@ Update: http://www.kimili.com/plugins/kml_flashembed/wp
 *
 *	KIMILI FLASH EMBED
 *
-*	Copyright 2009 Michael Bester (http://www.kimili.com)
+*	Copyright 2010 Michael Bester (http://www.kimili.com)
 *	Released under the GNU General Public License (http://www.gnu.org/licenses/gpl.html)
 *
 */
