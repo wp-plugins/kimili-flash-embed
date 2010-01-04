@@ -79,13 +79,13 @@ class KimiliFlashEmbed
 		
 		// Queue SWFObject
 		if ( get_option('kml_flashembed_reference_swfobject') == '1') {
-			// Let's override WP's bundled swfobject, cause it's still using 2.1
+			// Let's override WP's bundled swfobject, cause as of WP 2.9, it's still using 2.1 
 			wp_deregister_script('swfobject');
 			// and register our own.
 			if ( get_option('kml_flashembed_swfobject_source') == '0' ) {
 				wp_register_script( 'swfobject', 'http' . (is_ssl() ? 's' : '') . '://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js', array(), '2.2' );
 			} else {
-				wp_retister_script( 'swfobject', plugins_url('/kimili-flash-embed/js/swfobject.js'), array(), '2.2' );
+				wp_register_script( 'swfobject', plugins_url('/kimili-flash-embed/js/swfobject.js'), array(), '2.2' );
 			}
 			wp_enqueue_script('swfobject');
 		}

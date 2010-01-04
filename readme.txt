@@ -2,17 +2,17 @@
 Contributors: Kimili
 Tags: flash, flex, swf, swfobject, javascript
 Requires at least: 2.6
-Tested up to: 2.8.4
-Stable tag: 2.0.3
+Tested up to: 2.9
+Stable tag: 2.1
 Donate Link: http://kimili.com/donate
 
 Provides a WordPress interface for SWFObject, the best way to embed Flash content on any site.
 
 == Description ==
 
-Kimili Flash Embed is a plugin for Wordpress that allows you to easily place Flash movies on your site. Built upon [SWFObject](http://blog.deconcept.com/swfobject) javascript code, it is standards compliant, search engine friendly, highly flexible and full featured, as well as easy to use.
+Kimili Flash Embed is a plugin for Wordpress that allows you to easily place Flash movies on your site. Built upon [SWFObject](http://code.google.com/p/swfobject/) javascript code, it is standards compliant, search engine friendly, highly flexible and full featured, as well as easy to use.
 
-Kimili Flash Embed utilizes SWFObject 2.1, is fully compatible with Wordpress 2.x and plays well with most other plugins.
+Kimili Flash Embed utilizes SWFObject 2.2, is fully compatible with Wordpress 2.6 and later and plays well with most other plugins.
 
 == Installation ==
 
@@ -21,6 +21,7 @@ Installing the plugin is as easy as unzipping and uploading the entire kimili-fl
 == Screenshots ==
 
 1. The Kimili Flash Embed Tag Generator, as rendered by by Wordpress 2.7.
+2. The Kimili Flash Embed Preferences page as of v.2.1
 
 == Basic Usage ==
 
@@ -158,7 +159,7 @@ That is all you need in order to invoke the Express Install functionality.  In t
 
 == Defining Alternate Content for a Flash Movie ==
 
-With KFE 2.0, it is now _much_ easier to specify alternative content which gets displayed when your Flash doesn't get rendered. This could happen if a user doesn't have a recent enough Flash player installed or lacks the Flash player altogether, such as on an iPhone. Another reason to specify alternative content is for search engine optimization, or SEO. Most search engines aren't very good at indexing content in Flash movies, if they can do it at all (Google can, but only with content that has been hard coded into a SWF--dynamic content in a SWF doesn't get indexed). In these cases it's best to specify some alternative content for your SWF.
+As of KFE 2.0, it is now _much_ easier to specify alternative content which gets displayed when your Flash doesn't get rendered. This could happen if a user doesn't have a recent enough Flash player installed or lacks the Flash player altogether, such as on an iPhone. Another reason to specify alternative content is for search engine optimization, or SEO. Most search engines aren't very good at indexing content in Flash movies, if they can do it at all (Google can, but only with content that has been hard coded into a SWF--dynamic content in a SWF doesn't get indexed). In these cases it's best to specify some alternative content for your SWF.
 
 To define alternative content for a SWF, you can now nest arbitrary HTML inside a KFE tag and it will be treated as alternate content for that SWF. The Tag Generator does this for you automatically. Properly nested alternative content looks like this:
 
@@ -178,38 +179,113 @@ To define alternative content for a SWF, you can now nest arbitrary HTML inside 
 	
 == Configuration Options ==	
 
-New to KFE 2.0 are configuration options which allow you to customize how the plugin behaves as well as set certain defaults for the Tag Generator and KFE tags that omit some parameters. In Wordpress, you can find the options by navigating to _Settings &rarr; Kimili Flash Embed_. You'll find the following options available to you:
+KFE 2.1 features configuration options which allow you to customize how the plugin behaves as well as set all defaults for the Tag Generator and KFE tags that omit some parameters. In Wordpress, you can find the options by navigating to _Settings &rarr; Kimili Flash Embed_. Unless otherwise noted, the default tag generator values will be blank or unselected. You'll find the following options available to you:
 
-**SWF Filename**
-This is the default SWF filename which is populated in the **Flash (.swf)** field in the Tag Generator. This is especially useful if you use a common player to play FLVs, for instance. You can specify a URL with an absolute file path (i.e. @/flies/flash/player.swf@). Default is *untitled.swf*.
-
-**Element Class Name**
-This is the CSS class name applied to your rendered Flash movies. If you omit this attribute from a KFE tag, whatever value you have set here will be applied to the tag. Default is _flashmovie_.
+= SWFObject Configuration Defaults =
 
 **Publish Method**
 Specifies the default [publishing method](http://code.google.com/p/swfobject/wiki/documentation#Should_I_use_the_static_or_dynamic_publishing_method?) for your SWF. If you omit this attribute from a KFE tag, whatever value you have set here will be applied to the tag. Default is _static_
 
-**Dimensions (width&times;height)**
-Specifies the default width and height for your SWFs. If you omit either of these attributes from a KFE tag, whatever value you have set here will be applied to the tag. Default is _400&times;300_
-
 **Flash Version**
 Specifies the default Flash player version (Major.Minor.Release format) required to display your SWFs. If you omit this attribute from a KFE tag, whatever value you have set here will be applied to the tag. Default is _8.0.0_
 
-**Alternate Content**
-Specifies the default "alternative content":#altContent to display when your SWF isn't rendered. Default is a "Get Flash Player" badge linked to Adobe's Flash Player download page.
+**Adobe Express Install**
+Specifies whether or not you want to use Express Install functionality in your SWFs for users who don't have the minimum version of the Flash Player you've defined installed. Default is _yes_.
 
+= SWF Definition Defaults =
+
+**SWF Filename**
+This is the default SWF filename which is populated in the **Flash (.swf)** field in the Tag Generator. This is especially useful if you use a common player to play FLVs, for instance. You can specify a URL with an absolute file path (i.e. @/flies/flash/player.swf@). Default is *untitled.swf*.
+
+**Dimensions (width&times;height)**
+Specifies the default width and height for your SWFs. If you omit either of these attributes from a KFE tag, whatever value you have set here will be applied to the tag. Default is _400&times;300_
+
+= Attributes =
+
+**Flash Content ID**
+This is the CSS class name applied to your rendered Flash movies. This uniquely identifies the Flash movie so that it can be referenced using a scripting language or by CSS.
+
+**class**
+This is the CSS class name applied to your rendered Flash movies. If you omit this attribute from a KFE tag, whatever value you have set here will be applied to the tag. Default is _flashmovie_.
+
+**align**
+HTML alignment of the object element. If this attribute is omitted, it by default centers the movie and crops edges if the browser window is smaller than the movie. NOTE: Using this attribute is not valid in XHTML 1.0 Strict.
+
+= Parameters =
+
+**play**
+Specifies whether the movie begins playing immediately on loading in the browser. The default value is true if this attribute is omitted.
+
+**loop**
+Specifies whether the movie repeats indefinitely or stops when it reaches the last frame. The default value is true if this attribute is omitted.
+
+**menu**
+Shows a shortcut menu when users right-click (Windows) or control-click (Macintosh) the SWF file. To show only About Flash in the shortcut menu, deselect this option. By default, this option is set to true.
+
+**quality**
+Specifies the trade-off between processing time and appearance. The default value is 'high' if this attribute is omitted.
+
+**scale**
+Specifies scaling, aspect ratio, borders, distortion and cropping for if you have changed the document's original width and height.
+
+**salign**
+Specifies where the content is placed within the application window and how it is cropped.
+
+**wmode**
+Sets the Window Mode property of the Flash movie for transparency, layering, and positioning in the browser. The default value is 'window' if this attribute is omitted.
+
+**bgcolor**
+Hexadecimal RGB value in the format #RRGGBB, which specifies the background color of the movie, which will override the background color setting specified in the Flash file.
+
+**devicefont**
+Specifies whether static text objects that the Device Font option has not been selected for will be drawn using device fonts anyway, if the necessary fonts are available from the operating system.
+
+**seamlesstabbing**
+Specifies whether users are allowed to use the Tab key to move keyboard focus out of a Flash movie and into the surrounding HTML (or the browser, if there is nothing focusable in the HTML following the Flash movie). The default value is true if this attribute is omitted.
+
+**allowfullscreen**
+Enables full-screen mode. The default value is false if this attribute is omitted. You must have version 9,0,28,0 or greater of Flash Player installed to use full-screen mode.
+
+**allowscriptaccess**
+Controls the ability to perform outbound scripting from within a Flash SWF. The default value is 'always' if this attribute is omitted.
+
+**allownetworking**
+Controls a SWF file's access to network functionality. The default value is 'all' if this attribute is omitted.
+
+**base**
+Specifies the base directory or URL used to resolve all relative path statements in the Flash Player movie. This attribute is helpful when your Flash Player movies are kept in a different directory from your other files.
+
+**fvars**
+Allows you to pass variables to a Flash movie. You need to separate individual name/variable pairs with a semicolon (i.e. name=John Doe ; count=3).
+
+= Alternative Content Default =
+
+**Alternate Content**
+Specifies the default "alternative content":#altContent to display when your SWF isn't rendered. Default is a "Get Flash Player" badge linked to Adobe's Flash Player download page, rendered as follows:
+
+	<p>
+		<a href="http://adobe.com/go/getflashplayer">
+			<img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
+		</a>
+	</p>
+
+= Javascript Options =
+	
 **Create a reference to SWFObject.js?**
 Decide whether or not you want to create a reference to SWFObject 2.1 in the HTML of your page templates. It is useful to turn this off if you already have SWFObject being referenced elsewhere in your code. Note that SWFObject 2.x is NOT compatible with SWFObject 1.x! *KFE 2 requires SWFObject 2.x*. Default is _true_
 
 **Where do you want to reference SWFObject.js from?**
 If you choose to create a reference to SWFObject 2.1, you have 2 options in terms of where you reference it from. **Internal** creates a link to the copy of SWFObject bundled with the plugin. **Google Ajax Library** creates a link to the copy of SWFObject hosted in the [Google's Hosted Ajax Library](http://code.google.com/p/swfobject/wiki/hosted_library). The advantage of this is that the Javascript gets served with correct cache headers and it saves you a bit of bandwidth on your server. Default is _Google Ajax Library_
 
+**Do you want to use SWFObject's autohide functionality?**
+By default, SWFObject temporarily hides your SWF or alternative content until the library has decided which content to display. This option allows you to disable that behavior.
+
 == Backwards Compatibility Gotchas ==
 
 KFE 2.0 is _mostly_ backwards compatible with KFE 1.x, so if you've been using the 1.x version and just creating basic KFE tags, you should be able to upgrade with no issues whatsoever. There are, however, some attributes which were available in 1.x which are no longer available in 2.0. This is due primarily to changes in SWFObject itself when it went to 2.0, unless otherwise noted. The 1.x attributes which are no longer supported are:
 
 * `detectkey`
-* `noscript` - This is now handled by defining "alternate content":#altContent properly.
+* `noscript` - This is now handled by defining alternate content properly.
 * `redirecturl`
 * `xiredirecturl`
 
@@ -222,6 +298,12 @@ So I can maintain them in one place, please see the Kimili Flash Embed FAQs at t
 == Changelog ==
 
 > **Note:** Because this plugin has been around for a while and numerous older versions exist, yet version 1.4 is the first version to actually be included in the Wordpress Plugin Repository, any older versions are NOT available here.  If you'd like to download an older version, you can do so at the [Kimili Flash Embed for Wordpress Home Page](http://kimili.com/plugins/kml_flashembed/wp).
+
+= Version 2.1 =
+
+* Now utilizes SWFObject 2.2
+* Added ability to set defaults for every attribute in the KFE tag generator.
+* Fixed an issue when using KFE on SSL pages.
 
 = Version 2.0.3 =
 
