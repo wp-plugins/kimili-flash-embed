@@ -14,6 +14,9 @@ require_once($wp_path . $slash . 'wp-admin' . $slash . 'admin.php');
 load_plugin_textdomain( 'kimili-flash-embed', FALSE, 'kimili-flash-embed/langs/');
 
 $title = "Kimili Flash Embed";
+
+// Fix a conflict with the contact form 7 plugin
+function wpcf7_add_tag_generator(){}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" <?php do_action('admin_xml_ns'); ?> <?php language_attributes(); ?>>
