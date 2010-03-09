@@ -6,7 +6,7 @@ Tested up to: 2.9.2
 Stable tag: 2.1.3
 Donate Link: http://kimili.com/donate
 
-Provides a WordPress interface for SWFObject, the best way to embed Flash content on any site.
+Provides a WordPress interface for SWFObject 2, the best way to embed Flash content on any site.
 
 == Description ==
 
