@@ -302,6 +302,7 @@ So I can maintain them in one place, please see the Kimili Flash Embed FAQs at t
 = Version 2.1.4 =
 
 * Fixed a conflict with the WP FollowMe plugin, where the flash content of that plugin was getting hidden.
+* Added Latvian localization (Thanks to [Antsar](http://antsar.info/))
 
 = Version 2.1.3 =
 
