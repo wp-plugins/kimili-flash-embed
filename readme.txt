@@ -299,6 +299,10 @@ So I can maintain them in one place, please see the Kimili Flash Embed FAQs at t
 
 > **Note:** Because this plugin has been around for a while and numerous older versions exist, yet version 1.4 is the first version to actually be included in the Wordpress Plugin Repository, any older versions are NOT available here.  If you'd like to download an older version, you can do so at the [Kimili Flash Embed for Wordpress Home Page](http://kimili.com/plugins/kml_flashembed/wp).
 
+= Version 2.1.4 =
+
+* Fixed a conflict with the WP FollowMe plugin, where the flash content of that plugin was getting hidden.
+
 = Version 2.1.3 =
 
 * Corrected a conflict with the Contact Form 7 plugin which was causing a blank KFE Tag Generator window.

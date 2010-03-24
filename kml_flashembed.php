@@ -4,7 +4,7 @@
 Plugin Name: Kimili Flash Embed
 Plugin URI: http://www.kimili.com/plugins/kml_flashembed
 Description: Provides a full Wordpress interface for <a href="http://code.google.com/p/swfobject/">SWFObject</a> - the best way to embed Flash on your site.
-Version: 2.1.3
+Version: 2.1.4b
 Author: Michael Bester
 Author URI: http://www.kimili.com
 Update: http://www.kimili.com/plugins/kml_flashembed/wp
@@ -25,7 +25,7 @@ Update: http://www.kimili.com/plugins/kml_flashembed/wp
 class KimiliFlashEmbed
 {
 	
-	var $version = '2.1.3';
+	var $version = '2.1.4b';
 	var $staticSwfs = array();
 	var $dynamicSwfs = array();
 	
@@ -70,6 +70,7 @@ class KimiliFlashEmbed
 			if (is_feed()) {
 				$this->doObStart();
 			} else {
+				add_action('wp_head', array(&$this, 'disableAutohide'), 9);
 				add_action('wp_head', array(&$this, 'doObStart'));
 				add_action('wp_head', array(&$this, 'addScriptPlaceholder'));
 				add_action('wp_footer', array(&$this, 'doObEnd'));
@@ -234,6 +235,38 @@ class KimiliFlashEmbed
 		echo 'KML_FLASHEMBED_PROCESS_SCRIPT_CALLS';
 	}
 	
+	function disableAutohide()
+	{
+		// If we want to use autohide, or we don't have any swfs on the page, drop out.
+		if (get_option('kml_flashembed_swfobject_use_autohide')) {
+			return false;
+		}
+		
+		// Otherwise build out the script.
+		$out = array();
+		
+		$out[]	= '';
+		$out[]	= '<script type="text/javascript" charset="utf-8">';
+		$out[]	= '';
+		$out[]	= '	/**';
+		$out[]	= '	 * Courtesy of Kimili Flash Embed - Version ' . $this->version;
+		$out[]	= '	 * by Michael Bester - http://kimili.com';
+		$out[]	= '	 */';
+		$out[]	= '';
+		$out[]	= '	(function(){';
+		$out[]	= '		try {';
+		$out[]	= '			// Disabling SWFObject\'s Autohide feature';
+		$out[]	= '			if (typeof swfobject.switchOffAutoHideShow === "function") {';
+		$out[]	= '				swfobject.switchOffAutoHideShow();';
+		$out[]	= '			}';
+		$out[]	= '		} catch(e) {}';
+		$out[]	= '	})();';
+		$out[]	= '</script>';
+		$out[]	= '';
+		
+		echo join("\n", $out);
+	}
+	
 	function scriptSwfs()
 	{
 		// If we don't have any swfs on the page, drop out.
@@ -254,12 +287,6 @@ class KimiliFlashEmbed
 		$out[]		= '';
 		$out[]		= '	(function(){';
 		$out[]		= '		try {';
-		if (!get_option('kml_flashembed_swfobject_use_autohide')) {
-			$out[]	= '			// Disabling SWFObject\'s Autohide feature';
-			$out[]	= '			if (typeof swfobject.switchOffAutoHideShow === "function") {';
-			$out[]	= '				swfobject.switchOffAutoHideShow();';
-			$out[]	= '			}';
-		}
 		if (count($this->staticSwfs) > 0) {
 			$out[]	= '			// Registering Statically Published SWFs';
 		}
@@ -321,7 +348,7 @@ class KimiliFlashEmbed
 		}
 		
 		$out[]		= '		} catch(e) {}';
-		$out[]		= '	}())';
+		$out[]		= '	})();';
 		$out[]		= '</script>';
 		$out[]		= '';
 		
