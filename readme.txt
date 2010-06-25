@@ -2,8 +2,8 @@
 Contributors: Kimili
 Tags: flash, flex, swf, swfobject, javascript
 Requires at least: 2.6
-Tested up to: 3.0b2
-Stable tag: 2.1.4
+Tested up to: 3.0
+Stable tag: 2.1.5
 Donate Link: http://kimili.com/donate
 
 Provides a WordPress interface for SWFObject 2, the best way to embed Flash content on any site.
@@ -18,6 +18,7 @@ For non-english users, Kimili Flash Embed has been localized to the following la
 
 * Belorussian
 * Dutch
+* German
 * Hindi
 * Latvian
 * Russian
@@ -308,11 +309,16 @@ So I can maintain them in one place, please see the Kimili Flash Embed FAQs at t
 
 > **Note:** Because this plugin has been around for a while and numerous older versions exist, yet version 1.4 is the first version to actually be included in the Wordpress Plugin Repository, any older versions are NOT available here.  If you'd like to download an older version, you can do so at the [Kimili Flash Embed for Wordpress Home Page](http://kimili.com/plugins/kml_flashembed/wp).
 
+= Version 2.1.5 =
+
+* Tested up to Wordpress 3.0
+* Added German localization (Thanks to [BHV](http://www.bhvnederland.nl))
+
 = Version 2.1.4 =
 
 * Tested up to Wordpress 3.0 beta 2
 * Fixed a conflict with the WP FollowMe plugin, where the flash content of that plugin was getting hidden.
-* Added Dutch localization (Thanks to [Alanya Hotels](http://www.alanyahotels.com ))
+* Added Dutch localization (Thanks to [Alanya Hotels](http://www.alanyahotels.com))
 * Added Latvian localization (Thanks to [Antsar](http://antsar.info/))
 
 = Version 2.1.3 =
