@@ -25,7 +25,7 @@ Update: http://www.kimili.com/plugins/kml_flashembed/wp
 class KimiliFlashEmbed
 {
 	
-	var $version = '2.1.5';
+	var $version = '2.2';
 	var $staticSwfs = array();
 	var $dynamicSwfs = array();
 	
