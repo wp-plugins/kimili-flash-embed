@@ -4,7 +4,7 @@
 Plugin Name: Kimili Flash Embed
 Plugin URI: http://www.kimili.com/plugins/kml_flashembed
 Description: Provides a full Wordpress interface for <a href="http://code.google.com/p/swfobject/">SWFObject</a> - the best way to embed Flash on your site.
-Version: 2.1.5
+Version: 2.2
 Author: Michael Bester
 Author URI: http://www.kimili.com
 Update: http://www.kimili.com/plugins/kml_flashembed/wp
@@ -67,7 +67,7 @@ class KimiliFlashEmbed
 			
 		} else {
 			// Front-end
-			if (is_feed()) {
+			if ($this->is_feed()) {
 				$this->doObStart();
 			} else {
 				add_action('wp_head', array(&$this, 'disableAutohide'), 9);
@@ -480,8 +480,12 @@ class KimiliFlashEmbed
 			ob_end_flush();
 		}
 	}
-
 	
+	function is_feed()
+	{
+		return preg_match("/(\/\?feed=|\/feed)/i",$_SERVER['REQUEST_URI']);
+	}
+
 	function set_admin_js_vars()
 	{
 ?>
@@ -533,7 +537,7 @@ class KimiliFlashEmbed
 		wp_enqueue_script( 'kimiliflashembed', plugins_url('/kimili-flash-embed/js/kfe.js'), array(), $this->version );
 
 		// update options
-		if ($_POST['action'] && $_POST['action'] == 'kml_flashembed_update') {
+		if (isset($_POST['action']) && $_POST['action'] == 'kml_flashembed_update') {
 			
 			$filename				= preg_replace("/(^|&\S+;)|(<[^>]*>)/U", '', strip_tags($_POST['filename']));
 			$target_class 			= preg_replace("/(^|&\S+;)|(<[^>]*>)/U", '', strip_tags($_POST['target_class']));

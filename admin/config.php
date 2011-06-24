@@ -20,7 +20,7 @@ $title = "Kimili Flash Embed";
 <html xmlns="http://www.w3.org/1999/xhtml" <?php do_action('admin_xml_ns'); ?> <?php language_attributes(); ?>>
 <head>
 <meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php echo get_option('blog_charset'); ?>" />
-<title><?php bloginfo('name') ?> &rsaquo; <?php echo wp_specialchars( $title ); ?> &#8212; WordPress</title>
+<title><?php bloginfo('name') ?> &rsaquo; <?php echo esc_html( $title ); ?> &#8212; WordPress</title>
 <?php
 
 wp_admin_css( 'css/global' );
@@ -48,7 +48,7 @@ do_action('admin_head');
 <link rel="stylesheet" href="<?php echo plugins_url('/kimili-flash-embed/css/generator.css'); ?>?ver=<?php echo $KimiliFlashEmbed->version ?>" type="text/css" media="screen" title="no title" charset="utf-8" />
 <script src="<?php echo plugins_url('/kimili-flash-embed/js/kfe.js'); ?>?ver=<?php echo $KimiliFlashEmbed->version ?>" type="text/javascript" charset="utf-8"></script>
 <!--
-	<?php echo wp_specialchars($title." Tag Generator" ); ?> is heavily based on
+	<?php echo esc_html($title." Tag Generator" ); ?> is heavily based on
 	SWFObject 2 HTML and JavaScript generator v1.2 <http://code.google.com/p/swfobject/>
 	Copyright (c) 2007-2008 Geoff Stearns, Michael Williams, and Bobby van der Sluis
 	This software is released under the MIT License <http://www.opensource.org/licenses/mit-license.php>
@@ -59,7 +59,7 @@ do_action('admin_head');
 
 	<div class="wrap" id="KFE_Generator">
 	
-		<h2><?php echo wp_specialchars($title." ".__("Tag Generator",'kimili-flash-embed') ); ?></h2> 
+		<h2><?php echo esc_html($title." ".__("Tag Generator",'kimili-flash-embed') ); ?></h2> 
 
 		<div class="note"><?php _e('Asterisk (<span class="req">*</span>) indicates required field','kimili-flash-embed'); ?></div> 
 		<fieldset> 
