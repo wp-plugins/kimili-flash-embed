@@ -4,7 +4,7 @@
 Plugin Name: Kimili Flash Embed
 Plugin URI: http://www.kimili.com/plugins/kml_flashembed
 Description: Provides a full Wordpress interface for <a href="http://code.google.com/p/swfobject/">SWFObject</a> - the best way to embed Flash on your site.
-Version: 2.2.1
+Version: 2.3
 Author: Michael Bester
 Author URI: http://www.kimili.com
 Update: http://www.kimili.com/plugins/kml_flashembed/wp
@@ -14,7 +14,7 @@ Update: http://www.kimili.com/plugins/kml_flashembed/wp
 *
 *	KIMILI FLASH EMBED
 *
-*	Copyright 2010 Michael Bester (http://www.kimili.com)
+*	Copyright 2010-2012 Michael Bester (http://www.kimili.com)
 *	Released under the GNU General Public License (http://www.gnu.org/licenses/gpl.html)
 *
 */
@@ -25,7 +25,7 @@ Update: http://www.kimili.com/plugins/kml_flashembed/wp
 class KimiliFlashEmbed
 {
 
-	var $version = '2.2.1';
+	var $version = '2.3';
 	var $staticSwfs = array();
 	var $dynamicSwfs = array();
 
@@ -47,7 +47,7 @@ class KimiliFlashEmbed
 			add_option('kml_flashembed_version_revision', '0');
 			add_option('kml_flashembed_alt_content', '<p><a href="http://adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a></p>');
 			add_option('kml_flashembed_reference_swfobject', '1');
-			add_option('kml_flashembed_swfobject_source', '0');
+			add_option('kml_flashembed_swfobject_source', '1');
 			add_option('kml_flashembed_width', '400');
 			add_option('kml_flashembed_height', '300');
 
@@ -61,9 +61,8 @@ class KimiliFlashEmbed
 			}
 
 			// Queue Embed JS
-			add_action( 'admin_head', array(&$this, 'set_admin_js_vars'));
-			wp_enqueue_script( 'kimiliflashembed', plugins_url('/kimili-flash-embed/js/kfe.js'), array(), $this->version );
-
+			add_action( 'admin_head', array(&$this, 'setAdminJavaScriptVars'));
+			add_action( 'admin_enqueue_scripts', array(&$this, 'enqueueAdminJavaScript'));
 
 		} else {
 			// Front-end
@@ -79,17 +78,39 @@ class KimiliFlashEmbed
 		}
 
 		// Queue SWFObject
-		if ( get_option('kml_flashembed_reference_swfobject') == '1') {
-			// Let's override WP's bundled swfobject, cause as of WP 2.9, it's still using 2.1
-			wp_deregister_script('swfobject');
-			// and register our own.
-			if ( get_option('kml_flashembed_swfobject_source') == '0' ) {
-				wp_register_script( 'swfobject', 'http' . (is_ssl() ? 's' : '') . '://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js', array(), '2.2' );
-			} else {
-				wp_register_script( 'swfobject', plugins_url('/kimili-flash-embed/js/swfobject.js'), array(), '2.2' );
-			}
-			wp_enqueue_script('swfobject');
-		}
+		add_action( 'wp_enqueue_scripts', array(&$this, 'enqueueSWFObjectJavaScript'));
+	}
+
+	function enqueueAdminJavaScript()
+	{
+		wp_enqueue_script( 'kimiliflashembed', plugins_url('/kimili-flash-embed/js/kfe.js'), array(), $this->version );
+	}
+
+	function enqueueSWFObjectJavaScript()
+	{
+        $swfobject_source = get_option('kml_flashembed_swfobject_source');
+
+        if ( $swfobject_source == '0' ) {
+        		// Google Ajax Lib
+        		wp_deregister_script('swfobject');
+                wp_register_script( 'swfobject', 'http' . (is_ssl() ? 's' : '') . '://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js', array(), '2.2' );
+        } else {
+        	if ( ! $this->isMinimumWordpressVersion('3.3.2') ) {
+        		// Let's override WP's bundled swfobject, because before WP 3.3.2
+        		// an insecure (or old) version of the swfobject was bundled with WP.
+        		// http://core.trac.wordpress.org/changeset/20499
+        		wp_deregister_script('swfobject');
+                wp_register_script( 'swfobject', plugins_url('/kimili-flash-embed/js/swfobject.js'), array(), '2.2-20120604' );
+            }
+        }
+
+        wp_enqueue_script('swfobject');
+	}
+
+	function isMinimumWordpressVersion($minimum_version)
+	{
+		$wp_version = get_bloginfo( 'version' );
+		return (version_compare($wp_version, $minimum_version) >= 0);
 	}
 
 	function parseShortcodes($content)
@@ -486,7 +507,7 @@ class KimiliFlashEmbed
 		return preg_match("/(\/\?feed=|\/feed)/i",$_SERVER['REQUEST_URI']);
 	}
 
-	function set_admin_js_vars()
+	function setAdminJavaScriptVars()
 	{
 ?>
 <script type="text/javascript" charset="utf-8">
@@ -524,7 +545,7 @@ class KimiliFlashEmbed
 
 	// Set up the Plugin Options Page
 	function options_menu() {
-		add_options_page('Kimili Flash Embed Options', 'Kimili Flash Embed', 8, __FILE__, array(&$this, 'settings_page'));
+		add_options_page('Kimili Flash Embed Options', 'Kimili Flash Embed', 'manage_options', __FILE__, array(&$this, 'settings_page'));
 	}
 
 	// Render the settings page
@@ -532,9 +553,6 @@ class KimiliFlashEmbed
 
 		$message = null;
 		$message_updated = __("Kimili Flash Embed Options Updated.", 'kimili_flash_embed');
-
-		// Create a link to the KFE JS
-		wp_enqueue_script( 'kimiliflashembed', plugins_url('/kimili-flash-embed/js/kfe.js'), array(), $this->version );
 
 		// update options
 		if (isset($_POST['action']) && $_POST['action'] == 'kml_flashembed_update') {
@@ -1005,7 +1023,7 @@ class KimiliFlashEmbed
 				<th scope="row" style="vertical-align:top;"><?php _e("Where do you want to reference SWFObject.js from?", 'kimili-flash-embed'); ?></th>
 				<td>
 					<input type="radio" id="swfobject_source-0" name="swfobject_source" value="0" class="radio" <?php if (!get_option('kml_flashembed_swfobject_source')) echo "checked=\"checked\""; ?> /><label for="swfobject_source-0"><?php _e("Google Ajax Library", 'kimili-flash-embed'); ?></label>
-					<input type="radio" id="swfobject_source-1" name="swfobject_source" value="1" class="radio" <?php if (get_option('kml_flashembed_swfobject_source')) echo "checked=\"checked\""; ?> /><label for="swfobject_source-1"><?php _e("Internal", 'kimili-flash-embed'); ?></label>
+					<input type="radio" id="swfobject_source-1" name="swfobject_source" value="1" class="radio" <?php if (get_option('kml_flashembed_swfobject_source')) echo "checked=\"checked\""; ?> /><label for="swfobject_source-1"><?php _e("Internal", 'kimili-flash-embed'); ?> <em><?php _e("(recommended)", 'kimili-flash-embed'); ?></em></label>
 					<br />
 					<a id="toggleSWFObjectReference" href="#SWFObjectReference"><?php _e("what is this",'kimili-flash-embed'); ?>?</a>
 					<div id="SWFObjectReference" class="help">
@@ -1013,10 +1031,11 @@ class KimiliFlashEmbed
 							<?php _e("If you choose to use Kimili Flash Embed to create a reference to swfobject.js (which is necessary for KFE to function properly), you have two options from where to reference the file:",'kimili-flash-embed'); ?>
 						</p>
 						<h4><?php _e("Google Ajax Library", 'kimili-flash-embed'); ?></h4>
-						<p><?php _e("The Google Ajax Library is a content distribution network the most popular open source JavaScript libraries, including SWFObject. Google hosts these libraries, correctly sets cache headers, and stays up to date with the most recent release versions.", 'kimili-flash-embed'); ?></p>
+						<p><?php _e("The Google Ajax Library is a content distribution network the most popular open source JavaScript libraries, including SWFObject. Google hosts these libraries and correctly sets cache headers.", 'kimili-flash-embed'); ?></p>
 						<p><?php _e("Choosing this option offers fast, reliable access to the SWFObject code. It also increases the chances that your users may already have SWFObject cached in their browsers if they have visited other sites that also utilize the Google hosted copy of SWFObject, making your site load even faster.", 'kimili-flash-embed'); ?></p>
 						<h4><?php _e("Internal", 'kimili-flash-embed'); ?></h4>
 						<p><?php _e("If you'd rather not rely on an external service to serve SWFObject to your users, you can choose to reference a copy of SWFObject which comes bundles with Kimili Flash Embed so it is served from the same server as the rest of your website.", 'kimili-flash-embed'); ?></p>
+						<p><strong><?php _e("Note that the bundled version of SWFObject includes a security fix which isn't available on the Google Ajax Library version at this time. It's recommended that you select the 'internal' option.", 'kimili-flash-embed'); ?></strong></p>
 					</div>
 				</td>
 			</tr>
