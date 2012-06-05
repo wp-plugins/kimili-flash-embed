@@ -311,7 +311,8 @@ So I can maintain them in one place, please see the Kimili Flash Embed FAQs at t
 
 > **Note:** Because this plugin has been around for a while and numerous older versions exist, yet version 1.4 is the first version to actually be included in the Wordpress Plugin Repository, any older versions are NOT available here.  If you'd like to download an older version, you can do so at the [Kimili Flash Embed for Wordpress Home Page](http://kimili.com/plugins/kml_flashembed/wp).
 
-= Version 2.3
+= Version 2.3 =
+
 * Security patch to utilize updated version of SWFObject (identified by [kitchin](http://wordpress.org/support/profile/kitchin)). Now, when choosing to use the internal version of SWFObject (which is the recommended approach as of this update), KFE will reference the copy of SWFObject included with Wordpress if you're using WP 3.3.2 or newer, otherwise, it'll reference the copy of SWFObject bundled with the plugin.
 * Addressed issues with some warnings being thrown.
 
