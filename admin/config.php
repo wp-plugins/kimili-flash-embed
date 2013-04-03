@@ -314,7 +314,7 @@ do_action('admin_head');
 						</select>
 					</div>
 					<div class="col3">
-						<label for="allowfullscreen" class="info" title="<?php _e("Enables full-screen mode. The default value is false if this attribute is omitted. You must have version 9,0,28,0 or greater of Flash Player installed to use full-screen mode.",'kimili-flash-embed'); ?>">allowfullscreen</label>
+						<label for="allowfullscreen" class="info" title="<?php _e("Enables full-screen mode. The default value is false if this attribute is omitted. You must have version 9.0.28.0 or greater of Flash Player installed to use full-screen mode.",'kimili-flash-embed'); ?>">allowfullscreen</label>
 					</div>
 					<div class="col4">
 						<select id="allowfullscreen" name="allowfullscreen">
@@ -326,7 +326,7 @@ do_action('admin_head');
 					<div class="clear">&nbsp;</div>
 					<div class="col1">&nbsp;</div>
 					<div class="col3">
-						<label for="allowscriptaccess" class="info" title="<?php _e('Controls the ability to perform outbound scripting from within a Flash SWF. If omitted, the default value is "sameDomain" in most situations, except if the user\'s Flash Player version is lower than 9.0.115.0 and the Flash movie is published for FP7 or earlier. In that case, the default will be "always".','kimili-flash-embed'); ?>">allowscriptaccess</label>
+						<label for="allowscriptaccess" class="info" title="<?php _e("Controls the ability to perform outbound scripting from within a Flash SWF. If omitted, the default value is 'sameDomain' in most situations, except if the user's Flash Player version is lower than 9.0.115.0 and the Flash movie is published for FP7 or earlier. In that case, the default will be 'always'.",'kimili-flash-embed'); ?>">allowscriptaccess</label>
 					</div>
 					<div class="col4">
 						<select id="allowscriptaccess" name="allowscriptaccess">
