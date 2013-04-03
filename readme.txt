@@ -2,7 +2,7 @@
 Contributors: Kimili, kitchin
 Tags: flash, flex, swf, swfobject, javascript
 Requires at least: 2.8
-Tested up to: 3.3.2
+Tested up to: 3.5.1
 Stable tag: 2.3
 Donate Link: http://kimili.com/donate
 
@@ -256,10 +256,10 @@ Specifies whether static text objects that the Device Font option has not been s
 Specifies whether users are allowed to use the Tab key to move keyboard focus out of a Flash movie and into the surrounding HTML (or the browser, if there is nothing focusable in the HTML following the Flash movie). The default value is true if this attribute is omitted.
 
 **allowfullscreen**
-Enables full-screen mode. The default value is false if this attribute is omitted. You must have version 9,0,28,0 or greater of Flash Player installed to use full-screen mode.
+Enables full-screen mode. The default value is false if this attribute is omitted. You must have version 9.0.28.0 or greater of Flash Player installed to use full-screen mode.
 
 **allowscriptaccess**
-Controls the ability to perform outbound scripting from within a Flash SWF. The default value is 'always' if this attribute is omitted.
+Controls the ability to perform outbound scripting from within a Flash SWF. If omitted, the default value is "sameDomain" in most situations, except if the user's Flash Player version is lower than 9.0.115.0 and the Flash movie is published for FP7 or earlier. In that case, the default will be "always".
 
 **allownetworking**
 Controls a SWF file's access to network functionality. The default value is 'all' if this attribute is omitted.
@@ -310,6 +310,12 @@ So I can maintain them in one place, please see the Kimili Flash Embed FAQs at t
 == Changelog ==
 
 > **Note:** Because this plugin has been around for a while and numerous older versions exist, yet version 1.4 is the first version to actually be included in the Wordpress Plugin Repository, any older versions are NOT available here.  If you'd like to download an older version, you can do so at the [Kimili Flash Embed for Wordpress Home Page](http://kimili.com/plugins/kml_flashembed/wp).
+
+= Version 2.3.1 =
+
+* Changed the way the Generator code detects the Wordpress directory. This will allow KFE to be references via symbolic links.
+* Updated information about the "allowScriptAccess" defaults
+* Fixed some typos and clarified some information about how the internal SWFObject references are set up. (Thanks Adam Samec for pointing out these last two tweaks)
 
 = Version 2.3 =
 

@@ -2,19 +2,19 @@
 
 /*
 Plugin Name: Kimili Flash Embed
-Plugin URI: http://www.kimili.com/plugins/kml_flashembed
+Plugin URI: http://www.kimili.com/plugins/flash-embed
 Description: Provides a full Wordpress interface for <a href="http://code.google.com/p/swfobject/">SWFObject</a> - the best way to embed Flash on your site.
-Version: 2.3
+Version: 2.3.1
 Author: Michael Bester
 Author URI: http://www.kimili.com
-Update: http://www.kimili.com/plugins/kml_flashembed/wp
+Update: http://www.kimili.com/plugins/flash-embed/wp
 */
 
 /*
 *
 *	KIMILI FLASH EMBED
 *
-*	Copyright 2010-2012 Michael Bester (http://www.kimili.com)
+*	Copyright 2010-2013 Michael Bester (http://www.kimili.com)
 *	Released under the GNU General Public License (http://www.gnu.org/licenses/gpl.html)
 *
 */
@@ -25,7 +25,7 @@ Update: http://www.kimili.com/plugins/kml_flashembed/wp
 class KimiliFlashEmbed
 {
 
-	var $version = '2.3';
+	var $version = '2.3.1';
 	var $staticSwfs = array();
 	var $dynamicSwfs = array();
 
@@ -1031,10 +1031,10 @@ class KimiliFlashEmbed
 							<?php _e("If you choose to use Kimili Flash Embed to create a reference to swfobject.js (which is necessary for KFE to function properly), you have two options from where to reference the file:",'kimili-flash-embed'); ?>
 						</p>
 						<h4><?php _e("Google Ajax Library", 'kimili-flash-embed'); ?></h4>
-						<p><?php _e("The Google Ajax Library is a content distribution network the most popular open source JavaScript libraries, including SWFObject. Google hosts these libraries and correctly sets cache headers.", 'kimili-flash-embed'); ?></p>
+						<p><?php _e("The Google Ajax Library is a content distribution network for the most popular open source JavaScript libraries, including SWFObject. Google hosts these libraries and correctly sets cache headers.", 'kimili-flash-embed'); ?></p>
 						<p><?php _e("Choosing this option offers fast, reliable access to the SWFObject code. It also increases the chances that your users may already have SWFObject cached in their browsers if they have visited other sites that also utilize the Google hosted copy of SWFObject, making your site load even faster.", 'kimili-flash-embed'); ?></p>
 						<h4><?php _e("Internal", 'kimili-flash-embed'); ?></h4>
-						<p><?php _e("If you'd rather not rely on an external service to serve SWFObject to your users, you can choose to reference a copy of SWFObject which comes bundles with Kimili Flash Embed so it is served from the same server as the rest of your website.", 'kimili-flash-embed'); ?></p>
+						<p><?php _e("If you'd rather not rely on an external service to serve SWFObject to your users, you can choose to reference a copy of SWFObject that is included with WordPress. To ensure you're utilizing the latest version of SWFObject, this option will reference the copy that is included with your Wordpress installation, unless your that installation is older than Wordpress 3.3.2. In that case, selecting this option will reference the copy of SWFObject which is included with Kimili Flash Embed. In either case, selecting this option serves SWFObject from the same server as the rest of your website.", 'kimili-flash-embed'); ?></p>
 						<p><strong><?php _e("Note that the bundled version of SWFObject includes a security fix which isn't available on the Google Ajax Library version at this time. It's recommended that you select the 'internal' option.", 'kimili-flash-embed'); ?></strong></p>
 					</div>
 				</td>
