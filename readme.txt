@@ -3,7 +3,7 @@ Contributors: Kimili, kitchin
 Tags: flash, flex, swf, swfobject, javascript
 Requires at least: 2.8
 Tested up to: 3.5.1
-Stable tag: 2.3
+Stable tag: 2.3.1
 Donate Link: http://kimili.com/donate
 
 Provides a WordPress interface for SWFObject 2, the best way to embed Flash content on any site.
@@ -316,6 +316,7 @@ So I can maintain them in one place, please see the Kimili Flash Embed FAQs at t
 * Changed the way the Generator code detects the Wordpress directory. This will allow KFE to be references via symbolic links.
 * Updated information about the "allowScriptAccess" defaults
 * Fixed some typos and clarified some information about how the internal SWFObject references are set up. (Thanks Adam Samec for pointing out these last two tweaks)
+* Removed inline attribution in public HTML
 
 = Version 2.3 =
 
