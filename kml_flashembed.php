@@ -268,12 +268,6 @@ class KimiliFlashEmbed
 
 		$out[]	= '';
 		$out[]	= '<script type="text/javascript" charset="utf-8">';
-		$out[]	= '';
-		$out[]	= '	/**';
-		$out[]	= '	 * Courtesy of Kimili Flash Embed - Version ' . $this->version;
-		$out[]	= '	 * by Michael Bester - http://kimili.com';
-		$out[]	= '	 */';
-		$out[]	= '';
 		$out[]	= '	(function(){';
 		$out[]	= '		try {';
 		$out[]	= '			// Disabling SWFObject\'s Autohide feature';
@@ -300,12 +294,6 @@ class KimiliFlashEmbed
 
 		$out[]		= '';
 		$out[]		= '<script type="text/javascript" charset="utf-8">';
-		$out[]		= '';
-		$out[]		= '	/**';
-		$out[]		= '	 * Courtesy of Kimili Flash Embed - Version ' . $this->version;
-		$out[]		= '	 * by Michael Bester - http://kimili.com';
-		$out[]		= '	 */';
-		$out[]		= '';
 		$out[]		= '	(function(){';
 		$out[]		= '		try {';
 		if (count($this->staticSwfs) > 0) {
