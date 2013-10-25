@@ -4,7 +4,7 @@
 Plugin Name: Kimili Flash Embed
 Plugin URI: http://www.kimili.com/plugins/flash-embed
 Description: Provides a full Wordpress interface for <a href="http://code.google.com/p/swfobject/">SWFObject</a> - the best way to embed Flash on your site.
-Version: 2.3.1
+Version: 2.3.2
 Author: Michael Bester
 Author URI: http://www.kimili.com
 Update: http://www.kimili.com/plugins/flash-embed/wp
@@ -25,7 +25,7 @@ Update: http://www.kimili.com/plugins/flash-embed/wp
 class KimiliFlashEmbed
 {
 
-	var $version = '2.3.1';
+	var $version = '2.3.2';
 	var $staticSwfs = array();
 	var $dynamicSwfs = array();
 
