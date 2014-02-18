@@ -3,7 +3,7 @@ Contributors: Kimili, kitchin
 Tags: flash, flex, swf, swfobject, javascript
 Requires at least: 2.8
 Tested up to: 3.8.1
-Stable tag: 2.3.2
+Stable tag: 2.4
 Donate Link: http://kimili.com/donate
 
 Provides a WordPress interface for SWFObject 2, the best way to embed Flash content on any site.
