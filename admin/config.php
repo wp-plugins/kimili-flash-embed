@@ -348,6 +348,20 @@ do_action('admin_head');
 						</select>
 					</div>
 					<div class="clear">&nbsp;</div>
+					<div class="col4">&nbsp;</div>
+					<div class="col3">&nbsp;</div>
+					<div class="col3">&nbsp;</div>
+                    <div class="col1">
+                        <label for="allowfullscreeninteractive" class="info" title="<?php _e("Enables full-screen interactive mode, in which content running in Flash Player can fill the entire screen and accept text input. The default is false if this attribute is omitted. You must have version 11,3 or greater of Flash Player installed to use full-screen interactive mode.",'kimili-flash-embed'); ?>">allowfullscreeninteractive</label>
+                    </div>
+                    <div class="col4">
+                        <select id="allowfullscreeninteractive" name="allowfullscreeninteractive">
+                            <option value="">Choose...</option>
+                            <option value="true">true</option>
+                            <option value="false">false</option>
+                        </select>
+                    </div>
+                    <div class="clear">&nbsp;</div>
 					<div class="col1">&nbsp;</div>
 					<div class="col3">
 						<label for="base" class="info" title="<?php _e("Specifies the base directory or URL used to resolve all relative path statements in the Flash Player movie. This attribute is helpful when your Flash Player movies are kept in a different directory from your other files.",'kimili-flash-embed'); ?>">base</label>

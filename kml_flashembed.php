@@ -4,7 +4,7 @@
 Plugin Name: Kimili Flash Embed
 Plugin URI: http://www.kimili.com/plugins/flash-embed
 Description: Provides a full Wordpress interface for <a href="http://code.google.com/p/swfobject/">SWFObject</a> - the best way to embed Flash on your site.
-Version: 2.3.2
+Version: 2.4.0
 Author: Michael Bester
 Author URI: http://www.kimili.com
 Update: http://www.kimili.com/plugins/flash-embed/wp
@@ -25,7 +25,7 @@ Update: http://www.kimili.com/plugins/flash-embed/wp
 class KimiliFlashEmbed
 {
 
-	var $version = '2.3.2';
+	var $version = '2.4.0';
 	var $staticSwfs = array();
 	var $dynamicSwfs = array();
 
@@ -318,21 +318,22 @@ class KimiliFlashEmbed
 
 			// Parameters
 			$params = array();
-			if (isset($curr['play']))				$params[] = '"play" : "' . $curr['play'] . '"';
-			if (isset($curr['loop']))				$params[] = '"loop" : "' . $curr['loop'] . '"';
-			if (isset($curr['menu'])) 				$params[] = '"menu" : "' . $curr['menu'] . '"';
-			if (isset($curr['quality']))			$params[] = '"quality" : "' . $curr['quality'] . '"';
-			if (isset($curr['scale'])) 				$params[] = '"scale" : "' . $curr['scale'] . '"';
-			if (isset($curr['salign'])) 			$params[] = '"salign" : "' . $curr['salign'] . '"';
-			if (isset($curr['wmode'])) 				$params[] = '"wmode" : "' . $curr['wmode'] . '"';
-			if (isset($curr['bgcolor'])) 			$params[] = '"bgcolor" : "' . $curr['bgcolor'] . '"';
-			if (isset($curr['base'])) 	   		 	$params[] = '"base" : "' . $curr['base'] . '"';
-			if (isset($curr['swliveconnect']))		$params[] = '"swliveconnect" : "' . $curr['swliveconnect'] . '"';
-			if (isset($curr['devicefont']))			$params[] = '"devicefont" : "' . $curr['devicefont'] . '"';
-			if (isset($curr['allowscriptaccess']))	$params[] = '"allowscriptaccess" : "' . $curr['allowscriptaccess'] . '"';
-			if (isset($curr['seamlesstabbing']))	$params[] = '"seamlesstabbing" : "' . $curr['seamlesstabbing'] . '"';
-			if (isset($curr['allowfullscreen']))	$params[] = '"allowfullscreen" : "' . $curr['allowfullscreen'] . '"';
-			if (isset($curr['allownetworking']))	$params[] = '"allownetworking" : "' . $curr['allownetworking'] . '"';
+			if (isset($curr['play']))				        $params[] = '"play" : "' . $curr['play'] . '"';
+			if (isset($curr['loop']))				        $params[] = '"loop" : "' . $curr['loop'] . '"';
+			if (isset($curr['menu'])) 				        $params[] = '"menu" : "' . $curr['menu'] . '"';
+			if (isset($curr['quality']))			        $params[] = '"quality" : "' . $curr['quality'] . '"';
+			if (isset($curr['scale'])) 				        $params[] = '"scale" : "' . $curr['scale'] . '"';
+			if (isset($curr['salign'])) 			        $params[] = '"salign" : "' . $curr['salign'] . '"';
+			if (isset($curr['wmode'])) 				        $params[] = '"wmode" : "' . $curr['wmode'] . '"';
+			if (isset($curr['bgcolor'])) 			        $params[] = '"bgcolor" : "' . $curr['bgcolor'] . '"';
+			if (isset($curr['base'])) 	   		 	        $params[] = '"base" : "' . $curr['base'] . '"';
+			if (isset($curr['swliveconnect']))		        $params[] = '"swliveconnect" : "' . $curr['swliveconnect'] . '"';
+			if (isset($curr['devicefont']))			        $params[] = '"devicefont" : "' . $curr['devicefont'] . '"';
+			if (isset($curr['allowscriptaccess']))	        $params[] = '"allowscriptaccess" : "' . $curr['allowscriptaccess'] . '"';
+			if (isset($curr['seamlesstabbing']))	        $params[] = '"seamlesstabbing" : "' . $curr['seamlesstabbing'] . '"';
+			if (isset($curr['allowfullscreen']))	        $params[] = '"allowfullscreen" : "' . $curr['allowfullscreen'] . '"';
+			if (isset($curr['allowfullscreeninteractive']))	$params[] = '"allowfullscreeninteractive" : "' . $curr['allowfullscreeninteractive'] . '"';
+			if (isset($curr['allownetworking']))	        $params[] = '"allownetworking" : "' . $curr['allownetworking'] . '"';
 
 			// Attributes
 			$attributes = array();
@@ -374,59 +375,61 @@ class KimiliFlashEmbed
 		// Build a query string based on the $fvars attribute
 		$querystring = join("&amp;", $this->parseFvars($fvars));
 
-										$out[] = '';
-										$out[] = '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"';
-		if (isset($fid))				$out[] = '			id="'.$fid.'"';
-		if (isset($align)) 				$out[] = '			align="'.$align.'"';
-										$out[] = '			class="'.$targetclass.'"';
-										$out[] = '			width="'.$width.'"';
-										$out[] = '			height="'.$height.'">';
-										$out[] = '	<param name="movie" value="' . $movie . '" />';
-		if (count($fvars) > 0)			$out[] = '	<param name="flashvars" value="' . $querystring . '" />';
-		if (isset($play))				$out[] = '	<param name="play" value="' . $play . '" />';
-		if (isset($loop))				$out[] = '	<param name="loop" value="' . $loop . '" />';
-		if (isset($menu)) 				$out[] = '	<param name="menu" value="' . $menu . '" />';
-		if (isset($quality))			$out[] = '	<param name="quality" value="' . $quality . '" />';
-		if (isset($scale)) 				$out[] = '	<param name="scale" value="' . $scale . '" />';
-		if (isset($salign)) 			$out[] = '	<param name="salign" value="' . $salign . '" />';
-		if (isset($wmode)) 				$out[] = '	<param name="wmode" value="' . $wmode . '" />';
-		if (isset($bgcolor)) 			$out[] = '	<param name="bgcolor" value="' . $bgcolor . '" />';
-		if (isset($base)) 	   		 	$out[] = '	<param name="base" value="' . $base . '" />';
-		if (isset($swliveconnect))		$out[] = '	<param name="swliveconnect" value="' . $swliveconnect . '" />';
-		if (isset($devicefont))			$out[] = '	<param name="devicefont" value="' . $devicefont . '" />';
-		if (isset($allowscriptaccess))	$out[] = '	<param name="allowscriptaccess" value="' . $allowscriptaccess . '" />';
-		if (isset($seamlesstabbing))	$out[] = '	<param name="seamlesstabbing" value="' . $seamlesstabbing . '" />';
-		if (isset($allowfullscreen))	$out[] = '	<param name="allowfullscreen" value="' . $allowfullscreen . '" />';
-		if (isset($allownetworking))	$out[] = '	<param name="allownetworking" value="' . $allownetworking . '" />';
-										$out[] = '	<!--[if !IE]>-->';
-										$out[] = '	<object	type="application/x-shockwave-flash"';
-										$out[] = '			data="'.$movie.'"';
-		if (isset($fid))				$out[] = '			name="'.$fid.'"';
-		if (isset($align)) 				$out[] = '			align="'.$align.'"';
-										$out[] = '			width="'.$width.'"';
-										$out[] = '			height="'.$height.'">';
-		if (count($fvars) > 0)			$out[] = '		<param name="flashvars" value="' . $querystring . '" />';
-		if (isset($play))				$out[] = '		<param name="play" value="' . $play . '" />';
-		if (isset($loop))				$out[] = '		<param name="loop" value="' . $loop . '" />';
-		if (isset($menu)) 				$out[] = '		<param name="menu" value="' . $menu . '" />';
-		if (isset($quality))			$out[] = '		<param name="quality" value="' . $quality . '" />';
-		if (isset($scale)) 				$out[] = '		<param name="scale" value="' . $scale . '" />';
-		if (isset($salign)) 			$out[] = '		<param name="salign" value="' . $salign . '" />';
-		if (isset($wmode)) 				$out[] = '		<param name="wmode" value="' . $wmode . '" />';
-		if (isset($bgcolor)) 			$out[] = '		<param name="bgcolor" value="' . $bgcolor . '" />';
-		if (isset($base)) 	   		 	$out[] = '		<param name="base" value="' . $base . '" />';
-		if (isset($swliveconnect))		$out[] = '		<param name="swliveconnect" value="' . $swliveconnect . '" />';
-		if (isset($devicefont))			$out[] = '		<param name="devicefont" value="' . $devicefont . '" />';
-		if (isset($allowscriptaccess))	$out[] = '		<param name="allowscriptaccess" value="' . $allowscriptaccess . '" />';
-		if (isset($seamlesstabbing))	$out[] = '		<param name="seamlesstabbing" value="' . $seamlesstabbing . '" />';
-		if (isset($allowfullscreen))	$out[] = '		<param name="allowfullscreen" value="' . $allowfullscreen . '" />';
-		if (isset($allownetworking))	$out[] = '		<param name="allownetworking" value="' . $allownetworking . '" />';
-										$out[] = '	<!--<![endif]-->';
-		if (isset($alttext))			$out[] = '		'.$alttext;
-										$out[] = '	<!--[if !IE]>-->';
-							  	  		$out[] = '	</object>';
-										$out[] = '	<!--<![endif]-->';
-		 								$out[] = '</object>';
+										        $out[] = '';
+										        $out[] = '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"';
+		if (isset($fid))				        $out[] = '			id="'.$fid.'"';
+		if (isset($align)) 				        $out[] = '			align="'.$align.'"';
+										        $out[] = '			class="'.$targetclass.'"';
+										        $out[] = '			width="'.$width.'"';
+										        $out[] = '			height="'.$height.'">';
+										        $out[] = '	<param name="movie" value="' . $movie . '" />';
+		if (count($fvars) > 0)			        $out[] = '	<param name="flashvars" value="' . $querystring . '" />';
+		if (isset($play))				        $out[] = '	<param name="play" value="' . $play . '" />';
+		if (isset($loop))				        $out[] = '	<param name="loop" value="' . $loop . '" />';
+		if (isset($menu)) 				        $out[] = '	<param name="menu" value="' . $menu . '" />';
+		if (isset($quality))			        $out[] = '	<param name="quality" value="' . $quality . '" />';
+		if (isset($scale)) 				        $out[] = '	<param name="scale" value="' . $scale . '" />';
+		if (isset($salign)) 			        $out[] = '	<param name="salign" value="' . $salign . '" />';
+		if (isset($wmode)) 				        $out[] = '	<param name="wmode" value="' . $wmode . '" />';
+		if (isset($bgcolor)) 			        $out[] = '	<param name="bgcolor" value="' . $bgcolor . '" />';
+		if (isset($base)) 	   		 	        $out[] = '	<param name="base" value="' . $base . '" />';
+		if (isset($swliveconnect))		        $out[] = '	<param name="swliveconnect" value="' . $swliveconnect . '" />';
+		if (isset($devicefont))			        $out[] = '	<param name="devicefont" value="' . $devicefont . '" />';
+		if (isset($allowscriptaccess))	        $out[] = '	<param name="allowscriptaccess" value="' . $allowscriptaccess . '" />';
+		if (isset($seamlesstabbing))	        $out[] = '	<param name="seamlesstabbing" value="' . $seamlesstabbing . '" />';
+		if (isset($allowfullscreen))	        $out[] = '	<param name="allowfullscreen" value="' . $allowfullscreen . '" />';
+		if (isset($allowfullscreeninteractive))	$out[] = '	<param name="allowfullscreeninteractive" value="' . $allowfullscreeninteractive . '" />';
+		if (isset($allownetworking))	        $out[] = '	<param name="allownetworking" value="' . $allownetworking . '" />';
+										        $out[] = '	<!--[if !IE]>-->';
+										        $out[] = '	<object	type="application/x-shockwave-flash"';
+										        $out[] = '			data="'.$movie.'"';
+		if (isset($fid))				        $out[] = '			name="'.$fid.'"';
+		if (isset($align)) 				        $out[] = '			align="'.$align.'"';
+										        $out[] = '			width="'.$width.'"';
+										        $out[] = '			height="'.$height.'">';
+		if (count($fvars) > 0)			        $out[] = '		<param name="flashvars" value="' . $querystring . '" />';
+		if (isset($play))				        $out[] = '		<param name="play" value="' . $play . '" />';
+		if (isset($loop))				        $out[] = '		<param name="loop" value="' . $loop . '" />';
+		if (isset($menu)) 				        $out[] = '		<param name="menu" value="' . $menu . '" />';
+		if (isset($quality))			        $out[] = '		<param name="quality" value="' . $quality . '" />';
+		if (isset($scale)) 				        $out[] = '		<param name="scale" value="' . $scale . '" />';
+		if (isset($salign)) 			        $out[] = '		<param name="salign" value="' . $salign . '" />';
+		if (isset($wmode)) 				        $out[] = '		<param name="wmode" value="' . $wmode . '" />';
+		if (isset($bgcolor)) 			        $out[] = '		<param name="bgcolor" value="' . $bgcolor . '" />';
+		if (isset($base)) 	   		 	        $out[] = '		<param name="base" value="' . $base . '" />';
+		if (isset($swliveconnect))		        $out[] = '		<param name="swliveconnect" value="' . $swliveconnect . '" />';
+		if (isset($devicefont))			        $out[] = '		<param name="devicefont" value="' . $devicefont . '" />';
+		if (isset($allowscriptaccess))	        $out[] = '		<param name="allowscriptaccess" value="' . $allowscriptaccess . '" />';
+		if (isset($seamlesstabbing))	        $out[] = '		<param name="seamlesstabbing" value="' . $seamlesstabbing . '" />';
+		if (isset($allowfullscreen))	        $out[] = '		<param name="allowfullscreen" value="' . $allowfullscreen . '" />';
+		if (isset($allowfullscreeninteractive))	$out[] = '		<param name="allowfullscreeninteractive" value="' . $allowfullscreeninteractive . '" />';
+		if (isset($allownetworking))	        $out[] = '		<param name="allownetworking" value="' . $allownetworking . '" />';
+										        $out[] = '	<!--<![endif]-->';
+		if (isset($alttext))			        $out[] = '		'.$alttext;
+										        $out[] = '	<!--[if !IE]>-->';
+							  	  		        $out[] = '	</object>';
+										        $out[] = '	<!--<![endif]-->';
+		 								        $out[] = '</object>';
 
 		$ret .= join("\n", $out);
 		return $ret;
@@ -622,6 +625,7 @@ class KimiliFlashEmbed
 			update_option('kml_flashembed_seamlesstabbing', $_POST['seamlesstabbing']);
 			update_option('kml_flashembed_swliveconnect', $_POST['swliveconnect']);
 			update_option('kml_flashembed_allowfullscreen', $_POST['allowfullscreen']);
+			update_option('kml_flashembed_allowfullscreeninteractive', $_POST['allowfullscreeninteractive']);
 			update_option('kml_flashembed_allowscriptaccess', $_POST['allowscriptaccess']);
 			update_option('kml_flashembed_allownetworking', $_POST['allownetworking']);
 			update_option('kml_flashembed_base', $base);
@@ -937,6 +941,16 @@ class KimiliFlashEmbed
 						<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option>
 		  				<option <?php if (get_option('kml_flashembed_allowfullscreen') == "true") echo "selected=\"selected\""; ?> value="true" >true</option>
 						<option <?php if (get_option('kml_flashembed_allowfullscreen') == "false") echo "selected=\"selected\""; ?> value="false">false</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row" style="vertical-align:top;"><label for="allowfullscreeninteractive" class="info" title="<?php _e("Enables full-screen interactive mode, in which content running in Flash Player can fill the entire screen and accept text input. The default is false if this attribute is omitted. You must have version 11,3 or greater of Flash Player installed to use full-screen interactive mode.",'kimili-flash-embed'); ?>">allowfullscreeninteractive</label></th>
+				<td>
+					<select id="allowfullscreen" name="allowfullscreeninteractive">
+						<option value=""><?php _e("Choose",'kimili-flash-embed'); ?>...</option>
+		  				<option <?php if (get_option('kml_flashembed_allowfullscreeninteractive') == "true") echo "selected=\"selected\""; ?> value="true" >true</option>
+						<option <?php if (get_option('kml_flashembed_allowfullscreeninteractive') == "false") echo "selected=\"selected\""; ?> value="false">false</option>
 					</select>
 				</td>
 			</tr>

@@ -2,7 +2,7 @@
 Contributors: Kimili, kitchin
 Tags: flash, flex, swf, swfobject, javascript
 Requires at least: 2.8
-Tested up to: 3.7
+Tested up to: 3.8.1
 Stable tag: 2.3.2
 Donate Link: http://kimili.com/donate
 
@@ -311,6 +311,11 @@ So I can maintain them in one place, please see the Kimili Flash Embed FAQs at t
 == Changelog ==
 
 > **Note:** Because this plugin has been around for a while and numerous older versions exist, yet version 1.4 is the first version to actually be included in the Wordpress Plugin Repository, any older versions are NOT available here.  If you'd like to download an older version, you can do so at the [Kimili Flash Embed for Wordpress Home Page](http://kimili.com/plugins/kml_flashembed/wp).
+
+= Version 2.4 =
+
+* Added an option to utilize the allowFullScreenInteractive mode introduced in Flash Player 11.3
+* Tested up to Wordpress 3.8.1
 
 = Version 2.3.2 =
 
