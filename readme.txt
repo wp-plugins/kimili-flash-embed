@@ -58,6 +58,9 @@ The path and file name of the Flash movie you want to display.
 **ALLOWFULLSCREEN**
 (`true`|`false`) Enables full-screen mode. The default value is false if this attribute is omitted. You must have version 9,0,28,0 or greater of Flash Player installed to use full-screen mode.
 
+**ALLOWFULLSCREENINTERACTIVE**
+(`true`|`false`) Enables full-screen interactive mode, in which content running in Flash Player can fill the entire screen *and accept text input*. The default value is false if this attribute is omitted. You must have version 11,3,0 or greater of Flash Player installed to use full-screen interactive mode. See [Adobe's developer guide](http://help.adobe.com/en_US/as3/dev/WS58a13becbbb904c7-28cf6d32136e60de784-8000.html) for more info.
+
 **ALLOWNETWORKING**
 (`all`|`internal`|`none`) Controls a SWF file's access to network functionality. The default value is 'all' if this attribute is omitted.
 
@@ -258,6 +261,9 @@ Specifies whether users are allowed to use the Tab key to move keyboard focus ou
 
 **allowfullscreen**
 Enables full-screen mode. The default value is false if this attribute is omitted. You must have version 9.0.28.0 or greater of Flash Player installed to use full-screen mode.
+
+**allowfullscreeninteractive**
+Enables full-screen interactive mode, in which content running in Flash Player can fill the entire screen *and accept text input*. The default value is false if this attribute is omitted. You must have version 11.3.0 or greater of Flash Player installed to use full-screen interactive mode. See [Adobe's developer guide](http://help.adobe.com/en_US/as3/dev/WS58a13becbbb904c7-28cf6d32136e60de784-8000.html) for more info.
 
 **allowscriptaccess**
 Controls the ability to perform outbound scripting from within a Flash SWF. If omitted, the default value is "sameDomain" in most situations, except if the user's Flash Player version is lower than 9.0.115.0 and the Flash movie is published for FP7 or earlier. In that case, the default will be "always".
