@@ -17,6 +17,7 @@ Kimili Flash Embed utilizes SWFObject 2.2, is fully compatible with Wordpress 2.
 For non-english users, Kimili Flash Embed has been localized to the following languages:
 
 * Belorussian
+* Bulgarian
 * Dutch
 * German
 * Hindi
@@ -26,6 +27,7 @@ For non-english users, Kimili Flash Embed has been localized to the following la
 * Russian
 * Serbo-Croatian
 * Spanish
+* Ukranian
 
 == Installation ==
 
@@ -317,6 +319,12 @@ So I can maintain them in one place, please see the Kimili Flash Embed FAQs at t
 == Changelog ==
 
 > **Note:** Because this plugin has been around for a while and numerous older versions exist, yet version 1.4 is the first version to actually be included in the Wordpress Plugin Repository, any older versions are NOT available here.  If you'd like to download an older version, you can do so at the [Kimili Flash Embed for Wordpress Home Page](http://kimili.com/plugins/kml_flashembed/wp).
+
+= Version 2.4.1 =
+
+* Added Bulgarian localization (Thanks to [Ajoft Software](http://www.ajoft.com)).
+* Added Ukranian localization (Thanks to [Michael Yunat](http://www.iphostmonitor.com)).
+* Tested up to Wordpress 3.9.1
 
 = Version 2.4 =
 
