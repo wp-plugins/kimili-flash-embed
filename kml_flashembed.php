@@ -22,6 +22,8 @@ Update: http://www.kimili.com/plugins/flash-embed/wp
 /**
 *
 */
+
+
 class KimiliFlashEmbed
 {
 
@@ -66,16 +68,15 @@ class KimiliFlashEmbed
 
 		} else {
 			// Front-end
-			if ($this->is_feed()) {
-				$this->doObStart();
-			} else {
-				add_action('wp_head', array(&$this, 'disableAutohide'), 9);
-				add_action('wp_head', array(&$this, 'doObStart'));
-				add_action('wp_head', array(&$this, 'addScriptPlaceholder'));
-				add_action('wp_footer', array(&$this, 'doObEnd'));
-			}
 
+			add_filter( 'no_texturize_shortcodes', array(&$this, 'shortcodes_to_exempt_from_wptexturize'));
+			add_shortcode('kml_flashembed', array(&$this, 'processShortcode'));
+			add_action('wp_head', array(&$this, 'disableAutohide'), 9);
+			add_action('wp_footer', array(&$this, 'scriptSwfs'), 101);
 		}
+
+		add_filter( 'no_texturize_shortcodes', array(&$this, 'shortcodes_to_exempt_from_wptexturize'));
+		add_shortcode('kml_flashembed', array(&$this, 'process_shortcode'));
 
 		// Queue SWFObject
 		add_action( 'wp_enqueue_scripts', array(&$this, 'enqueueSWFObjectJavaScript'));
@@ -113,23 +114,22 @@ class KimiliFlashEmbed
 		return (version_compare($wp_version, $minimum_version) >= 0);
 	}
 
+	function shortcodes_to_exempt_from_wptexturize($shortcodes) {
+		$shortcodes[] = 'kml_flashembed';
+		$shortcodes[] = 'kml_swfembed';
+		return $shortcodes;
+	}
+
 	function parseShortcodes($content)
 	{
-		$pattern = '/(<p>[\s\n\r]*)?\[(kml_(flash|swf)embed)\b(.*?)(?:(\/))?\](?:(.+?)\[\/\2\])?([\s\n\r]*<\/p>)?/s';
-		$temp 	= preg_replace_callback($pattern, array(&$this, 'processShortcode'), $content);
-		$result = preg_replace_callback('/KML_FLASHEMBED_PROCESS_SCRIPT_CALLS/s', array(&$this, 'scriptSwfs'), $temp);
+		$result = preg_replace_callback('/KML_FLASHEMBED_PROCESS_SCRIPT_CALLS/s', array(&$this, 'scriptSwfs'), $content);
 		return $result;
 	}
 
 	// Thanks to WP shortcode API Code
-	function processShortcode($code)
+	function processShortcode($atts, $altContent = null)
 	{
 		$r	= "";
-
-		$atts = $this->parseAtts($code[4]);
-		$altContent = isset($code[6]) ? $code[6] : '';
-
-		$attpairs	= preg_split('/\|/', $elements, -1, PREG_SPLIT_NO_EMPTY);
 
 		if (isset($atts['movie'])) {
 
@@ -192,32 +192,7 @@ class KimiliFlashEmbed
 			}
 		}
 
-	 	return $r;
-	}
-
-	// Thanks to WP shortcode API Code
-	function parseAtts($text)
-	{
-		$atts = array();
-		$pattern = '/(\w+)\s*=\s*"([^"]*)"(?:\s|$)|(\w+)\s*=\s*\'([^\']*)\'(?:\s|$)|(\w+)\s*=\s*([^\s\'"]+)(?:\s|$)|"([^"]*)"(?:\s|$)|(\S+)(?:\s|$)/';
-		$text = preg_replace("/[\x{00a0}\x{200b}]+/u", " ", $text);
-		if ( preg_match_all($pattern, $text, $match, PREG_SET_ORDER) ) {
-			foreach ($match as $m) {
-				if (!empty($m[1]))
-					$atts[strtolower($m[1])] = stripcslashes($m[2]);
-				elseif (!empty($m[3]))
-					$atts[strtolower($m[3])] = stripcslashes($m[4]);
-				elseif (!empty($m[5]))
-					$atts[strtolower($m[5])] = stripcslashes($m[6]);
-				elseif (isset($m[7]) and strlen($m[7]))
-					$atts[] = stripcslashes($m[7]);
-				elseif (isset($m[8]))
-					$atts[] = stripcslashes($m[8]);
-			}
-		} else {
-			$atts = ltrim($text);
-		}
-		return $atts;
+	 	return $r	;
 	}
 
 	function publishStatic($atts)
@@ -362,7 +337,7 @@ class KimiliFlashEmbed
 		$out[]		= '</script>';
 		$out[]		= '';
 
-		return join("\n", $out);
+		echo join("\n", $out);
 	}
 
 	function buildObjectTag($atts)
