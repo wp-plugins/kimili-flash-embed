@@ -4,7 +4,7 @@
 Plugin Name: Kimili Flash Embed
 Plugin URI: http://www.kimili.com/plugins/flash-embed
 Description: Provides a full Wordpress interface for <a href="http://code.google.com/p/swfobject/">SWFObject</a> - the best way to embed Flash on your site.
-Version: 2.5
+Version: 2.5.1
 Author: Michael Bester
 Author URI: http://www.kimili.com
 Update: http://www.kimili.com/plugins/flash-embed/wp
@@ -23,11 +23,10 @@ Update: http://www.kimili.com/plugins/flash-embed/wp
 *
 */
 
-
 class KimiliFlashEmbed
 {
 
-	var $version = '2.5';
+	var $version = '2.5.1';
 	var $staticSwfs = array();
 	var $dynamicSwfs = array();
 
@@ -337,7 +336,7 @@ class KimiliFlashEmbed
 		}
 
 		// Build a query string based on the $fvars attribute
-		$querystring = join("&amp;", $this->parseFvars($fvars));
+		$querystring = isset($fvars) ? join("&amp;", $this->parseFvars($fvars)) : '';
 
 										        $out[] = '';
 										        $out[] = '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"';
@@ -347,7 +346,7 @@ class KimiliFlashEmbed
 										        $out[] = '			width="'.$width.'"';
 										        $out[] = '			height="'.$height.'">';
 										        $out[] = '	<param name="movie" value="' . $movie . '" />';
-		if (count($fvars) > 0)			        $out[] = '	<param name="flashvars" value="' . $querystring . '" />';
+		if (isset($fvars) && count($fvars) > 0)	$out[] = '	<param name="flashvars" value="' . $querystring . '" />';
 		if (isset($play))				        $out[] = '	<param name="play" value="' . $play . '" />';
 		if (isset($loop))				        $out[] = '	<param name="loop" value="' . $loop . '" />';
 		if (isset($menu)) 				        $out[] = '	<param name="menu" value="' . $menu . '" />';
@@ -371,7 +370,7 @@ class KimiliFlashEmbed
 		if (isset($align)) 				        $out[] = '			align="'.$align.'"';
 										        $out[] = '			width="'.$width.'"';
 										        $out[] = '			height="'.$height.'">';
-		if (count($fvars) > 0)			        $out[] = '		<param name="flashvars" value="' . $querystring . '" />';
+		if (isset($fvars) && count($fvars) > 0) $out[] = '		<param name="flashvars" value="' . $querystring . '" />';
 		if (isset($play))				        $out[] = '		<param name="play" value="' . $play . '" />';
 		if (isset($loop))				        $out[] = '		<param name="loop" value="' . $loop . '" />';
 		if (isset($menu)) 				        $out[] = '		<param name="menu" value="' . $menu . '" />';
@@ -395,8 +394,7 @@ class KimiliFlashEmbed
 										        $out[] = '	<!--<![endif]-->';
 		 								        $out[] = '</object>';
 
-		$ret .= join("\n", $out);
-		return $ret;
+		return join("\n", $out);
 	}
 
 	function parseFvars($fvars, $format='string')

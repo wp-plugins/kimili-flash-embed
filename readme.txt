@@ -3,7 +3,7 @@ Contributors: Kimili, kitchin
 Tags: flash, flex, swf, swfobject, javascript
 Requires at least: 2.8
 Tested up to: 4.0.1
-Stable tag: 2.5
+Stable tag: 2.5.1
 Donate Link: http://cl.ly/YgIv
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -420,9 +420,13 @@ Although it&#8217;s using an old version of the plugin, [Brooks Andrus](http://w
 
 == Upgrade Notice ==
 
-Version 2.4.1 and earlier of this plugin are broken as of WordPress 4.0.1. This release, version 2.5 will get you back in business, so upgrade today! See the changelog for more information.
+Version 2.4.1 and earlier of this plugin are broken as of WordPress 4.0.1. This release, version 2.5.1	 will get you back in business, so upgrade today! See the changelog for more information.
 
 == Changelog ==
+
+= Version 2.5.1 =
+
+* Whoops! 2.5 shipped with some undefined variable bugs! This release fixes those.
 
 = Version 2.5 =
 
