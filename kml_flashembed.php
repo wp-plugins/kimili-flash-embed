@@ -4,7 +4,7 @@
 Plugin Name: Kimili Flash Embed
 Plugin URI: http://www.kimili.com/plugins/flash-embed
 Description: Provides a full Wordpress interface for <a href="http://code.google.com/p/swfobject/">SWFObject</a> - the best way to embed Flash on your site.
-Version: 2.4.1
+Version: 2.5
 Author: Michael Bester
 Author URI: http://www.kimili.com
 Update: http://www.kimili.com/plugins/flash-embed/wp
@@ -14,7 +14,7 @@ Update: http://www.kimili.com/plugins/flash-embed/wp
 *
 *	KIMILI FLASH EMBED
 *
-*	Copyright 2010-2013 Michael Bester (http://www.kimili.com)
+*	Copyright 2006-2015 Michael Bester (http://www.kimili.com)
 *	Released under the GNU General Public License (http://www.gnu.org/licenses/gpl.html)
 *
 */
@@ -27,7 +27,7 @@ Update: http://www.kimili.com/plugins/flash-embed/wp
 class KimiliFlashEmbed
 {
 
-	var $version = '2.4.1';
+	var $version = '2.5';
 	var $staticSwfs = array();
 	var $dynamicSwfs = array();
 
@@ -68,9 +68,9 @@ class KimiliFlashEmbed
 
 		} else {
 			// Front-end
-
 			add_filter( 'no_texturize_shortcodes', array(&$this, 'shortcodes_to_exempt_from_wptexturize'));
 			add_shortcode('kml_flashembed', array(&$this, 'processShortcode'));
+			add_shortcode('kml_swfembed', array(&$this, 'processShortcode'));
 			add_action('wp_head', array(&$this, 'disableAutohide'), 9);
 			add_action('wp_footer', array(&$this, 'scriptSwfs'), 101);
 		}
@@ -118,12 +118,6 @@ class KimiliFlashEmbed
 		$shortcodes[] = 'kml_flashembed';
 		$shortcodes[] = 'kml_swfembed';
 		return $shortcodes;
-	}
-
-	function parseShortcodes($content)
-	{
-		$result = preg_replace_callback('/KML_FLASHEMBED_PROCESS_SCRIPT_CALLS/s', array(&$this, 'scriptSwfs'), $content);
-		return $result;
 	}
 
 	// Thanks to WP shortcode API Code
@@ -192,7 +186,7 @@ class KimiliFlashEmbed
 			}
 		}
 
-	 	return $r	;
+	 	return $r;
 	}
 
 	function publishStatic($atts)
@@ -224,11 +218,6 @@ class KimiliFlashEmbed
 		$out[]		= '<div id="' . $target . '" class="' . $targetclass . '">'.$alttext.'</div>';
 
 		return join("\n", $out);
-	}
-
-	function addScriptPlaceholder()
-	{
-		echo 'KML_FLASHEMBED_PROCESS_SCRIPT_CALLS';
 	}
 
 	function disableAutohide()
@@ -446,26 +435,6 @@ class KimiliFlashEmbed
 
 		return $ret;
 
-	}
-
-	function doObStart()
-	{
-		ob_start(array(&$this, 'parseShortcodes'));
-	}
-
-	function doObEnd()
-	{
-		// Check the output buffer
-		if (function_exists('ob_list_handlers')) {
-			$active_handlers = ob_list_handlers();
-		} else {
-			$active_handlers = array();
-		}
-		if (sizeof($active_handlers) > 0 &&
-			strtolower($active_handlers[sizeof($active_handlers) - 1]) ==
-			strtolower('KimiliFlashEmbed::parseShortcodes')) {
-			ob_end_flush();
-		}
 	}
 
 	function is_feed()

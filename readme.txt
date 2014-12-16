@@ -2,9 +2,11 @@
 Contributors: Kimili, kitchin
 Tags: flash, flex, swf, swfobject, javascript
 Requires at least: 2.8
-Tested up to: 3.9.1
-Stable tag: 2.4.1
-Donate Link: http://kimili.com/donate
+Tested up to: 4.0.1
+Stable tag: 2.5
+Donate Link: http://cl.ly/YgIv
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Provides a WordPress interface for SWFObject 2, the best way to embed Flash content on any site.
 
@@ -314,11 +316,118 @@ One other minor backwards compatibility issue for you has to do with the format 
 
 == Frequently Asked Questions ==
 
-So I can maintain them in one place, please see the Kimili Flash Embed FAQs at the [Kimili Flash Embed Home](http://kimili.com/plugins/kml_flashembed#faqs)
+### I put a Flash Movie in my header. It works on the home page, but not on any other pages. Why?
+
+When you embed a SWF on an HTML page, you have to make sure that you use an **absolute** path to reference your SWF, not a relative one. The reason for this is that the browser looks for the SWF _relative to a page&#8217;s URL_. Therefore, by using an absolute path, you&#8217;ll ensure that the browser always looks for the SWF in the same place, regardless of what the page&#8217;s URL may be. The difference looks like this:
+
+#### Relative Path _incorrect_
+
+    [kml_flashembed movie="myMovie.swf" height="100" width="800" /]
+
+#### Absolute Path _correct_
+
+    [kml_flashembed movie="/path/to/myMovie.swf" height="100" width="800" /]
+
+As you can see, the main difference is that your path begin with a `/`, and then the path to your SWF. This tells the browser to start at the root of your site and find your SWF from there. Note that the absolute path need not include your site&#8217;s URL&#8212;it&#8217;s probably best if it _doesn&#8217;t_ include it, as it&#8217;s more portable if your URL were to change.
+
+### I&#8217;m using SlideShowPro (_or a similar slideshow tool_). It works fine if I open the SWF directly in a browser, but on my site, it doesn&#8217;t display any content. What gives?
+
+SlideShowPro reads an XML file which tells it where to find the images to display. If it doesn&#8217;t find that XML, it won&#8217;t display anything. Typically, the XML file is in the same directory as the slideshow SWF, and the slideshow SWF will look for that XML using a relative path. This is fine if you access the SWF directly in the browser, but as I explain in the previous question, once you embed that SWF in an HTML page, the SWF resolves paths relative to that HTML page, _not relative to itself_.
+
+The way to override this is to use the `base` parameter. Since the slideshow SWF and its XML file are typically in the same directory, set the base value to the absolute path to that directory. It should look something like this:
+
+    [kml_flashembed movie="/path/to/my/slideshow.swf" base="/path/to/my/" /]
+
+Of course, if your XML lives in a different directory, they you should change the value of the `base` parameter to match.
+
+### My Flash movie references external XML/image/audio/video/etc. files to populate its content and it’s not working. What’s going on?
+
+If you&#8217;re using the `fvars` attribute to pass your Flash movie a path to an external file, make sure the path you&#8217;re feeding it is **absolute, not relative**. As in the first question above, when a SWF is embedded in an HTML page, the browser references other files that the SWF may ask for _relative to the HTML page, not the SWF_. Using absolute paths is the best way to make sure the browser always knows where to find those files.
+
+In situations like the SlideShowPro question above, It may be the case that a relative path to an XML file is embedded in the SWF itself. If you can&#8217;t override the path in the SWF, you can use KFE&#8217;s `base` attribute to define a absolute base URL that the relative path will use as its point of reference to find those files.
+
+### I made sure to use an absolute path to reference my SWF (and it&#8217;s assets), but it&#8217;s still not working. Help!
+
+In cases like this, the simplest answer is usually the best. Take that absolute URL, put it directly in a browser&#8217;s address bar and try to load the file in the browser. Do you see it? If not, make sure to correct the URL to point to the right place and then update your KFE tag with the correct URL. If you do see the file, but is still doesn&#8217;t work in your KFE tag, then feel free to [contact me](http://kimili.com/contact).
+
+### Can I use KFE on my Wordpress.com blog?
+
+Unfortunately, no. Because it&#8217;s a hosted service, wordpress.com doesn&#8217;t allow you the same freedom to install plugins and otherwise customize your site the way that you can with your own Wordpress installation on your own server.
+
+### I see KFE tags instead of my Flash movies on my Wordpress site. How can I fix this?
+
+This is _usually_ due to some missing function calls when using a non-default theme. If you&#8217;re experiencing this problem and have your site running with a custom theme, the best thing to do is to go into the theme editor and check the header and footer templates. They should have function calls as follows:
+
+#### Header _typically header.php_
+
+    <?php wp_head() ?>
+    </head>
+
+#### Footer _typically footer.php_
+
+    <?php wp_footer() ?>
+    </body>
+
+If either the `wp_head()` or the `wp_footer()` php functions are missing, **KFE will not work**, so you&#8217;ll need to add them in. They should be placed, respectively, just before the `</head>` and `</body>` elements, as illustrated above.
+
+### I have HTML drop-down menus (or some other positioned HTML elements) which get hidden behind my Flash movie. How can I fix this?
+
+Fortunately, there&#8217;s a very simple remedy for this. Just set the `wmode` attribute to `transparent` in your KFE tag and you should be good to go.
+
+### I set the `play` attribute to `false` in my KFE, but the video I&#8217;m embedding still plays. What gives?
+
+The `play` parameter is misleading when it comes to embedding video. What it does is tell a simple flash movie with a timeline to play or stop, but that&#8217;s not the case with video. At its simplest, Flash video requires you have a player SWF &#8211; which has the playback controls and the stage for showing the video &#8211; and a video file &#8211; most likely an FLV &#8211; which gets loaded in the player SWF. The KFE `play` parameter has no control over the playback of video, but the player SWF does. Most video player SWFs have some way to play or stop the loaded video defined which is specific to that player. It could be a parameter that you pass to the video player when you load it. It could be a Javascript function that you call. It could be a combination of these things, too. You&#8217;d need to reference the documentation of the player that you&#8217;re using in order to find out what works for you in your specific situation.
+
+### How do I center or add some space around Flash movies on my page?
+
+This is easy to do using a bit of CSS. By default, KFE renders Flash movies either within a `<div>` or an `<object>` element with has a class name of &#8220;flashmovie&#8221; (or whatever you set in your [configuration options](#configuration)). Utilizing that, you can add a CSS definition like this:
+
+    div.flashmovie {
+        margin: 1em auto;
+    }
+
+That will add a 1 em margin on the top and bottom as well as center of all the Flash movies on your site that you&#8217;ve inserted using KFE. Also, remember that if you can apply a different class name to a certain Flash movies using the `targetclass` attribute. This is useful if you want to, for example, use a Flash movie in the header on your site and don&#8217;t want the default margins you&#8217;ve specified in your CSS to be applied to it.
+
+### How do I make my Flash movie clickable?
+
+If you want somebody to be able to click on your Flash movie and have it work as a link, then you actually have to build that link, or clickable area into your SWF. KFE cannot &#8220;wrap&#8221; your SWF with a link.
+
+### How do I open a new window when someone clicks on my Flash movie?
+
+First, re-read the previous question.
+
+Now, if you still want to open a new window from your Flash movie, be aware that it&#8217;s a _bad idea_ because it probably won&#8217;t work. You&#8217;d have to embed a `window.open()` javascript call in your movie, but the problem is that when you do that and someone clicks on it, any decent browser with a popup blocker (most, these days) will not allow it. Fact is, because the Flash player is a _plugin_, browsers don&#8217;t know whether a javascript call which originates from within a Flash movie was triggered by user interaction or programatically. Since the latter can easily be used with malicious intent (if you&#8217;ve ever see a Windows machine infected with spyware, you know what I&#8217;m talking about), browsers simply don&#8217;t allow it. Don&#8217;t do it.
+
+### Does this thing work with FLV files?
+
+Sure it does, but you can&#8217;t just reference a FLV file directly with KFE. You have to insert a video player SWF onto your page and load an FLV into _that_. If you don&#8217;t have an video player SWF, there are a number available online such as the [JW FLV Media Player](http://www.longtailvideo.com/players/jw-flv-player/).
+
+The general approach you&#8217;d take with KFE is to embed your video player as the SWF and use the `fvars` attribute to specify either the url to the FLV file the URL to a playlist that references the FLV file(s). The specifics of how the `fvars` would be defined depends on the particular requirements of your FLV player.
+
+### I&#8217;d like to use KFE to put a Flash header in my Wordpress site. How do I do it?
+
+You can put a `kml_flashembed` tag anywhere on your site, but it requires some familiarity with editing PHP and HTML files. With the Tag Generator, the plugin is set up to insert tags in posts very easily, but you can manually insert a tag in any of your theme files as well. Simply navigate to _Appearance &rarr; Editor_, select one of your current Theme&#8217;s PHP files, and insert a KFE tag among the HTML and PHP where you want your SWF to appear.
+
+### Help! I installed KFE on my Wordpress site and everything blew up! What do I do?
+
+The first step is to check for incompatibilities with another plugin. Leaving KFE active, disable other plugins you have active one at a time, each time checking to see if your site is still blowing up. The moment you see that it doesn&#8217;t, the last plugin you disabled is the culprit &#8211; [let me know about it](http://kimili.com/contact/).
+
+Of course, this assumes that you are using a stock installation of Wordpress, which is the only type of installation I&#8217;ve tested this plugin on. If you&#8217;re using a non-standard theme or you&#8217;ve modified or hacked the core PHP files in any way, I cannot guarantee any functionality, nor offer you support on how to fix things when they go awry. Sorry.
+
+### I&#8217;m still having trouble getting KFE to work in my Wordpress site. Can you show me what to do?
+
+Although it&#8217;s using an old version of the plugin, [Brooks Andrus](http://www.brooksandrus.com/blog/) has put together [a helpful screencast](http://www.brooksandrus.com/blog_assets/fitc/word_press/index.html) that walks through process of installing an using KFE.
+
+== Upgrade Notice ==
+
+Version 2.4.1 and earlier of this plugin are broken as of WordPress 4.0.1. This release, version 2.5 will get you back in business, so upgrade today! See the changelog for more information.
 
 == Changelog ==
 
-> **Note:** Because this plugin has been around for a while and numerous older versions exist, yet version 1.4 is the first version to actually be included in the Wordpress Plugin Repository, any older versions are NOT available here.  If you'd like to download an older version, you can do so at the [Kimili Flash Embed for Wordpress Home Page](http://kimili.com/plugins/kml_flashembed/wp).
+= Version 2.5 =
+
+* I've finally updated shortcode parsing to use the official Wordpress Shortcode API rather than the home-spun approach I cobbled together nearly 9 years ago when I first wrote this plugin. Frankly, I was impressed it worked for as long as it did, but now I was able to strip out that old fragile (and, as of WP 4.0.1, broken) code as a result. Kimili Flash Embed now is a better WordPress citizen, and should work with other plugins that it might not have worked alongside in the past. Now that it uses only official WP APIs, it should also be more future-proof, so you can continue to use it confidently as WordPress continues to evolve in the future.
+*
 
 = Version 2.4.1 =
 
