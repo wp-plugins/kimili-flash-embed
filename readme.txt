@@ -427,7 +427,7 @@ Version 2.4.1 and earlier of this plugin are broken as of WordPress 4.0.1. This 
 = Version 2.5 =
 
 * I've finally updated shortcode parsing to use the official Wordpress Shortcode API rather than the home-spun approach I cobbled together nearly 9 years ago when I first wrote this plugin. Frankly, I was impressed it worked for as long as it did, but now I was able to strip out that old fragile (and, as of WP 4.0.1, broken) code as a result. Kimili Flash Embed now is a better WordPress citizen, and should work with other plugins that it might not have worked alongside in the past. Now that it uses only official WP APIs, it should also be more future-proof, so you can continue to use it confidently as WordPress continues to evolve in the future.
-*
+* Tested up to Wordpress 4.0.1
 
 = Version 2.4.1 =
 
